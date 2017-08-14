@@ -13,7 +13,6 @@ import android.util.Log;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.HomeTabbedActivity;
-import com.example.zodiac.sawa.MenuActiviries.aboutUserActivity;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.Spring.Models.SignUpModel;
 import com.example.zodiac.sawa.Spring.Models.UserModel;
@@ -145,8 +144,7 @@ public class RegisterActivity extends Activity {
                 UserModel userModel = response.body();
                 Log.d("SignUpNew", response.code() + " ");
                 if (response.code() == 200) {
-                    aboutUserActivity.updateAbout("", "", "");
-                    aboutUserActivity about = new aboutUserActivity();
+                    updateAbout("", "", "");
                     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profileimage);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); // what 90 does ??
@@ -165,6 +163,28 @@ public class RegisterActivity extends Activity {
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(getApplicationContext());
                 Log.d("notvalid", "valid" + t.getMessage());
+            }
+        });
+
+    }
+	
+	 public static void updateAbout(final String bioText, final String statusText, final String songText) {
+        AboutUserRequestModel aboutUserModel = new AboutUserRequestModel(GeneralAppInfo.getUserID(), bioText, statusText, songText);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GeneralAppInfo.SPRING_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        AboutUserInterface aboutUserApi = retrofit.create(AboutUserInterface.class);
+
+        Call<AboutUserResponseModel> call = aboutUserApi.addNewAboutUser(aboutUserModel);
+        call.enqueue(new Callback<AboutUserResponseModel>() {
+            @Override
+            public void onResponse(Call<AboutUserResponseModel> call, Response<AboutUserResponseModel> response) {
+                Log.d("AboutUserUpdate", "Done successfully");
+            }
+
+            @Override
+            public void onFailure(Call<AboutUserResponseModel> call, Throwable t) {
+                Log.d("AboutUserUpdate", "Failure " + t.getMessage());
             }
         });
 
