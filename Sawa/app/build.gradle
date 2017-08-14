@@ -1,0 +1,90 @@
+apply plugin: 'com.android.application'
+android {
+
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.example.zodiac.sawa"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    useLibrary 'org.apache.http.legacy'
+
+}
+final def var = dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:design:+'
+    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'id.zelory:compressor:1.0.4'
+
+
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.koushikdutta.ion:ion:2.+'
+
+
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.mikhaellopez:circularimageview:3.0.2'
+    compile 'com.android.support:cardview-v7:+'
+    compile 'com.github.markushi:circlebutton:1.1'
+
+    // compile 'com.google.firebase:firebase-messaging:10.2.4'
+
+    //compile "com.google.android.gms:play-services:9.3.0"
+
+
+    testCompile 'junit:junit:4.12'
+    compile files('activation.jar')
+    compile files('additionnal.jar')
+    compile files('mail.jar')
+}
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+
+}
+dependencies {
+    compile 'com.android.support:multidex:1.0.0'
+    compile files('activation.jar')
+    compile files('additionnal.jar')
+    compile files('mail.jar')
+    compile files('YouTubeAndroidPlayerApi.jar')
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
+
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
+    compile 'com.hbb20:ccp:2.0.2'
+
+
+
+    compile 'javax.inject:javax.inject:1'
+}
+apply plugin: 'com.google.gms.google-services'

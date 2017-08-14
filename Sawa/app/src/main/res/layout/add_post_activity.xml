@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple"
+        tools:targetApi="lollipop"></Toolbar>
+
+
+    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:fastScrollPopupBgColor="@color/purple"
+        app:fastScrollPopupTextColor="@android:color/primary_text_dark"
+        app:fastScrollThumbColor="@color/purple"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    <ScrollView
+        android:id="@+id/Scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/corners">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/senderImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/friend_picture" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="65dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="1dp"
+                android:background="#999" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/receiverImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="230dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/friend_picture" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="63dp"
+                android:background="#fff"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/PostText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:gravity="top|left"
+                    android:hint="Your text here"
+                    android:isScrollContainer="true"
+                    android:maxLines="15"
+                    android:minLines="4"
+                    android:padding="5dp"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/cross"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right"
+                    android:layout_marginRight="10dp"
+                    android:drawableRight="@drawable/rsz_delete"
+                    android:elevation="2dp"
+                    android:indeterminate="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible">
+
+                    <com.google.android.youtube.player.YouTubePlayerView
+                        android:id="@+id/youtube"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/PostImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:background="@android:color/transparent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+
+                <TextView
+                    android:id="@+id/AddImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:background="#fff"
+                    android:drawableLeft="@drawable/picture"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="3dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="6dp"
+                android:elevation="2dp">
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/anonymous"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="3dp"
+                    app:cb_color="#aaa"
+
+                    />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Anonymously"
+                    android:textColor="@color/purple" />
+
+
+                <Button
+                    android:id="@+id/CancelBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="90dp"
+                    android:background="@android:color/transparent"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple" />
+
+                <Button
+                    android:id="@+id/PostBtn"
+                    android:layout_width="70dp"
+                    android:layout_height="28dp"
+                    android:background="@android:color/transparent"
+                    android:text="Post"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/postProgress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="0dp"
+        android:indeterminateTint="@color/purple"
+        android:visibility="invisible" />
+</LinearLayout>

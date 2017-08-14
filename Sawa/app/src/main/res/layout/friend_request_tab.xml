@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeRequest"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/purple"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/toolBarText"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:drawableLeft="@mipmap/left"
+            android:focusableInTouchMode="true"
+            android:paddingRight="10dp"
+            android:textColor="#fff"
+            android:textSize="19dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="7dp"
+            android:focusableInTouchMode="true"
+            android:paddingRight="10dp"
+            android:text="Friend Requests"
+            android:textColor="#fff"
+            android:textSize="19dp"
+            android:textStyle="bold" />
+
+    </Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+
+        <ProgressBar
+            android:id="@+id/ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:indeterminateTint="@color/purple" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/no_request_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+
+                android:id="@+id/circle"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="110dp"
+                android:src="@drawable/no_friends" />
+
+            <TextView
+                android:id="@+id/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="-1dp"
+                android:fontFamily="cursive"
+                android:text="   No Requests To Show"
+                android:textAlignment="center"
+                android:textColor="#878787"
+                android:textSize="24dp" />
+
+        </LinearLayout>
+
+        <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fastScrollPopupBgColor="@color/purple"
+            app:fastScrollPopupTextColor="@android:color/primary_text_dark"
+            app:fastScrollThumbColor="@color/purple" />
+    </LinearLayout>
+</RelativeLayout>

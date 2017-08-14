@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "9669241952",
+    "firebase_url": "https://sawa-abd1f.firebaseio.com",
+    "project_id": "sawa-abd1f",
+    "storage_bucket": "sawa-abd1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9669241952:android:bcc69569c462e92c",
+        "android_client_info": {
+          "package_name": "com.example.zodiac.sawa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9669241952-epa1b97d833k40p508he5lage0vjln9r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zodiac.sawa",
+            "certificate_hash": "f426a154bb85cd192f28e7511f77524b05e6d9fe"
+          }
+        },
+        {
+          "client_id": "9669241952-h1jia4fhamh70i7j8s409p7f2o95scr4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLZ5WuKShcCAi3MfTacKVcD2vUb6SNSd0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9669241952-h1jia4fhamh70i7j8s409p7f2o95scr4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

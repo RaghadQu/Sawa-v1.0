@@ -1,0 +1,108 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/three"
+    android:orientation="vertical"
+    android:paddingBottom="30dp"
+    android:paddingLeft="40dp"
+    android:paddingRight="45dp"
+    android:paddingTop="45dp">
+
+    <TextView
+        android:id="@+id/Sawa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="cursive"
+        android:text="Sawa"
+        android:textColor="@color/purple"
+        android:textSize="80dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="100dp"
+        android:layout_toRightOf="@+id/Sawa"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@mipmap/account"
+            android:drawablePadding="5dp"
+            android:ems="20"
+            android:hint="Email"
+            android:inputType="text"
+            android:paddingLeft="0dp"
+            android:textColor="#000"
+            android:textColorHint="@color/purple"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawableLeft="@mipmap/lock2"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="#000"
+            android:textColorHint="@color/purple"
+            android:textSize="15dp"
+
+            />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/selector_xml_btn_yellow"
+            android:onClick="checkLogin"
+            android:text="Log In"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:onClick="forgot_pass"
+            android:text="Forgot password?"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Don't have an account ? "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:onClick="register"
+            android:text="Register Now"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/purple"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+</RelativeLayout>
