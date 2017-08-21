@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Validation;
+import com.example.zodiac.sawa.Services.ValidationService;
 import com.hbb20.CountryCodePicker;
 
 /**
@@ -47,7 +47,7 @@ public class MobileFragment extends android.app.Fragment {
                 if (userMobile.getText().toString().trim().equals("")) {
                     userMobile.setError("Mobile number is required");
                 } else {
-                    if (!Validation.isValidMobile(userMobile.getText().toString())) {
+                    if (!ValidationService.isValidMobile(userMobile.getText().toString())) {
                         userMobile.setError("Mobile number is not valid");
                     } else {
                         String phoneCode = ccp.getSelectedCountryCode();

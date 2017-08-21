@@ -166,28 +166,16 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/friendsTxt"
+                android:id="@+id/newPostTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="28dp"
                 android:clickable="true"
                 android:padding="10dp"
-                android:text="Friends"
+                android:text="New Post"
                 android:textAllCaps="false"
                 android:textColor="@color/purple"
                 android:textSize="14dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible">
-
-                <com.google.android.youtube.player.YouTubePlayerView
-                    android:id="@+id/youtube"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible" />
-            </LinearLayout>
 
             <View
                 android:layout_width="0.1dp"
@@ -199,13 +187,13 @@
 
 
             <TextView
-                android:id="@+id/friendsTxt"
+                android:id="@+id/followerTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="28dp"
                 android:clickable="true"
                 android:padding="10dp"
-                android:text="Friends"
+                android:text="Follower"
                 android:textAllCaps="false"
                 android:textColor="@color/purple"
                 android:textSize="14dp" />
@@ -219,13 +207,13 @@
                 android:background="#ACACAC" />
 
             <TextView
-                android:id="@+id/requestTxt"
+                android:id="@+id/followingTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="28dp"
                 android:clickable="true"
                 android:padding="10dp"
-                android:text="Requests"
+                android:text="Following"
                 android:textAllCaps="false"
                 android:textColor="@color/purple"
                 android:textSize="14dp" />
@@ -237,18 +225,6 @@
                 android:layout_marginLeft="22dp"
                 android:layout_marginTop="3dp"
                 android:background="#ACACAC" />
-
-            <TextView
-                android:id="@+id/newPostTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:clickable="true"
-                android:padding="10dp"
-                android:text="New Post"
-                android:textAllCaps="false"
-                android:textColor="@color/purple"
-                android:textSize="14dp" />
 
 
         </LinearLayout>

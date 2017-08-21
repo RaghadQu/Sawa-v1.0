@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Services.FirebaseServices;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +10,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
+import com.example.zodiac.sawa.Activities.MainActivity;
+import com.example.zodiac.sawa.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

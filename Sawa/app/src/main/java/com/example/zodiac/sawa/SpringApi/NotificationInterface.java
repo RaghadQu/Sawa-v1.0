@@ -1,7 +1,7 @@
 package com.example.zodiac.sawa.SpringApi;
 
-import com.example.zodiac.sawa.Spring.Models.NotificationModel;
-import com.example.zodiac.sawa.Spring.Models.updateNotificationModel;
+import com.example.zodiac.sawa.SpringModels.NotificationModel;
+import com.example.zodiac.sawa.SpringModels.updateNotificationModel;
 
 import retrofit2.Call;
 import retrofit2.http.FormUrlEncoded;

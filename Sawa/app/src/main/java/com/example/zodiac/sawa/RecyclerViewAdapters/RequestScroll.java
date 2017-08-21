@@ -11,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.FriendProfile.FreindsFunctions;
+import com.example.zodiac.sawa.Activities.*;
 import com.example.zodiac.sawa.GeneralAppInfo;
-import com.example.zodiac.sawa.MenuActiviries.MyProfileActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyRequestsActivity;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Spring.Models.FriendRequestModel;
+import com.example.zodiac.sawa.Services.FriendServices.FreindsFunctions;
+import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;

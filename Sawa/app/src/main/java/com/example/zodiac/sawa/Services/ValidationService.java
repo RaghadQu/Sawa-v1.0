@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Services;
 
 import android.widget.EditText;
 
@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
  * Created by Rabee on 3/24/2017.
  */
 
-public class Validation {
-    public Validation() {
+public class ValidationService {
+    public ValidationService() {
 
     }
 

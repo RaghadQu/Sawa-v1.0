@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.Spring.Models;
+package com.example.zodiac.sawa.SpringModels;
 
 /**
  * Created by Rabee on 6/26/2017.
@@ -13,9 +13,7 @@ public class UserModel {
     String birthdate;
     String mobile;
     String image;
-
     int sign_in_out;
-    int anon_post;
     int public_post_view;
     String cover_image;
 
@@ -91,14 +89,6 @@ public class UserModel {
         this.sign_in_out = sign_in_out;
     }
 
-    public int getAnon_post() {
-        return anon_post;
-    }
-
-    public void setAnon_post(int anon_post) {
-        this.anon_post = anon_post;
-    }
-
     public int getPublic_post_view() {
         return public_post_view;
     }
@@ -115,5 +105,5 @@ public class UserModel {
         this.gender = gender;
     }
 
-
 }
+

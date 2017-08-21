@@ -1,9 +1,9 @@
 package com.example.zodiac.sawa.SpringApi;
 
-import com.example.zodiac.sawa.Spring.Models.AboutUserRequestModel;
-import com.example.zodiac.sawa.Spring.Models.AboutUserResponseModel;
-import com.example.zodiac.sawa.Spring.Models.EditProfileModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.SpringModels.AboutUserRequestModel;
+import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
+import com.example.zodiac.sawa.SpringModels.EditProfileModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

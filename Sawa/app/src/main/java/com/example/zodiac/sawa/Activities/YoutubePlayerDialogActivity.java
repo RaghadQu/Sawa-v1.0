@@ -1,10 +1,11 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Activities;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 
+import com.example.zodiac.sawa.R;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;

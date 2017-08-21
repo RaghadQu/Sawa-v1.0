@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.FriendProfile.FreindsFunctions;
+import com.example.zodiac.sawa.Services.FriendServices.FreindsFunctions;
 import com.example.zodiac.sawa.GeneralAppInfo;
-import com.example.zodiac.sawa.NotificationTab;
+import com.example.zodiac.sawa.NotificationTabFragment;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Spring.Models.updateNotificationModel;
+import com.example.zodiac.sawa.SpringModels.updateNotificationModel;
 import com.example.zodiac.sawa.SpringApi.NotificationInterface;
 import com.squareup.picasso.Picasso;
 
@@ -181,7 +181,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     position = getAdapterPosition();
                     updateNotificationModel notificationModel = new updateNotificationModel();
 
-                    int notificatioID = NotificationTab.NotificationList.get(position).getNotificatioId();
+                    int notificatioID = NotificationTabFragment.NotificationList.get(position).getNotificatioId();
                     notificationModel.setNotification_id(notificatioID);
                     Call<Integer> notificationResponse = notificationApi.updateReadFlag(notificationModel);
                     notificationResponse.enqueue(new Callback<Integer>() {
@@ -198,11 +198,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     });
 
 
-                    if (NotificationTab.NotificationList.get(position).getType() == 3) {
-                        String name = NotificationTab.NotificationList.get(position).getText();
-                        String image = NotificationTab.NotificationList.get(position).getImage();
-                        int friend_id = NotificationTab.NotificationList.get(position).getFriend_id();
-                        Context context = NotificationTab.NotificationList.get(position).getContext();
+                    if (NotificationTabFragment.NotificationList.get(position).getType() == 3) {
+                        String name = NotificationTabFragment.NotificationList.get(position).getText();
+                        String image = NotificationTabFragment.NotificationList.get(position).getImage();
+                        int friend_id = NotificationTabFragment.NotificationList.get(position).getFriend_id();
+                        Context context = NotificationTabFragment.NotificationList.get(position).getContext();
 
                         final FreindsFunctions freindsFunctions = new FreindsFunctions();
                         freindsFunctions.startFriend(context, name, friend_id, image);

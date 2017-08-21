@@ -13,7 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.zodiac.sawa.Spring.Models.DeviceTokenModel;
+import com.example.zodiac.sawa.SpringModels.DeviceTokenModel;
 import com.example.zodiac.sawa.SpringApi.DeviceTokenInterface;
 
 import java.io.File;

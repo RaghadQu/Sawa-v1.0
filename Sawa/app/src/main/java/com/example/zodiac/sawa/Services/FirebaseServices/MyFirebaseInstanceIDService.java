@@ -1,9 +1,12 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Services.FirebaseServices;
+
 
 import android.provider.Settings;
 import android.util.Log;
 
-import com.example.zodiac.sawa.Spring.Models.DeviceTokenModel;
+import com.example.zodiac.sawa.GeneralAppInfo;
+import com.example.zodiac.sawa.GeneralFunctions;
+import com.example.zodiac.sawa.SpringModels.DeviceTokenModel;
 import com.example.zodiac.sawa.SpringApi.DeviceTokenInterface;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;

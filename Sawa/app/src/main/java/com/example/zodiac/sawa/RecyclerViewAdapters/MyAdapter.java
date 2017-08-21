@@ -17,12 +17,10 @@ import android.widget.TextView;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
-import com.example.zodiac.sawa.MainActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyFriendsActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyProfileActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyRequestsActivity;
+import com.example.zodiac.sawa.Activities.*;
+import com.example.zodiac.sawa.Activities.MyRequestsActivity;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Spring.Models.SignOutModel;
+import com.example.zodiac.sawa.SpringModels.SignOutModel;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -89,7 +87,7 @@ public class MyAdapter extends FastScrollRecyclerView.Adapter<MyAdapter.ViewHold
                     }
                     if (getAdapterPosition() == 1) {
                         //  Intent i = new Intent(contexts, aboutUserActivity.class);
-                        Intent i = new Intent(contexts, MyFriendsActivity.class);
+                        Intent i = new Intent(contexts, MyFollowersActivity.class);
                         contexts.startActivity(i);
 
                     }

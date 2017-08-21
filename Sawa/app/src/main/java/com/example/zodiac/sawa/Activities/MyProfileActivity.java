@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.MenuActiviries;
+package com.example.zodiac.sawa.Activities;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -34,20 +34,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.zodiac.sawa.AddPostActivity;
-import com.example.zodiac.sawa.EditProfileActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
-import com.example.zodiac.sawa.ImageConverter.ImageConverter;
-import com.example.zodiac.sawa.ImageConverter.uploadImage;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.MyAdapter;
-import com.example.zodiac.sawa.Spring.Models.AboutUserRequestModel;
-import com.example.zodiac.sawa.Spring.Models.AboutUserResponseModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.Services.ImageConverterService;
+import com.example.zodiac.sawa.Services.ImageConverterService;
+import com.example.zodiac.sawa.SpringModels.*;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.ImageInterface;
-import com.example.zodiac.sawa.YoutubePlayerDialogActivity;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -79,7 +74,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     public String video_id = "rzLKwtC5q1k";
     YouTubePlayerView youTubePlayerView;
     int youtubeFlag = 0;
-    TextView friendsTxt, requestsTxt, newPostTxt;
+    TextView followerTxt, followingTxt, newPostTxt;
     TextView profileBio;
     CircleImageView editProfile, editSong;
     Button saveAbout, saveSong;
@@ -257,8 +252,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         context = this;
         GeneralFunctions generalFunctions = new GeneralFunctions();
         boolean isOnline = generalFunctions.isOnline(getApplicationContext());
-        friendsTxt = (TextView) findViewById(R.id.friendsTxt);
-        requestsTxt = (TextView) findViewById(R.id.requestTxt);
+        followerTxt = (TextView) findViewById(R.id.followerTxt);
+        followingTxt = (TextView) findViewById(R.id.followingTxt);
         newPostTxt = (TextView) findViewById(R.id.newPostTxt);
         editProfile = (CircleImageView) findViewById(R.id.editProfile);
         editSong = (CircleImageView) findViewById(R.id.editSong);
@@ -347,7 +342,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 
             img = (ImageView) findViewById(R.id.user_profile_photo);
             // imageView.setImageURI();
-            final uploadImage uploadImage = new uploadImage();
             //  String imageUrl = uploadImage.getUserImageFromDB(GeneralAppInfo.getUserID(), img, MyProfileActivity.this, 1, anim);
             mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
             mRecyclerView.setNestedScrollingEnabled(false);
@@ -464,18 +458,18 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             });
 
 
-            friendsTxt.setOnClickListener(new View.OnClickListener() {
+            followerTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    Intent i = new Intent(getApplicationContext(), MyFriendsActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                     startActivity(i);
                 }
             });
 
-            requestsTxt.setOnClickListener(new View.OnClickListener() {
+            followingTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    Intent i = new Intent(getApplicationContext(), MyRequestsActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MyFollowingActivity.class);
                     startActivity(i);
                 }
             });
@@ -564,12 +558,10 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                 if (requestCode == 200) {
                     coverImage.setImageBitmap(bitmap);
                 }
-                ImageConverter imageConverter = new ImageConverter();
+                ImageConverterService imageConverter = new ImageConverterService();
                 byte[] image = imageConverter.getBytes(bitmap);
                 String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
-                uploadImage uploadImage = new uploadImage();
                 Log.d("XX", "arrive");
-                uploadImage.uploadImagetoDB(path, bitmap, requestCode, coverProgressBar);
             } catch (Exception e) {
                 Toast toast = Toast.makeText(this, "Image is large", Toast.LENGTH_SHORT);
                 toast.show();

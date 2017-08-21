@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,13 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.ImageConverter.uploadImage;
-import com.example.zodiac.sawa.MenuActiviries.MyFriendsActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyProfileActivity;
+import com.example.zodiac.sawa.GeneralAppInfo;
+import com.example.zodiac.sawa.GeneralFunctions;
+import com.example.zodiac.sawa.R;
+import com.example.zodiac.sawa.Services.ImageConverterService.*;
 import com.example.zodiac.sawa.RecyclerViewAdapters.AddPostImagesAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
-import com.example.zodiac.sawa.models.getFriendsRequest;
-import com.example.zodiac.sawa.models.getFriendsResponse;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -57,7 +56,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
     static public CircleImageView senderImage, receiverImage;
-    public static ArrayList<MyFriendsActivity.friend> FriendPostList = new ArrayList<>();
+    public static ArrayList<MyFollowersActivity.friend> FriendPostList = new ArrayList<>();
     static int ReceiverID;
     static String postImage = "";
     public String video_id = "rzLKwtC5q1k";
@@ -74,7 +73,6 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
     FriendshipInterface service;
     ProgressBar postProgress;
 
-    List<getFriendsResponse> FreindsList;
     private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
         @Override
         public void onLoading() {
@@ -216,8 +214,6 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
         DeletePostImage = (TextView) findViewById(R.id.cross);
         Log.d("DeletePostImage", " " + DeletePostImage);
         DeletePostImage.setVisibility(View.INVISIBLE);
-        uploadImage uploadImage = new uploadImage();
-        uploadImage.getUserImageFromDB(GeneralAppInfo.getUserID(), senderImage, AddPostActivity.this, 0, null);
 
         adapter = new AddPostImagesAdapter(this, FriendPostList);
         recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
@@ -268,33 +264,6 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                 .addConverterFactory(GsonConverterFactory.create()).build();
         service = retrofit.create(FriendshipInterface.class);
 
-        final getFriendsRequest request = new getFriendsRequest();
-        request.setId(GeneralAppInfo.getUserID());
-        final Call<Integer> FriendsResponse = service.getFriendShipState(request.getId(), 1);
-        Log.d("AddPostActivity", " Add post after request");
-        FriendsResponse.enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                Log.d("AddPostActivity", " Add post after request with code " + response.code());
-                if (response.body() != null) {
-                    int state = response.body();
-                    Log.d("AddPostActivity", " Add post after request with size " + FreindsList.size());
-
-                    FriendPostList.clear();
-                    for (int i = 0; i < FreindsList.size(); i++) {
-                        FriendPostList.add(new MyFriendsActivity.friend(Integer.valueOf(FreindsList.get(i).getId()), FreindsList.get(i).getUser_image(),
-                                FreindsList.get(i).getFirstName() + " " + FreindsList.get(i).getLast_name()));
-                        recyclerView.setAdapter(new AddPostImagesAdapter(AddPostActivity.this, FriendPostList));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity");
-
-            }
-        });
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,8 +10,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.Spring.Models.EditProfileModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.GeneralAppInfo;
+import com.example.zodiac.sawa.GeneralFunctions;
+import com.example.zodiac.sawa.R;
+import com.example.zodiac.sawa.SpringModels.EditProfileModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 
 import retrofit2.Call;

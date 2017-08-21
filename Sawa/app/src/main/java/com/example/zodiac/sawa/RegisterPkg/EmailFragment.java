@@ -14,10 +14,10 @@ import android.widget.ProgressBar;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Spring.Models.SignInModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
-import com.example.zodiac.sawa.Validation;
+import com.example.zodiac.sawa.Services.ValidationService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +58,7 @@ public class EmailFragment extends android.app.Fragment {
                 String userEmail = email.getText().toString();
                 if ((userEmail.equals(""))) {
                     email.setError("Email is required");
-                } else if (!(Validation.isEmailValid(email.getText().toString()))) {
+                } else if (!(ValidationService.isEmailValid(email.getText().toString()))) {
                     email.setError("Email is not valid");
                 } else {
                     checkEmailProgress.setVisibility(View.VISIBLE);

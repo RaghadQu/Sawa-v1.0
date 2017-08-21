@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.FriendProfile;
+package com.example.zodiac.sawa.Services.FriendServices;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
-import com.example.zodiac.sawa.Spring.Models.FriendRequestModel;
-import com.example.zodiac.sawa.Spring.Models.FriendResponseModel;
+import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
+import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 
 import retrofit2.Call;
@@ -56,7 +56,7 @@ public class NotFriendProfileClass {
         friendshipModel.setFriend2_id(friend2_id);
 
 
-        Call<FriendResponseModel> addFrienshipCall = FriendApi.addNewFriendShip(friendshipModel);
+        Call<FriendResponseModel> addFrienshipCall = FriendApi.sendFollowRequest(friendshipModel);
         addFrienshipCall.enqueue(new Callback<FriendResponseModel>() {
             @Override
             public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {

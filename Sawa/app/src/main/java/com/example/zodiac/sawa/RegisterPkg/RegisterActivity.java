@@ -12,10 +12,13 @@ import android.util.Log;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
-import com.example.zodiac.sawa.HomeTabbedActivity;
+import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Spring.Models.SignUpModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
+import com.example.zodiac.sawa.SpringModels.AboutUserRequestModel;
+import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
+import com.example.zodiac.sawa.SpringModels.SignUpModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
 
 import java.io.ByteArrayOutputStream;

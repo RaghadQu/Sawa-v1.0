@@ -1,6 +1,6 @@
 package com.example.zodiac.sawa.SpringApi;
 
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 
 import java.util.List;
 

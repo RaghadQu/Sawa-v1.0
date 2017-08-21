@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.FriendProfile.FreindsFunctions;
+import com.example.zodiac.sawa.Services.FriendServices.FreindsFunctions;
 import com.example.zodiac.sawa.GeneralAppInfo;
-import com.example.zodiac.sawa.MenuActiviries.MyFriendsActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyProfileActivity;
+import com.example.zodiac.sawa.Activities.MyFollowersActivity;
+import com.example.zodiac.sawa.Activities.MyProfileActivity;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -36,11 +36,11 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
     public int removeButtonFlag;
     public View view;
     UserViewHolder viewHolder;
-    ArrayList<MyFriendsActivity.friend> userList;
+    ArrayList<MyFollowersActivity.friend> userList;
     FriendshipInterface service;
     private Context mContext;
 
-    public FastScrollAdapter(Context mContext, ArrayList<MyFriendsActivity.friend> userList, int removeButtonFlag) {
+    public FastScrollAdapter(Context mContext, ArrayList<MyFollowersActivity.friend> userList, int removeButtonFlag) {
         this.mContext = mContext;
         this.userList = userList;
         this.removeButtonFlag = removeButtonFlag;
@@ -64,7 +64,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         final FreindsFunctions freindsFunctions = new FreindsFunctions();
-        final MyFriendsActivity.friend user = userList.get(position);
+        final MyFollowersActivity.friend user = userList.get(position);
         holder.tvName.setText(user.getUserName());
         String image;
         try {

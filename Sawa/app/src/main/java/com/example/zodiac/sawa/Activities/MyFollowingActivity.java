@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.MenuActiviries;
+package com.example.zodiac.sawa.Activities;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -19,8 +19,8 @@ import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
-import com.example.zodiac.sawa.Spring.Models.FriendResponseModel;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.net.MalformedURLException;
@@ -35,23 +35,18 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by raghadq on 5/2/2017.
+ * Created by zodiac on 08/21/2017.
  */
 
-/**
- * Created by zodiac on 04/03/2017.
- */
+public class MyFollowingActivity extends Activity {
 
 
-public class MyFriendsActivity extends Activity {
-
-
-    public static List<FriendResponseModel> FreindsList;
-    public static ArrayList<friend> LayoutFriendsList = new ArrayList<>();
+    public static List<UserModel> FreindsList;
+    public static ArrayList<MyFollowersActivity.friend> LayoutFriendsList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
     FriendshipInterface friendshipApi;
-    TextView toolbarText;
+    TextView toolbarText , FriendshipTypeLabel;
 
     @Override
     protected void onResume() {
@@ -67,7 +62,10 @@ public class MyFriendsActivity extends Activity {
                 .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
+
         friendshipApi = retrofit.create(FriendshipInterface.class);
+        FriendshipTypeLabel = (TextView) findViewById(R.id.FriendshipTabType);
+        FriendshipTypeLabel.setText("Following");
         toolbarText = (TextView) findViewById(R.id.toolBarText);
         final ProgressBar progressBar;
         progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
@@ -86,11 +84,11 @@ public class MyFriendsActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        final Call<List<FriendResponseModel>> FriendsResponse = friendshipApi.getUserFriends(GeneralAppInfo.getUserID());
-        FriendsResponse.enqueue(new Callback<List<FriendResponseModel>>() {
+        final Call<List<UserModel>> FriendsResponse = friendshipApi.getFollowers(GeneralAppInfo.getUserID());
+        FriendsResponse.enqueue(new Callback<List<UserModel>>() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void onResponse(Call<List<FriendResponseModel>> call, Response<List<FriendResponseModel>> response) {
+            public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
                 progressBar.setVisibility(View.INVISIBLE);
 
                 Log.d("GetFriends", " Get friends " + response.code());
@@ -115,23 +113,19 @@ public class MyFriendsActivity extends Activity {
                             progressBar.setVisibility(View.GONE);
                             noFriendsLayout.setVisibility(View.GONE);
                             for (int i = 0; i < FreindsList.size(); i++) {
-                                if (FreindsList.get(i).getFriend2_id().getId() == GeneralAppInfo.getUserID()) {
-                                    LayoutFriendsList.add(new friend(FreindsList.get(i).getFriend1_id().getId(), FreindsList.get(i).getFriend1_id().getImage(),
-                                            FreindsList.get(i).getFriend1_id().getFirst_name() + " " + FreindsList.get(i).getFriend1_id().getLast_name()));
-                                } else {
-                                    LayoutFriendsList.add(new friend(FreindsList.get(i).getFriend2_id().getId(), FreindsList.get(i).getFriend2_id().getImage(),
-                                            FreindsList.get(i).getFriend2_id().getFirst_name() + " " + FreindsList.get(i).getFriend2_id().getLast_name()));
-                                }
-                                recyclerView.setAdapter(new FastScrollAdapter(MyFriendsActivity.this, LayoutFriendsList, 0));
-
+                                LayoutFriendsList.add(new MyFollowersActivity.friend(FreindsList.get(i).getId(), FreindsList.get(i).getImage(),
+                                        FreindsList.get(i).getFirst_name() + " " + FreindsList.get(i).getLast_name()));
                             }
+                            recyclerView.setAdapter(new FastScrollAdapter(MyFollowingActivity.this, LayoutFriendsList, 0));
+
                         }
                     }
                 }
             }
 
+
             @Override
-            public void onFailure(Call<List<FriendResponseModel>> call, Throwable t) {
+            public void onFailure(Call<List<UserModel>> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(getApplicationContext());

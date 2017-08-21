@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.emailSender;
+package com.example.zodiac.sawa.Services.EmailSenderService;
 
 import java.util.Date;
 import java.util.Properties;

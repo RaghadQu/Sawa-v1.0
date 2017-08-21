@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.FriendProfile;
+package com.example.zodiac.sawa.Services.FriendServices;
 
 import android.app.Dialog;
 import android.content.Context;

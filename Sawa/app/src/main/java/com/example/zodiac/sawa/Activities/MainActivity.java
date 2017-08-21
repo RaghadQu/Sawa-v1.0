@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Activities;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
@@ -19,12 +19,12 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.zodiac.sawa.GeneralAppInfo;
+import com.example.zodiac.sawa.GeneralFunctions;
+import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecoverPassword.RecoverPass;
 import com.example.zodiac.sawa.RegisterPkg.RegisterActivity;
-import com.example.zodiac.sawa.Spring.Models.LoginWIthGoogleModel;
-import com.example.zodiac.sawa.Spring.Models.LoginWithFacebookModel;
-import com.example.zodiac.sawa.Spring.Models.SignInModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.SpringModels.*;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.zodiac.sawa.RecyclerViewAdapters.NotificationAdapter;
-import com.example.zodiac.sawa.Spring.Models.NotificationModel;
+import com.example.zodiac.sawa.SpringModels.NotificationModel;
 import com.example.zodiac.sawa.SpringApi.NotificationInterface;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -28,7 +28,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by zodiac on 05/22/2017.
  */
 
-public class NotificationTab extends AppCompatDialogFragment {
+public class NotificationTabFragment extends AppCompatDialogFragment {
 
     public static ArrayList<NotificationAdapter.NotificationRecyclerViewDataProvider> NotificationList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;

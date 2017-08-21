@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Services;
 
 /**
  * Created by exalt on 5/31/2017.
@@ -30,7 +30,7 @@ import android.widget.TabWidget;
  *
  * @author Jeff Gilfelt
  */
-public class BadgeView extends android.support.v7.widget.AppCompatTextView {
+public class BadgeViewService extends android.support.v7.widget.AppCompatTextView {
 
     public static final int POSITION_TOP_LEFT = 1;
     public static final int POSITION_TOP_RIGHT = 2;
@@ -62,11 +62,11 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 
     private int targetTabIndex;
 
-    public BadgeView(Context context) {
+    public BadgeViewService(Context context) {
         this(context, (AttributeSet) null, android.R.attr.textViewStyle);
     }
 
-    public BadgeView(Context context, AttributeSet attrs) {
+    public BadgeViewService(Context context, AttributeSet attrs) {
         this(context, attrs, android.R.attr.textViewStyle);
     }
 
@@ -78,7 +78,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
      * @param context context for this view.
      * @param target  the View to attach the badge to.
      */
-    public BadgeView(Context context, View target) {
+    public BadgeViewService(Context context, View target) {
         this(context, null, android.R.attr.textViewStyle, target, 0);
     }
 
@@ -92,15 +92,15 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
      * @param target  the TabWidget to attach the badge to.
      * @param index   the position of the tab within the target.
      */
-    public BadgeView(Context context, TabWidget target, int index) {
+    public BadgeViewService(Context context, TabWidget target, int index) {
         this(context, null, android.R.attr.textViewStyle, target, index);
     }
 
-    public BadgeView(Context context, AttributeSet attrs, int defStyle) {
+    public BadgeViewService(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs, defStyle, null, 0);
     }
 
-    public BadgeView(Context context, AttributeSet attrs, int defStyle, View target, int tabIndex) {
+    public BadgeViewService(Context context, AttributeSet attrs, int defStyle, View target, int tabIndex) {
         super(context, attrs, defStyle);
         init(context, target, tabIndex);
     }

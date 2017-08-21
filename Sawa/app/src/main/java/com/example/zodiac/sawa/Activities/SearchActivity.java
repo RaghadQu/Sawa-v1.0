@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Activities;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -9,11 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 
-import com.example.zodiac.sawa.MenuActiviries.MyFriendsActivity;
+import com.example.zodiac.sawa.GeneralAppInfo;
+import com.example.zodiac.sawa.GeneralFunctions;
+import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.SearchInterface;
-import com.example.zodiac.sawa.models.getFriendsResponse;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
@@ -26,9 +27,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
-    public static List<getFriendsResponse> FreindsList;
     public static List<UserModel> userModelList;
-    public static ArrayList<MyFriendsActivity.friend> LayoutFriendsList = new ArrayList<>();
+    public static ArrayList<MyFollowersActivity.friend> LayoutFriendsList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
     SearchView searchView;
@@ -88,7 +88,6 @@ public class SearchActivity extends AppCompatActivity {
         searchInterface = retrofit.create(SearchInterface.class);
 
 
-        // final getFriendsRequest request = new getFriendsRequest();
         final Call<List<UserModel>> FriendsResponse = searchInterface.getSearchResult(word);
         FriendsResponse.enqueue(new Callback<List<UserModel>>() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -112,7 +111,7 @@ public class SearchActivity extends AppCompatActivity {
                         } else {
                             Log.d("Not null", Integer.toString(userModelList.get(0).getId()));
                             for (int i = 0; i < userModelList.size(); i++) {
-                                LayoutFriendsList.add(new MyFriendsActivity.friend(Integer.valueOf(userModelList.get(i).getId()), userModelList.get(i).getImage(),
+                                LayoutFriendsList.add(new MyFollowersActivity.friend(Integer.valueOf(userModelList.get(i).getId()), userModelList.get(i).getImage(),
                                         userModelList.get(i).getFirst_name() + " " + userModelList.get(i).getLast_name()));
                                 recyclerView.setAdapter(new FastScrollAdapter(SearchActivity.this, LayoutFriendsList, 1));
                             }

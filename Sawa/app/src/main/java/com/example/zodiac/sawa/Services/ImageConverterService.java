@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.ImageConverter;
+package com.example.zodiac.sawa.Services;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
  * Created by Rabee on 4/12/2017.
  */
 
-public class ImageConverter {
+public class ImageConverterService {
     // convert from bitmap to byte array
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

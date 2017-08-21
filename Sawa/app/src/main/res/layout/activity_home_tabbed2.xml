@@ -8,7 +8,7 @@
     android:layout_marginTop="-2dp"
     android:background="@color/purple"
     android:fitsSystemWindows="true"
-    tools:context="com.example.zodiac.sawa.HomeTabbedActivity">
+    tools:context="com.example.zodiac.sawa.Activities.HomeTabbedActivity">
 
     <LinearLayout
         android:id="@+id/SearchLayout"

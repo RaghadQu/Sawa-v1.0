@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.zodiac.sawa.HomeTabbedActivity;
+import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
 import com.example.zodiac.sawa.R;
 
 public class newPasswordFragment extends android.app.Fragment {

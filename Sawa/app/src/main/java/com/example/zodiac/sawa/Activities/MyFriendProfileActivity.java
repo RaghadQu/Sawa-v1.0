@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.FriendProfile;
+package com.example.zodiac.sawa.Activities;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -28,7 +28,8 @@ import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.MyAdapter;
-import com.example.zodiac.sawa.Spring.Models.AboutUserResponseModel;
+import com.example.zodiac.sawa.Services.FriendServices.FriendsClass;
+import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.squareup.picasso.Picasso;

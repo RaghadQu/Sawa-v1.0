@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.FriendProfile;
+package com.example.zodiac.sawa.Services.FriendServices;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,9 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import com.example.zodiac.sawa.Activities.MyFriendProfileActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
-import com.example.zodiac.sawa.MenuActiviries.MyProfileActivity;
-import com.example.zodiac.sawa.Spring.Models.FriendRequestModel;
+import com.example.zodiac.sawa.Activities.MyProfileActivity;
+import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 
 import retrofit2.Call;

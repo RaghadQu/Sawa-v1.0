@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.Spring.Models;
+package com.example.zodiac.sawa.SpringModels;
 
 /**
  * Created by zodiac on 06/29/2017.

@@ -13,9 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.AddPostActivity;
+
+import com.example.zodiac.sawa.Activities.AddPostActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
-import com.example.zodiac.sawa.MenuActiviries.MyFriendsActivity;
+import com.example.zodiac.sawa.Activities.MyFollowersActivity;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -33,11 +34,11 @@ public class AddPostImagesAdapter extends RecyclerView.Adapter<AddPostImagesAdap
 
     public View view;
     UserViewHolder viewHolder;
-    ArrayList<MyFriendsActivity.friend> friendsList;
+    ArrayList<MyFollowersActivity.friend> friendsList;
     FriendshipInterface service;
     private Context mContext;
 
-    public AddPostImagesAdapter(Context mContext, ArrayList<MyFriendsActivity.friend> userList) {
+    public AddPostImagesAdapter(Context mContext, ArrayList<MyFollowersActivity.friend> userList) {
         this.mContext = mContext;
         this.friendsList = userList;
     }
@@ -58,7 +59,7 @@ public class AddPostImagesAdapter extends RecyclerView.Adapter<AddPostImagesAdap
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        final MyFriendsActivity.friend user = friendsList.get(position);
+        final MyFollowersActivity.friend user = friendsList.get(position);
         holder.tvName.setText(user.getUserName());
         String image;
         try {

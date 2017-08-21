@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.Spring.Models;
+package com.example.zodiac.sawa.SpringModels;
 
 import java.util.Date;
 

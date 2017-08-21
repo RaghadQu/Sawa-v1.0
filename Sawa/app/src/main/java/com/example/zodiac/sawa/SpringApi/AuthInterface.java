@@ -1,12 +1,6 @@
 package com.example.zodiac.sawa.SpringApi;
 
-import com.example.zodiac.sawa.Spring.Models.LoginWIthGoogleModel;
-import com.example.zodiac.sawa.Spring.Models.LoginWithFacebookModel;
-import com.example.zodiac.sawa.Spring.Models.SignInModel;
-import com.example.zodiac.sawa.Spring.Models.SignOutModel;
-import com.example.zodiac.sawa.Spring.Models.SignUpModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
-
+import com.example.zodiac.sawa.SpringModels.*;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;

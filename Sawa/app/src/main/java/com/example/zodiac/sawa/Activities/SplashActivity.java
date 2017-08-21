@@ -1,8 +1,10 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.zodiac.sawa.R;
 
 public class SplashActivity extends AppCompatActivity {
 

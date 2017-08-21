@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa;
+package com.example.zodiac.sawa.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,12 +29,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.MenuActiviries.MyFriendsActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyProfileActivity;
-import com.example.zodiac.sawa.MenuActiviries.MyRequestsActivity;
+import com.example.zodiac.sawa.GeneralAppInfo;
+import com.example.zodiac.sawa.GeneralFunctions;
+import com.example.zodiac.sawa.NotificationTabFragment;
+import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.NotificationAdapter;
-import com.example.zodiac.sawa.Spring.Models.SignOutModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -49,15 +47,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+import com.example.zodiac.sawa.Services.BadgeViewService;
 import static com.example.zodiac.sawa.R.id.container;
-
+import com.example.zodiac.sawa.SpringModels.*;
 
 public class HomeTabbedActivity extends AppCompatActivity {
 
     public static Handler UIHandler;
     public static Activity activity = null;
-    static BadgeView badge;
+    static BadgeViewService badge;
     static UserModel userInfo;
     static SharedPreferences sharedPreferences;
     static ImageView imageView;
@@ -184,7 +182,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Hello", " new resume");
-        NotificationTab.getUserNotifications(getApplicationContext());
+        NotificationTabFragment.getUserNotifications(getApplicationContext());
         showBadge(getApplicationContext());
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("isRunning",
                 1).commit();
@@ -242,9 +240,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
         GeneralFunctions generalFunctions = new GeneralFunctions();
         generalFunctions.storeUserIdWithDeviceId(GeneralAppInfo.getUserID(), android_id);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -262,7 +257,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
         TabLayout.Tab tab = tabLayout.getTabAt(1);
         tab.setIcon(R.drawable.notification);
         // tab.setCustomView(imageView);
-        badge = new BadgeView(getApplicationContext(), imageView);
+        badge = new BadgeViewService(getApplicationContext(), imageView);
         badge.getOffsetForPosition(120, 30);
         showBadge(getApplicationContext());
 
@@ -277,7 +272,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 if (position == GeneralAppInfo.notifications_tab_position) {
 
                     if (sharedPreferences.getInt("notifications_counter", 0) > 0) {
-                        NotificationTab.getUserNotifications(getApplicationContext());
+                        NotificationTabFragment.getUserNotifications(getApplicationContext());
                     }
 
                     PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("notifications_counter",
@@ -411,12 +406,12 @@ public class HomeTabbedActivity extends AppCompatActivity {
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
                 //NotificationTab;
                 View rootView = inflater.inflate(R.layout.notification_tab, container, false);
-                NotificationTab.NotificationList = new ArrayList<>();
-                NotificationTab.adapter = new NotificationAdapter(NotificationTab.NotificationList);
-                NotificationTab.recyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recyclerNotification);
-                NotificationTab.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                NotificationTab.recyclerView.setAdapter(NotificationTab.adapter);
-                NotificationTab.getUserNotifications(getContext());
+                NotificationTabFragment.NotificationList = new ArrayList<>();
+                NotificationTabFragment.adapter = new NotificationAdapter(NotificationTabFragment.NotificationList);
+                NotificationTabFragment.recyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recyclerNotification);
+                NotificationTabFragment.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                NotificationTabFragment.recyclerView.setAdapter(NotificationTabFragment.adapter);
+                NotificationTabFragment.getUserNotifications(getContext());
                 return rootView;
 
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
@@ -424,10 +419,10 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
                 userName = (TextView) rootView.findViewById(R.id.userName);
                 getUserInfo();
-                CircleImageView friendsIcon, requestsIcon, savedPostsIcon, settingsIcon, logoutIcon;
-                friendsIcon = (CircleImageView) rootView.findViewById(R.id.friendsIcon);
-                requestsIcon = (CircleImageView) rootView.findViewById(R.id.requestsIcon);
-                savedPostsIcon = (CircleImageView) rootView.findViewById(R.id.savedPostsIcon);
+                CircleImageView followerIcon, followingIcon, reqeustsIcon, settingsIcon, logoutIcon;
+                followerIcon = (CircleImageView) rootView.findViewById(R.id.followersIcon);
+                followingIcon = (CircleImageView) rootView.findViewById(R.id.FollowingIcon);
+                reqeustsIcon = (CircleImageView) rootView.findViewById(R.id.RequestsIcon);
                 settingsIcon = (CircleImageView) rootView.findViewById(R.id.settingsIcon);
                 logoutIcon = (CircleImageView) rootView.findViewById(R.id.logoutIcon);
                 LinearLayout showProfileLayout = (LinearLayout) rootView.findViewById(R.id.showProfileLayout);
@@ -440,14 +435,21 @@ public class HomeTabbedActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
-                friendsIcon.setOnClickListener(new View.OnClickListener() {
+                followerIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(context, MyFriendsActivity.class);
+                        Intent i = new Intent(context, MyFollowersActivity.class);
                         startActivity(i);
                     }
                 });
-                requestsIcon.setOnClickListener(new View.OnClickListener() {
+                followingIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, MyFollowingActivity.class);
+                        startActivity(i);
+                    }
+                });
+                reqeustsIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(context, MyRequestsActivity.class);

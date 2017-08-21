@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -67,23 +66,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="60dp"
+            android:paddingLeft="70dp"
             android:paddingRight="40dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/friendsIcon"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:id="@+id/followersIcon"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
                 android:layout_marginTop="18dp"
                 android:src="@drawable/new_friends" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/requestsIcon"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="90dp"
+                android:id="@+id/FollowingIcon"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:layout_marginLeft="97dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/requests" />
+                android:src="@drawable/followingicon" />
 
         </LinearLayout>
 
@@ -97,7 +96,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Friends"
+                android:text="Followers"
                 android:textColor="#000"
                 android:textStyle="bold" />
 
@@ -105,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="113dp"
-                android:text="Requests"
+                android:text="Following"
                 android:textColor="#000"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -121,21 +120,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="60dp"
+            android:paddingLeft="70dp"
             android:paddingRight="40dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/savedPostsIcon"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:id="@+id/RequestsIcon"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/logout" />
+                android:src="@drawable/requests" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/settingsIcon"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="90dp"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:layout_marginLeft="97dp"
                 android:layout_marginTop="18dp"
                 android:src="@drawable/settings1" />
 
@@ -144,21 +143,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="65dp"
+            android:paddingLeft="80dp"
             android:paddingRight="40dp"
             android:paddingTop="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Saved Posts"
+                android:text="Requests"
                 android:textColor="#000"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="95dp"
+                android:layout_marginLeft="113dp"
                 android:text="Settings"
                 android:textColor="#000"
                 android:textStyle="bold" />
@@ -175,13 +174,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="60dp"
+            android:paddingLeft="70dp"
             android:paddingRight="40dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/logoutIcon"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
                 android:layout_marginTop="18dp"
                 android:src="@drawable/log_out" />
 
@@ -197,8 +196,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="75dp"
-            android:paddingRight="40dp"
+            android:paddingLeft="84dp"
+            android:paddingRight="50dp"
             android:paddingTop="3dp">
 
             <TextView

@@ -1,6 +1,6 @@
 package com.example.zodiac.sawa.SpringApi;
 
-import com.example.zodiac.sawa.Spring.Models.DeviceTokenModel;
+import com.example.zodiac.sawa.SpringModels.DeviceTokenModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

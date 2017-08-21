@@ -13,11 +13,11 @@ import android.widget.EditText;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Spring.Models.SignInModel;
-import com.example.zodiac.sawa.Spring.Models.UserModel;
+import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
-import com.example.zodiac.sawa.Validation;
-import com.example.zodiac.sawa.emailSender.BackgroungSender;
+import com.example.zodiac.sawa.Services.ValidationService;
+import com.example.zodiac.sawa.Services.EmailSenderService.BackgroungSender;
 
 import java.util.UUID;
 
@@ -53,7 +53,7 @@ public class SendEmailFragment extends android.app.Fragment {
                 if (recievedEmail.getText().toString().equals("")) {
                     recievedEmail.setError("Email is required");
                 } else {
-                    if (!(Validation.isEmailValid(recievedEmail.getText().toString()))) {
+                    if (!(ValidationService.isEmailValid(recievedEmail.getText().toString()))) {
                         recievedEmail.setError("Invalid Email");
                     } else {
                         Retrofit retrofit = new Retrofit.Builder()

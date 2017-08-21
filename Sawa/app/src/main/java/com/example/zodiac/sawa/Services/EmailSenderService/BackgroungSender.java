@@ -1,4 +1,4 @@
-package com.example.zodiac.sawa.emailSender;
+package com.example.zodiac.sawa.Services.EmailSenderService;
 
 import android.os.AsyncTask;
 import android.util.Log;
