@@ -22,15 +22,15 @@ public interface FriendshipInterface {
 
 
     @Headers("Cache-Control: max-age=64000")
-    @GET("/api/v1/getFollowers/{id}")
+    @GET("/api/v1/friend/getFollowers/{id}")
     Call<List<UserModel>> getFollowers(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
-    @GET("/api/v1/getFollowing/{id}")
+    @GET("/api/v1/friend/getFollowing/{id}")
     Call<List<UserModel>> getFollowing(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
-    @GET("/api/v1/getFollowRequest/{id}")
+    @GET("/api/v1/friend/getFollowRequest/{id}")
     Call<List<UserModel>> getFollowRequest(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")

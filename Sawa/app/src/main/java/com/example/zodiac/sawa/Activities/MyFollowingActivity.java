@@ -84,7 +84,7 @@ public class MyFollowingActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        final Call<List<UserModel>> FriendsResponse = friendshipApi.getFollowers(GeneralAppInfo.getUserID());
+        final Call<List<UserModel>> FriendsResponse = friendshipApi.getFollowing(GeneralAppInfo.getUserID());
         FriendsResponse.enqueue(new Callback<List<UserModel>>() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override

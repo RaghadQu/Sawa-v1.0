@@ -292,8 +292,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             editMySong = new Dialog(this);
             editMySong.setContentView(R.layout.edit_song_profile_dialog);
             editMySong.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube);
-            youTubePlayerView.setVisibility(View.INVISIBLE);
+
             songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
             //Youtube viewer for song edit text
             songTxt.addTextChangedListener(new TextWatcher() {
