@@ -169,7 +169,7 @@
                 android:id="@+id/newPostTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="26dp"
+                android:layout_marginLeft="21dp"
                 android:clickable="true"
                 android:padding="10dp"
                 android:text="New Post"

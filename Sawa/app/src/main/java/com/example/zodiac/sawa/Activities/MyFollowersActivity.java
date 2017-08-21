@@ -69,7 +69,7 @@ public class MyFollowersActivity extends Activity {
 
         friendshipApi = retrofit.create(FriendshipInterface.class);
         FriendshipTypeLabel = (TextView) findViewById(R.id.FriendshipTabType);
-        FriendshipTypeLabel.setText("Following");
+        FriendshipTypeLabel.setText("Followers");
         toolbarText = (TextView) findViewById(R.id.toolBarText);
         final ProgressBar progressBar;
         progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
