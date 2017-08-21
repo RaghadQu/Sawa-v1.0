@@ -107,7 +107,6 @@ public class MyFollowersActivity extends Activity {
                     if (FreindsList != null) {
 
                         if (FreindsList.size() == 0) {
-
                             noFriendsLayout.setVisibility(View.VISIBLE);
                             CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
                             circle.setImageDrawable(getDrawable(R.drawable.no_friends));

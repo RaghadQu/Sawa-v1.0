@@ -18,19 +18,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name=".Services.FirebaseServices.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".MyFirebaseInstanceIDService">
+        <service android:name=".Services.FirebaseServices.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activities.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             >
             <intent-filter>
@@ -40,20 +40,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MenuActiviries.MyFriendsActivity"
+            android:name=".Activities.MyFollowersActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".MenuActiviries.MyRequestsActivity"
+            android:name=".Activities.MyFollowingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".AddPostActivity"
+            android:name=".Activities.MyRequestsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".Activities.AddPostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".RecoverPassword.RecoverPass"
             android:configChanges="orientation|keyboard|screenSize"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
@@ -67,19 +70,18 @@
             android:configChanges="orientation|screenSize|keyboard"
             android:windowSoftInputMode="adjustResize|stateVisible" />
 
-        <activity android:name=".MenuActiviries.MyProfileActivity" />
-        <activity android:name=".MenuActiviries.aboutUserActivity" />
+        <activity android:name=".Activities.MyProfileActivity" />
         <activity
             android:name=".Activities.HomeTabbedActivity"
             android:label="@string/title_activity_home_tabbed"
             android:theme="@style/AppTheme" />
-        <activity android:name=".FriendProfile.MyFriendProfileActivity" />
-        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".Activities.MyFriendProfileActivity" />
+        <activity android:name=".Activities.EditProfileActivity" />
 
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".Activities.SearchActivity" />
 
         <activity
-            android:name=".YoutubePlayerDialogActivity"
+            android:name=".Activities.YoutubePlayerDialogActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog"></activity>
 
