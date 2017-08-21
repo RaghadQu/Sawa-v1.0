@@ -29,7 +29,7 @@
             android:layout_marginTop="7dp"
             android:focusableInTouchMode="true"
             android:paddingRight="10dp"
-            android:text="Friend Requests"
+            android:text="Follow Requests"
             android:textColor="#fff"
             android:textSize="19dp"
             android:textStyle="bold" />
