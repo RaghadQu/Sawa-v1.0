@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.example.zodiac.sawa.Activities.MyFriendProfileActivity;
+import com.example.zodiac.sawa.Activities.MyRequestsActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
 import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
@@ -30,7 +31,7 @@ public class FreindsFunctions {
                 .addConverterFactory(GsonConverterFactory.create()).build();
         FriendshipInterface friendshipApi = retrofit.create(FriendshipInterface.class);
 
-        Call<Integer> call = friendshipApi.getFriendShipState(friend1_id, friend2_id);
+        Call<Integer> call = friendshipApi.getFollowRelationState(friend1_id, friend2_id);
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -98,11 +99,11 @@ public class FreindsFunctions {
         FriendRequest.setFriend2_id(friend2_id);
 
 
-        final Call<Integer> deleteCall = FriendApi.deleteFriendship(FriendRequest);
+        final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
         deleteCall.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                Log.d("Delete FriendShip", " state is " + response.code());
+
 
 
             }

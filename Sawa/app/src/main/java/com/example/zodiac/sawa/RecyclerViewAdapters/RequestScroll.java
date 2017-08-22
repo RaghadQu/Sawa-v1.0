@@ -143,30 +143,33 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                             .addConverterFactory(GsonConverterFactory.create()).build();
                     FriendshipInterface FriendApi = retrofit.create(FriendshipInterface.class);
 
-                    final FriendRequestModel FriendRequest = new FriendRequestModel();
-                    FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());
-                    FriendRequest.setFriend2_id(Integer.valueOf(userList.get(position).getId()));
+                    int deletedUserId = Integer.valueOf(userList.get(position).getId());
+
+                    if(deletedUserId >=0 ) {
+                        final FriendRequestModel FriendRequest = new FriendRequestModel();
+                        FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());
+                        FriendRequest.setFriend2_id(deletedUserId);
 
 
-                    final Call<Integer> deleteCall = FriendApi.deleteFriendship(FriendRequest);
-                    deleteCall.enqueue(new Callback<Integer>() {
-                        @Override
-                        public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            MyRequestsActivity.recyclerView.removeViewAt(position);
-                            MyRequestsActivity.FreindsList.remove(position);
-                            MyRequestsActivity.LayoutFriendsList.remove(position);
-                        }
+                        final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
+                        deleteCall.enqueue(new Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                MyRequestsActivity.recyclerView.removeViewAt(position);
+                                MyRequestsActivity.FreindsList.remove(position);
+                                MyRequestsActivity.LayoutFriendsList.remove(position);
+                            }
 
-                        @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
-                            Log.d("fail to get friends ", "Failure to Get friends");
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+                                Log.d("fail to get friends ", "Failure to Get friends");
 
-                        }
-
-
-                    });
+                            }
 
 
+                        });
+
+                    }
                 }
             });
 
@@ -185,32 +188,33 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                             .addConverterFactory(GsonConverterFactory.create()).build();
                     FriendshipInterface service_confirm = retrofit.create(FriendshipInterface.class);
 
-                    FriendRequestModel friendshipModel = new FriendRequestModel();
-                    friendshipModel.setFriend1_id(GeneralAppInfo.getUserID());
-                    friendshipModel.setFriend2_id(Integer.valueOf(userList.get(position).getId()));
+                    int addedUserId = Integer.valueOf(userList.get(position).getId());
+                    if(addedUserId >=0) {
+                        FriendRequestModel friendshipModel = new FriendRequestModel();
+                        friendshipModel.setFriend1_id(GeneralAppInfo.getUserID());
+                        friendshipModel.setFriend2_id(addedUserId);
 
-                    final Call<Integer> confirmCall = service_confirm.confirmFriendship(friendshipModel);
-                    confirmCall.enqueue(new Callback<Integer>() {
-                        @Override
-                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        final Call<Integer> confirmCall = service_confirm.confirmFriendship(friendshipModel);
+                        confirmCall.enqueue(new Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
 
-                            //    MyRequestsActivity.recyclerView.removeViewAt(position);
-                            MyRequestsActivity.FreindsList.remove(position);
-                            MyRequestsActivity.LayoutFriendsList.remove(position);
-                            notifyItemRemoved(position);
-                            Log.d("----- Remove ", "removed" + MyRequestsActivity.FreindsList.size());
+                                //    MyRequestsActivity.recyclerView.removeViewAt(position);
+                                MyRequestsActivity.FreindsList.remove(position);
+                                MyRequestsActivity.LayoutFriendsList.remove(position);
+                                notifyItemRemoved(position);
+                                Log.d("----- Remove ", "removed" + MyRequestsActivity.FreindsList.size());
+                            }
 
-                        }
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+                                Log.d("fail to get friends ", "Failure to Get friends");
 
-                        @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
-                            Log.d("fail to get friends ", "Failure to Get friends");
-
-                        }
+                            }
 
 
-                    });
-
+                        });
+                    }
 
                 }
             });

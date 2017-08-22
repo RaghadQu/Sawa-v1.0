@@ -175,37 +175,36 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                     .baseUrl(GeneralAppInfo.SPRING_URL)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             FriendshipInterface getFreindApi = retrofit.create(FriendshipInterface.class);
-            Call<Integer> call = getFreindApi.getFriendShipState(GeneralAppInfo.getUserID(), Id);
+            Call<Integer> call = getFreindApi.getFollowRelationState(GeneralAppInfo.getUserID(), Id);
 
             call.enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     Log.d("GetState", "get Friend State code is " + response.code());
-                    Integer FriendshipState = response.body();
+                    Integer FollowRelationState = response.body();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar_button.setVisibility(View.INVISIBLE);
                     FriendsClass friendsClass = new FriendsClass();
 
-                    if (FriendshipState != null) {
-                        Log.d("stateeee", "" + FriendshipState);
-                        if (FriendshipState == 0) {
+                    if (FollowRelationState != null) {
+                        Log.d("stateeee", "" + FollowRelationState);
+                        if (FollowRelationState == 0) {  // No relation
                             mRecyclerView.setVisibility(View.GONE);
                             GeneralAppInfo.friendMode = 0;
-                            friendsClass.SetFriendButtn(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
 
-                        } else if (FriendshipState == 1) { // Friend
-                            mRecyclerView.setVisibility(View.VISIBLE);
+                        } else if (FollowRelationState == 1) { // Follow Request Pending
+                            mRecyclerView.setVisibility(View.GONE);
                             GeneralAppInfo.friendMode = 1;
-                            friendsClass.SetFriendButtn(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
-                        } else if (FriendshipState == 3) { // Not a friend
+                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                        }/* else if (FollowRelationState == 3) { //
                             mRecyclerView.setVisibility(View.GONE);
                             GeneralAppInfo.friendMode = 3;
-                            friendsClass.SetFriendButtn(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
-                        } else if (FriendshipState == 2) { // user = friend_id 2, friend = friend_id 1  .. friend sends to user
-                            mRecyclerView.setVisibility(View.GONE);
-                            GeneralAppInfo.friendMode = 0;
-                            friendsClass.setFriendRequestButton(friendStatus, confirmRequest, deleteRequest, Id1);
-                            //  friendsClass.SetFriendButtn(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                        }*/ else if (FollowRelationState == 2) { // Follower
+                            mRecyclerView.setVisibility(View.INVISIBLE);
+                            GeneralAppInfo.friendMode = 2;
+                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
                         }
                         fillAbout(about_bio, about_status, about_song, Id1);
 

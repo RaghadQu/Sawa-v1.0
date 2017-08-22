@@ -31,14 +31,14 @@ public class FriendsClass {
     FreindsFunctions friendFunction;
     TextView textMsg;
 
-    public void SetFriendButtn(final Button friendStatus, final RecyclerView recyclerView, final Context context, final int Id, Context c) {
+    public void setFollowRelationState(final Button friendStatus, final RecyclerView recyclerView, final Context context, final int Id, Context c) {
         recyclerView.setVisibility(View.VISIBLE);
         if (GeneralAppInfo.friendMode == 0)
-            friendStatus.setText("Pending");
-        if (GeneralAppInfo.friendMode == 1)
-            friendStatus.setText("Friend");
-        if (GeneralAppInfo.friendMode == 3)
             friendStatus.setText("Follow");
+        if (GeneralAppInfo.friendMode == 1)
+            friendStatus.setText("Pending");
+        if (GeneralAppInfo.friendMode == 2)
+            friendStatus.setText("-------");
 
 
         friendFunction = new FreindsFunctions();
@@ -54,8 +54,8 @@ public class FriendsClass {
             @Override
             public void onClick(View view) {
                 //Pending state
-                if (GeneralAppInfo.friendMode == 0) {
-                    textMsg.setText("Are you sure you want to delete this request ?");
+                if (GeneralAppInfo.friendMode == 1) {
+                    textMsg.setText("Are you sure you want to delete the follow request ?");
                     ConfirmDeletion.show();
 
                     NoBtn.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +73,7 @@ public class FriendsClass {
                         public void onClick(View view) {
                             // recyclerView.setVisibility(View.GONE);
 
-                            GeneralAppInfo.friendMode = 3;
+                            GeneralAppInfo.friendMode = 0;
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
                             friendFunction.DeleteFriend(GeneralAppInfo.getUserID(), Id, friendStatus);
@@ -84,7 +84,7 @@ public class FriendsClass {
 
                 }
                 //Friend state
-                else if (GeneralAppInfo.friendMode == 1) {
+                else if (GeneralAppInfo.friendMode == 2) {
                     ConfirmDeletion.show();
 
                     NoBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +100,7 @@ public class FriendsClass {
 
                         @Override
                         public void onClick(View view) {
-                            GeneralAppInfo.friendMode = 2;
+                            GeneralAppInfo.friendMode = 0;
                             recyclerView.setVisibility(View.GONE);
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
@@ -109,8 +109,8 @@ public class FriendsClass {
                     });
                 }
                 //not friend state
-                else if (GeneralAppInfo.friendMode == 3) {
-                    GeneralAppInfo.friendMode = 0;
+                else if (GeneralAppInfo.friendMode == 0) {
+                    GeneralAppInfo.friendMode = 1;
                     friendStatus.setText("Pending");
                     NotFriendProfileClass notFriendProfileClass = new NotFriendProfileClass();
                     notFriendProfileClass.addNewFriendShip(GeneralAppInfo.getUserID(), Id);

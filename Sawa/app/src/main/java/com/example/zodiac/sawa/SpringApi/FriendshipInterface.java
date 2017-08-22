@@ -34,16 +34,16 @@ public interface FriendshipInterface {
     Call<List<UserModel>> getFollowRequest(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
-    @GET("/api/v1/friends/getFriendShipState/{friend1_id}/{friend2_id}")
-    Call<Integer> getFriendShipState(@Path("friend1_id") int friend1_id, @Path("friend2_id") int friend2_id);
+    @GET("/api/v1/friend/getFollowRelationState/{friend1_id}/{friend2_id}")
+    Call<Integer> getFollowRelationState(@Path("friend1_id") int friend1_id, @Path("friend2_id") int friend2_id);
 
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/friend/sendFollowRequest")
     Call<FriendResponseModel> sendFollowRequest(@Body FriendRequestModel friendshipModel);
 
     @Headers("Cache-Control: max-age=64000")
-    @POST("/api/v1/friend/deleteFriendship")
-    Call<Integer> deleteFriendship(@Body FriendRequestModel friendshipModel);
+    @POST("/api/v1/friend/deleteFollow")
+    Call<Integer> deleteFollow(@Body FriendRequestModel friendshipModel);
 
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/friend/confirmFollowRequest")
