@@ -13,7 +13,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="17dp"
         android:gravity="center"
-        android:text="Are you sure you want to delete this friend ? "
+        android:text="Are you sure you want to delete this Follow ? "
         android:textColor="#000"
         android:textSize="17dp" />
 

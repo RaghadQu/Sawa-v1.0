@@ -211,7 +211,8 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                                 @Override
                                 public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
                                     Log.d("FastScrollResp", " " + response.code());
-                                    remove.setText("Pending");
+                                    if(response.code()==200){
+                                    remove.setVisibility(View.INVISIBLE);}
 
 
                                 }
