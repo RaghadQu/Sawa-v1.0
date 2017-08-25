@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.zodiac.sawa.Activities.MyFollowingActivity;
@@ -70,10 +71,43 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
 
     @Override
-    public void onBindViewHolder(UserViewHolder holder, int position) {
+    public void onBindViewHolder(final UserViewHolder holder, int position) {
         final FreindsFunctions freindsFunctions = new FreindsFunctions();
         final MyFollowersActivity.friend user = userList.get(position);
+
+        if(removeButtonFlag==0) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GeneralAppInfo.SPRING_URL)
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            FriendshipInterface friendshipApi = retrofit.create(FriendshipInterface.class);
+
+            Call<Integer> call = friendshipApi.getFollowRelationState(GeneralAppInfo.getUserID(), user.getId());
+            call.enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    Integer FriendshipState = response.body();
+                    Log.d("stateeee", "" + FriendshipState);
+                    if (FriendshipState == 2) {
+                        holder.remove.setText("Following");
+                    }
+                    if (FriendshipState == 0) {
+                        holder.remove.setText("Follow");
+                    }
+                    if (FriendshipState == 1) {
+                        holder.remove.setText("Requested");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    Log.d("stateeee", " Failure ");
+
+                }
+            });
+        }
         holder.tvName.setText(user.getUserName());
+
         String image;
         try {
             image = user.getImageResourceId();
@@ -120,6 +154,8 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
         });
 
 
+
+
     }
 
     @Override
@@ -146,13 +182,10 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
             tvName = (TextView) itemView.findViewById(R.id.Name);
             remove = (Button) view.findViewById(R.id.Remove);
 
-            if (removeButtonFlag == 1) {
-                remove.setVisibility(View.INVISIBLE);
-            }
 
             if(removeButtonFlag == 0)
             {
-                remove.setText("Follow");
+                remove.setText("");
             }
 
 
@@ -165,7 +198,6 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                     final int position = getAdapterPosition();
 
 
-                    FreindsFunctions friendFunction = new FreindsFunctions();
                     if(userList.get(position)!= null) {
                         Log.d("FastScroll",userList.get(position) + " " + position);
                      //   friendFunction.DeleteFriend(GeneralAppInfo.getUserID(), userList.get(position).getId(), remove);
@@ -187,12 +219,9 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                                 @Override
                                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                                     Log.d("FastScrollResp", " " + response.code());
-
-                                    MyFollowingActivity.recyclerView.removeViewAt(position);
+                                /*    MyFollowingActivity.recyclerView.removeViewAt(position);
                                     MyFollowingActivity.FreindsList.remove(position);
-                                    MyFollowingActivity.LayoutFriendsList.remove(position);
-
-
+                                    MyFollowingActivity.LayoutFriendsList.remove(position);*/
                                 }
 
                                 @Override
@@ -200,21 +229,18 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                                     Log.d("fail to get friends ", "Failure to Get friends");
 
                                 }
-
-
                             });
                         }
-                        else if (removeButtonFlag==0)
+                        else if (removeButtonFlag==0 && remove.getText().toString().equals("Follow"))
                         {
+                            Log.d("FastScrollAdapter"," from Follow to Requested");
                             final Call<FriendResponseModel> deleteCall = FriendApi.sendFollowRequest(FriendRequest);
                             deleteCall.enqueue(new Callback<FriendResponseModel>() {
                                 @Override
                                 public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
                                     Log.d("FastScrollResp", " " + response.code());
                                     if(response.code()==200){
-                                    remove.setVisibility(View.INVISIBLE);}
-
-
+                                    remove.setText("Requested");}
                                 }
 
                                 @Override
@@ -226,6 +252,27 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
                             });
                         }
+                        else if (removeButtonFlag==0 && (remove.getText().toString().equals("Following") || remove.getText().toString().equals("Requested")))
+                        {
+                            Log.d("FastScrollAdapter"," from Requested or Following to Follow");
+
+                            final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
+                            deleteCall.enqueue(new Callback<Integer>() {
+                                @Override
+                                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                    Log.d("FastScrollResp", " " + response.code());
+                                    if(response.code()==200){
+                                        remove.setText("Follow");
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Integer> call, Throwable t) {
+                                    Log.d("fail to get friends ", "Failure to Get friends");
+                                }
+                            });
+                        }
+
                     }
 
                 }

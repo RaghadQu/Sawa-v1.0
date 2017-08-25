@@ -71,9 +71,9 @@ public class MyFriendProfileActivity extends AppCompatActivity {
     int Id1;
     private ProgressBar progressBar;
     private ProgressBar progressBar_button;
-    private RecyclerView mRecyclerView;
+   /* private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;*/
 
     public static void verifyStoragePermissions(Activity activity) {
 
@@ -189,22 +189,22 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                     if (FollowRelationState != null) {
                         Log.d("stateeee", "" + FollowRelationState);
                         if (FollowRelationState == 0) {  // No relation
-                            mRecyclerView.setVisibility(View.GONE);
+                         //   mRecyclerView.setVisibility(View.GONE);
                             GeneralAppInfo.friendMode = 0;
-                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
 
                         } else if (FollowRelationState == 1) { // Follow Request Pending
-                            mRecyclerView.setVisibility(View.GONE);
+                         //   mRecyclerView.setVisibility(View.GONE);
                             GeneralAppInfo.friendMode = 1;
-                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
                         }/* else if (FollowRelationState == 3) { //
                             mRecyclerView.setVisibility(View.GONE);
                             GeneralAppInfo.friendMode = 3;
-                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
                         }*/ else if (FollowRelationState == 2) { // Follower
-                            mRecyclerView.setVisibility(View.INVISIBLE);
+                          //  mRecyclerView.setVisibility(View.INVISIBLE);
                             GeneralAppInfo.friendMode = 2;
-                            friendsClass.setFollowRelationState(friendStatus, mRecyclerView, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
                         }
                         fillAbout(about_bio, about_status, about_song, Id1);
 
@@ -257,7 +257,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                 }
             });
 
-            mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
+          /*  mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
             mRecyclerView.setVisibility(View.GONE);
 
             mRecyclerView.setNestedScrollingEnabled(false);
@@ -266,7 +266,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mAdapter = new MyAdapter(this, myDataset, images);
-            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setAdapter(mAdapter);*/
 
 
             aboutFriendIcon.setOnClickListener(new View.OnClickListener() {

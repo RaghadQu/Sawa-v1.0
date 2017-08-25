@@ -141,22 +141,22 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/ConfirmRequest"
-                    android:layout_width="60dp"
+                    android:id="@+id/myFollowState"
+                    android:layout_width="85dp"
                     android:layout_height="31dp"
-                    android:background="@drawable/left_corners_50dp"
+                    android:text="Follow"
                     android:drawableLeft="@mipmap/checkmark2"
                     android:paddingLeft="20dp"
                     android:visibility="invisible"
 
                     />
 
-                <Button
-                    android:id="@+id/deleteRequest"
-                    android:layout_width="60dp"
+                <ImageView
+                    android:id="@+id/otherFollowState"
+                    android:layout_width="35dp"
                     android:layout_height="31dp"
                     android:background="@drawable/right_corners_50dp"
-                    android:drawableLeft="@mipmap/deletemark2"
+                    android:src="@drawable/follower_icon"
                     android:paddingLeft="18dp"
                     android:visibility="invisible" />
             </LinearLayout>
@@ -233,7 +233,7 @@
             android:layout_marginRight="10dp"
             android:background="#ACACAC" />
 
-        <android.support.v7.widget.RecyclerView
+<!--        <android.support.v7.widget.RecyclerView
             android:id="@+id/Viewer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
             android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>-->
 
 
     </LinearLayout>

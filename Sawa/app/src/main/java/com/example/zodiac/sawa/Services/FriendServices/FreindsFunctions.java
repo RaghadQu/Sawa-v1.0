@@ -24,50 +24,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class FreindsFunctions {
-    public void getFreindShipState(int friend1_id, int friend2_id, final Button button) {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.SPRING_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        FriendshipInterface friendshipApi = retrofit.create(FriendshipInterface.class);
-
-        Call<Integer> call = friendshipApi.getFollowRelationState(friend1_id, friend2_id);
-        call.enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                Integer FriendshipState = response.body();
-                Log.d("stateeee", "" + FriendshipState);
-                if (FriendshipState == 2) {
-                    button.setText("Add as freind");
-                } else if (FriendshipState == 0) {
-                    button.setText("Pending");
-                } else if (FriendshipState == 1) {
-                    button.setText("Freind");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Log.d("stateeee", " Failure ");
-
-            }
-        });
-    }
-
-    public void startMyProfile(Context mContext, String mName, int Id) {
-        if (Id == GeneralAppInfo.getUserID()) {
-            Intent i = new Intent(mContext, MyProfileActivity.class);
-            mContext.startActivity(i);
-        } else {
-            Intent i = new Intent(mContext, MyFriendProfileActivity.class);
-            Bundle b = new Bundle();
-            b.putString("mName", mName);
-            b.putInt("Id", Id);
-
-            i.putExtras(b);
-            mContext.startActivity(i);
-        }
-    }
 
     public void startFriend(Context mContext, String mName, int Id, String ImageUrl) {
         if (Id == GeneralAppInfo.getUserID()) {

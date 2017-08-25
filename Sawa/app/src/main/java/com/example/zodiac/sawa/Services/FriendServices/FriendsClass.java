@@ -31,14 +31,14 @@ public class FriendsClass {
     FreindsFunctions friendFunction;
     TextView textMsg;
 
-    public void setFollowRelationState(final Button friendStatus, final RecyclerView recyclerView, final Context context, final int Id, Context c) {
-        recyclerView.setVisibility(View.VISIBLE);
+    public void setFollowRelationState(final Button friendStatus, final Context context, final int Id, Context c) {
+       // recyclerView.setVisibility(View.VISIBLE);
         if (GeneralAppInfo.friendMode == 0)
             friendStatus.setText("Follow");
         if (GeneralAppInfo.friendMode == 1)
             friendStatus.setText("Pending");
         if (GeneralAppInfo.friendMode == 2)
-            friendStatus.setText("-------");
+            friendStatus.setText("Following");
 
 
         friendFunction = new FreindsFunctions();
@@ -101,7 +101,7 @@ public class FriendsClass {
                         @Override
                         public void onClick(View view) {
                             GeneralAppInfo.friendMode = 0;
-                            recyclerView.setVisibility(View.GONE);
+                    //        recyclerView.setVisibility(View.GONE);
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
                             friendFunction.DeleteFriend(GeneralAppInfo.getUserID(), Id, friendStatus);

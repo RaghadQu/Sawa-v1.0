@@ -34,7 +34,7 @@
 
         <Button
             android:id="@+id/Remove"
-            android:layout_width="80dp"
+            android:layout_width="87dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="2dp"
@@ -42,7 +42,7 @@
             android:layout_marginTop="1dp"
             android:background="@drawable/remove_friend_style"
             android:clickable="true"
-            android:text="Remove"
+            android:text="Following"
             android:textAllCaps="false"
             android:textSize="14dp"
 
