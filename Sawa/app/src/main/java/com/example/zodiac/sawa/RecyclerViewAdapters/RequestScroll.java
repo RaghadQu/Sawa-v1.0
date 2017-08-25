@@ -198,12 +198,11 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                         confirmCall.enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
-
+                                Log.d("----- Added ", "added" + response.code());
                                 //    MyRequestsActivity.recyclerView.removeViewAt(position);
                                 MyRequestsActivity.FreindsList.remove(position);
                                 MyRequestsActivity.LayoutFriendsList.remove(position);
                                 notifyItemRemoved(position);
-                                Log.d("----- Remove ", "removed" + MyRequestsActivity.FreindsList.size());
                             }
 
                             @Override
