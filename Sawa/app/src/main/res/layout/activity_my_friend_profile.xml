@@ -123,7 +123,7 @@
 
             <Button
                 android:id="@+id/friendStatus"
-                android:layout_width="120dp"
+                android:layout_width="121dp"
                 android:layout_height="31dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
@@ -145,19 +145,24 @@
                     android:layout_width="85dp"
                     android:layout_height="31dp"
                     android:text="Follow"
-                    android:drawableLeft="@mipmap/checkmark2"
-                    android:paddingLeft="20dp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/left_corners_50dp"
+                    android:paddingLeft="11dp"
                     android:visibility="invisible"
 
                     />
 
                 <ImageView
                     android:id="@+id/otherFollowState"
-                    android:layout_width="35dp"
+                    android:layout_width="36dp"
                     android:layout_height="31dp"
                     android:background="@drawable/right_corners_50dp"
                     android:src="@drawable/follower_icon"
-                    android:paddingLeft="18dp"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="3.5dp"
+                    android:paddingBottom="3.5dp"
+                    android:paddingRight="3.7dp"
+
                     android:visibility="invisible" />
             </LinearLayout>
 

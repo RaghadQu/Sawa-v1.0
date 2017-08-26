@@ -85,24 +85,32 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                     .addConverterFactory(GsonConverterFactory.create()).build();
             FriendshipInterface friendshipApi = retrofit.create(FriendshipInterface.class);
 
-            Call<Integer> call = friendshipApi.getFollowRelationState(GeneralAppInfo.getUserID(), user.getId());
-            call.enqueue(new Callback<Integer>() {
+            Call<FriendResponseModel> call = friendshipApi.getFollowRelationState(GeneralAppInfo.getUserID(), user.getId());
+            final Integer[] FriendshipState = new Integer[1];
+            call.enqueue(new Callback<FriendResponseModel>() {
                 @Override
-                public void onResponse(Call<Integer> call, Response<Integer> response) {
-                    Integer FriendshipState = response.body();
-                    Log.d("stateeee", "" + FriendshipState);
+                public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
+                    if(response.code()==200){
+                    if(GeneralAppInfo.getUserID() == response.body().getFriend1_id().getId()){
+                        FriendshipState[0] =response.body().getFriend1_state();}
+                else
+                {
+                    FriendshipState[0] =response.body().getFriend2_state();
+                }
+
+                    Log.d("stateeee", "" + FriendshipState[0]);
                     if (response.code() == 200) {
-                        if (FriendshipState == 2) {
+                        if (FriendshipState[0] == 2) {
                             holder.remove.setText("Following");
                         }
 
-                    if (FriendshipState == 0) {
+                    if (FriendshipState[0] == 0) {
                         holder.remove.setText("Follow");
                     }
-                    if (FriendshipState == 1) {
+                    if (FriendshipState[0] == 1) {
                         holder.remove.setText("Requested");
                     }
-                }
+                }}
                     else {
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
@@ -111,7 +119,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                 }
 
                 @Override
-                public void onFailure(Call<Integer> call, Throwable t) {
+                public void onFailure(Call<FriendResponseModel> call, Throwable t) {
                     Log.d("stateeee", " Failure ");
 
                 }
