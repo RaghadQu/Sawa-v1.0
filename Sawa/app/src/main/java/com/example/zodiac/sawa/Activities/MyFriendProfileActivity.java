@@ -317,7 +317,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<FriendResponseModel> call, Throwable t) {
-                    Log.d("stateeee", "fail nnnnnnn");
+                    Log.d("stateeee", "fail "+ t.getMessage());
 
                 }
             });
