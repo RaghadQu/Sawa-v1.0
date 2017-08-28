@@ -155,11 +155,12 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                         deleteCall.enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                MyRequestsActivity.recyclerView.removeViewAt(position);
-                                MyRequestsActivity.FreindsList.remove(position);
-                                MyRequestsActivity.LayoutFriendsList.remove(position);
+                                if (MyRequestsActivity.recyclerView.findViewHolderForPosition(position) != null) {
+                                    MyRequestsActivity.recyclerView.removeViewAt(position);
+                                    MyRequestsActivity.FreindsList.remove(position);
+                                    MyRequestsActivity.LayoutFriendsList.remove(position);
+                                }
                             }
-
                             @Override
                             public void onFailure(Call<Integer> call, Throwable t) {
                                 Log.d("fail to get friends ", "Failure to Get friends");

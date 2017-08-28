@@ -29,9 +29,11 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.MyAdapter;
 import com.example.zodiac.sawa.Services.FriendServices.FriendsClass;
+import com.example.zodiac.sawa.Services.FriendServices.NotFriendProfileClass;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
+import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -75,6 +77,12 @@ public class MyFriendProfileActivity extends AppCompatActivity {
    /* private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;*/
+
+     Dialog ConfirmDeletion;
+     Button NoBtn;
+     Button YesBtn;
+     TextView textMsg;
+
 
     public static void verifyStoragePermissions(Activity activity) {
 
@@ -148,6 +156,8 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         });
         final Button confirmRequest = (Button) findViewById(R.id.ConfirmRequest);
         final Button deleteRequest = (Button) findViewById(R.id.deleteRequest);
+        final Button myFollowState = (Button) findViewById(R.id.myFollowState);
+        final ImageView otherFollowState = (ImageView) findViewById(R.id.otherFollowState);
 
         progressBar_button = (ProgressBar) findViewById(R.id.progressBar_button);
         progressBar_button.setProgress(0);
@@ -170,6 +180,12 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         String imageUrl = GeneralAppInfo.SPRING_URL + "/" + mImageUrl;
         Picasso.with(getApplicationContext()).load(imageUrl).into(img);
 
+        ConfirmDeletion = new Dialog(MyFriendProfileActivity.this);
+        ConfirmDeletion.setContentView(R.layout.confirm_delete_friend_or_request_dialog);
+        NoBtn = (Button) ConfirmDeletion.findViewById(R.id.NoBtn);
+        YesBtn = (Button) ConfirmDeletion.findViewById(R.id.YesBtn);
+        textMsg = (TextView) ConfirmDeletion.findViewById(R.id.TextMsg);
+
         Id1 = Id;
         Log.d("IDD1", "" + Id);
         GeneralFunctions generalFunctions = new GeneralFunctions();
@@ -184,36 +200,125 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                     .baseUrl(GeneralAppInfo.SPRING_URL)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             FriendshipInterface getFreindApi = retrofit.create(FriendshipInterface.class);
-            Call<Integer> call = getFreindApi.getFollowRelationState(GeneralAppInfo.getUserID(), Id);
+            Call<FriendResponseModel> call = getFreindApi.getFollowRelationState(GeneralAppInfo.getUserID(), Id);
+            final Integer[] FollowRelationState = new Integer[2];
 
-            call.enqueue(new Callback<Integer>() {
+            final String finalMName = mName;
+            call.enqueue(new Callback<FriendResponseModel>() {
                 @Override
-                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                public void onResponse(Call<FriendResponseModel> call, final Response<FriendResponseModel> response) {
                     Log.d("GetState", "get Friend State code is " + response.code());
-                    Integer FollowRelationState = response.body();
-                    progressBar.setVisibility(View.INVISIBLE);
-                    progressBar_button.setVisibility(View.INVISIBLE);
-                    FriendsClass friendsClass = new FriendsClass();
+                    if (response.code() == 200) {
+                        if (GeneralAppInfo.getUserID() == response.body().getFriend1_id().getId()) {
+                            FollowRelationState[0] = response.body().getFriend1_state();
+                            FollowRelationState[1] = response.body().getFriend2_state();
+                        } else {
+                            FollowRelationState[0] = response.body().getFriend2_state();
+                            FollowRelationState[1] = response.body().getFriend1_state();
 
-                    if (FollowRelationState != null) {
-                        Log.d("stateeee", "" + FollowRelationState);
-                        if (FollowRelationState == 0) {  // No relation
-                         //   mRecyclerView.setVisibility(View.GONE);
-                            GeneralAppInfo.friendMode = 0;
-                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                        }
+                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar_button.setVisibility(View.INVISIBLE);
+                        if (FollowRelationState[1] == 0) {
 
-                        } else if (FollowRelationState == 1) { // Follow Request Pending
-                         //   mRecyclerView.setVisibility(View.GONE);
-                            GeneralAppInfo.friendMode = 1;
-                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
-                        }/* else if (FollowRelationState == 3) { //
-                            mRecyclerView.setVisibility(View.GONE);
-                            GeneralAppInfo.friendMode = 3;
-                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
-                        }*/ else if (FollowRelationState == 2) { // Follower
-                          //  mRecyclerView.setVisibility(View.INVISIBLE);
-                            GeneralAppInfo.friendMode = 2;
-                            friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                            FriendsClass friendsClass = new FriendsClass();
+
+                            if (FollowRelationState[0] != null) {
+                                Log.d("stateeee", "" + FollowRelationState[0]);
+                                if (FollowRelationState[0] == 0) {  // No relation
+                                    GeneralAppInfo.friendMode = 0;
+                                    friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+
+                                } else if (FollowRelationState[0] == 1) { // Follow Request Pending
+                                    GeneralAppInfo.friendMode = 1;
+                                    friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                } else if (FollowRelationState[0] == 2) { // Follower
+                                    GeneralAppInfo.friendMode = 2;
+                                    friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                }
+                            }
+                        } else {
+
+                            friendStatus.setVisibility(View.INVISIBLE);
+                            myFollowState.setVisibility(View.VISIBLE);
+                            otherFollowState.setVisibility(View.VISIBLE);
+
+
+                            // myFollowState
+                            FriendsClass friendsClass = new FriendsClass();
+                            if (FollowRelationState[0] != null) {
+                                Log.d("stateeee", "" + FollowRelationState[0]);
+                                if (FollowRelationState[0] == 0) {  // No relation
+                                    GeneralAppInfo.friendMode = 0;
+                                    friendsClass.setFollowRelationState(myFollowState, MyFriendProfileActivity.this, Id1, getApplicationContext());
+
+                                } else if (FollowRelationState[0] == 1) { // Follow Request Pending
+                                    GeneralAppInfo.friendMode = 1;
+                                    friendsClass.setFollowRelationState(myFollowState, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                } else if (FollowRelationState[0] == 2) { // Follower
+                                    GeneralAppInfo.friendMode = 2;
+                                    friendsClass.setFollowRelationState(myFollowState, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                }
+                            }
+
+                            if (FollowRelationState[1] == 1) // follower request Pending ( follower sent request)
+                            {
+                                otherFollowState.setImageResource(R.drawable.follower_request_pending);
+                                otherFollowState.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View view) {
+                                        textMsg.setText(finalMName + " sent you a follow request. Do you want to accept it?");
+                                        ConfirmDeletion.show();
+
+                                        NoBtn.setOnClickListener(new View.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(View view) {
+                                                ConfirmDeletion.dismiss();
+
+                                            }
+                                        });
+
+                                        YesBtn.setOnClickListener(new View.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(View view) {
+                                                ConfirmDeletion.dismiss();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            if (FollowRelationState[1] == 2) {
+                                otherFollowState.setImageResource(R.drawable.follower_icon);
+                                otherFollowState.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View view) {
+                                        textMsg.setText(" Do you want to remove " + finalMName + " from your followers ?");
+                                        ConfirmDeletion.show();
+
+                                        NoBtn.setOnClickListener(new View.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(View view) {
+                                                ConfirmDeletion.dismiss();
+
+                                            }
+                                        });
+
+                                        YesBtn.setOnClickListener(new View.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(View view) {
+                                                ConfirmDeletion.dismiss();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+
                         }
                         fillAbout(about_bio, about_status, about_song, Id1);
 
@@ -222,7 +327,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<Integer> call, Throwable t) {
+                public void onFailure(Call<FriendResponseModel> call, Throwable t) {
                     Log.d("stateeee", "fail nnnnnnn");
 
                 }
