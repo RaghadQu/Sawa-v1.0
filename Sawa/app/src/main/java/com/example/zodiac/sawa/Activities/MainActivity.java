@@ -43,6 +43,8 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
+import com.google.api.services.people.v1.model.Person;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,12 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .duration(700)
                 .repeat(0)
                 .playOn(findViewById(R.id.loginWithGoogleBtn));
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id)).
+                        requestServerAuthCode(getString(R.string.default_web_client_id)).requestScopes(new Scope(Scopes.PLUS_LOGIN)).build();
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).addApi(Plus.API)
                 .build();
 
         signInButton = (SignInButton) findViewById(R.id.loginWithGoogleBtn);
@@ -174,9 +176,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         //Sign in with google section
 
-        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestProfile()
-                .requestIdToken(getString(R.string.default_web_client_id)).
-                        requestServerAuthCode(getString(R.string.default_web_client_id)).requestScopes(new Scope(Scopes.PLUS_LOGIN)).build();
+//        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestProfile()
+//                .requestIdToken(getString(R.string.default_web_client_id)).
+//                        requestServerAuthCode(getString(R.string.default_web_client_id)).requestScopes(new Scope(Scopes.PLUS_LOGIN)).build();
 
         //end section
 
@@ -332,6 +334,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // data.getStringExtra("")
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
+            com.google.android.gms.plus.model.people.Person person= Plus.PeopleApi.getCurrentPerson(googleApiClient);
+            Log.i("", "Gender: " + person.getGender());
         } else {
             progressDialog.dismiss();
             callbackManager.onActivityResult(requestCode, responseCode, data);
@@ -380,6 +384,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             loginWIthGoogleModel.setAccessToken(account.getIdToken());
             loginWIthGoogleModel.setFirstName(account.getGivenName());
             loginWIthGoogleModel.setLastName(account.getFamilyName());
+            loginWIthGoogleModel.setGender("male");
+
             loginWIthGoogleModel.setId(userId);
 
             loginWIthGoogleModel.setImage(account.getPhotoUrl().toString());

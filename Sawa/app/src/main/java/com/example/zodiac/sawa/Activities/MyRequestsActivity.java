@@ -112,9 +112,10 @@ public class MyRequestsActivity extends Activity {
                         if (FreindsList != null) {
 
                             if (FreindsList.size() == 0) {
-                                noRequestsLaout.setVisibility(View.VISIBLE);
                                 CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
                                 circle.setImageDrawable(getDrawable(R.drawable.no_requests));
+                                noRequestsLaout.setVisibility(View.VISIBLE);
+
                             } else {
                                 progressBar.setVisibility(View.GONE);
                                 noRequestsLaout.setVisibility(View.GONE);

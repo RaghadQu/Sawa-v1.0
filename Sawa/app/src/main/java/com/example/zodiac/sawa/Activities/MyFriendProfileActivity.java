@@ -59,6 +59,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
     TextView user_profile_name;
     TextView toolBarText;
     TextView aboutUsername;
+    TextView following,followers;
     ImageView imageView; // View image in dialog
     Button friendStatus;
     int image1 = R.drawable.image1;
@@ -126,6 +127,9 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_friend_profile);
         toolBarText = (TextView) findViewById(R.id.ToolbarText);
         user_profile_name = (TextView) findViewById(R.id.user_profile_name);
+        following=(TextView)findViewById(R.id.followingTxt);
+        followers=(TextView)findViewById(R.id.followerTxt);
+
         //get parameters
         Bundle b = getIntent().getExtras();
         int Id = -1; // or other values
@@ -137,6 +141,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
             mName = b.getString("mName");
             mImageUrl = b.getString("mImageURL");
         }
+
         user_profile_name.setText(mName);
         toolBarText.setText(mName);
 
@@ -144,7 +149,13 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         friendStatus.setText(" ");
         aboutFriendIcon = (ImageView) findViewById(R.id.aboutFriendIcon);
         coverPhoto = (ImageView) findViewById(R.id.coverPhoto);
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
+            }
+        });
+        final Button confirmRequest = (Button) findViewById(R.id.ConfirmRequest);
+        final Button deleteRequest = (Button) findViewById(R.id.deleteRequest);
         final Button myFollowState = (Button) findViewById(R.id.myFollowState);
         final ImageView otherFollowState = (ImageView) findViewById(R.id.otherFollowState);
 
@@ -338,13 +349,6 @@ public class MyFriendProfileActivity extends AppCompatActivity {
             editBio = (TextView) findViewById(R.id.editBio);
 
 
-            /*    about_bio.setText(aboutUserResponeModel.getUser_bio());
-                editBio.setText(aboutUserResponeModel.getUser_bio());
-                about_status.setText(aboutUserResponeModel.getUser_status());
-                about_song.setText(aboutUserResponeModel.getUser_song());
-
-          */
-
 
             img.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -360,16 +364,6 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                 }
             });
 
-          /*  mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
-            mRecyclerView.setVisibility(View.GONE);
-
-            mRecyclerView.setNestedScrollingEnabled(false);
-
-            mRecyclerView.setHasFixedSize(true);
-            mLayoutManager = new LinearLayoutManager(this);
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            mAdapter = new MyAdapter(this, myDataset, images);
-            mRecyclerView.setAdapter(mAdapter);*/
 
 
             aboutFriendIcon.setOnClickListener(new View.OnClickListener() {

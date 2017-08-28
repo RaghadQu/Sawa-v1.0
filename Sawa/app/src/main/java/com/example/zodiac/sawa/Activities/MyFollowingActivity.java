@@ -62,7 +62,6 @@ public class MyFollowingActivity extends Activity {
                 .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
-
         friendshipApi = retrofit.create(FriendshipInterface.class);
         FriendshipTypeLabel = (TextView) findViewById(R.id.FriendshipTabType);
         FriendshipTypeLabel.setText("Following");

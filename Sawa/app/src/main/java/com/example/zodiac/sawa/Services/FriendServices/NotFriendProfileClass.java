@@ -22,26 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class NotFriendProfileClass {
-    public void SetFriendButtn(final Button friendStatus, RecyclerView recyclerView, final int Id, Context c) {
-        //recyclerView.setVisibility(View.GONE);
-        friendStatus.setText("Add as friend");
-        friendStatus.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                if (view == friendStatus && friendStatus.getText().equals("Add")) {
-                    friendStatus.setText("Pending");
-
-
-                    addNewFriendShip(GeneralAppInfo.getUserID(), Id);
-
-                } else
-                    Log.d("Add friend ship", "Already sent");
-
-
-            }
-        });
-    }
 
 
     public void addNewFriendShip(int friend1_id, int friend2_id) {
