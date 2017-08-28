@@ -1,6 +1,7 @@
 package com.example.zodiac.sawa.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -10,6 +11,9 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by exalt on 8/1/2017.
@@ -88,6 +92,20 @@ public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.youtube_activity_dialog);
         video_id = "LwLABSm0yYc";
+
+
+        Bundle b = getIntent().getExtras();
+        String youtubeSongUrl = "";
+        if (b != null) {
+            youtubeSongUrl = b.getString("youtubeSongUrl");
+            if(youtubeSongUrl!=null){
+            String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+            Pattern compiledPattern = Pattern.compile(pattern);
+            Matcher matcher = compiledPattern.matcher(youtubeSongUrl);
+            if(matcher.find()){
+                video_id= matcher.group();
+            }}
+        }
         //  LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
         // LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.edit_song, null, false);
 

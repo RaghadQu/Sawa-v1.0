@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.zodiac.sawa.Activities.*;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Services.FriendServices.FreindsFunctions;
+import com.example.zodiac.sawa.Services.FriendServices.FollowFunctions;
 import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -36,11 +36,11 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
 
     FriendshipInterface service;
     FriendshipInterface service_confirm;
-    FreindsFunctions friendFunction;
-    ArrayList<MyRequestsActivity.friend> userList;
+    FollowFunctions friendFunction;
+    ArrayList<MyFollowersActivity.friend> userList;
     private Context mContext;
 
-    public RequestScroll(Context mContext, ArrayList<MyRequestsActivity.friend> userList) {
+    public RequestScroll(Context mContext, ArrayList<MyFollowersActivity.friend> userList) {
         this.mContext = mContext;
         this.userList = userList;
     }
@@ -61,8 +61,8 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        final FreindsFunctions freindsFunctions = new FreindsFunctions();
-        final MyRequestsActivity.friend user = userList.get(position);
+        final FollowFunctions freindsFunctions = new FollowFunctions();
+        final MyFollowersActivity.friend user = userList.get(position);
         holder.tvName.setText(user.getUserName());
         holder.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,12 +127,13 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
         Button remove;
         Button confirmReuqest;
 
+
         public UserViewHolder(View itemView) {
             super(itemView);
             ivProfile = (CircleImageView) itemView.findViewById(R.id.image);
             tvName = (TextView) itemView.findViewById(R.id.Name);
             remove = (Button) itemView.findViewById(R.id.deleteRequest);
-            friendFunction = new FreindsFunctions();
+            friendFunction = new FollowFunctions();
             remove.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -157,7 +158,7 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 if (MyRequestsActivity.recyclerView.findViewHolderForPosition(position) != null) {
                                     MyRequestsActivity.recyclerView.removeViewAt(position);
-                                    MyRequestsActivity.FreindsList.remove(position);
+                                    MyRequestsActivity.FriendsList.remove(position);
                                     MyRequestsActivity.LayoutFriendsList.remove(position);
                                 }
                             }
@@ -201,7 +202,7 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 Log.d("----- Added ", "added" + response.code());
                                 //    MyRequestsActivity.recyclerView.removeViewAt(position);
-                                MyRequestsActivity.FreindsList.remove(position);
+                                MyRequestsActivity.FriendsList.remove(position);
                                 MyRequestsActivity.LayoutFriendsList.remove(position);
                                 notifyItemRemoved(position);
                             }

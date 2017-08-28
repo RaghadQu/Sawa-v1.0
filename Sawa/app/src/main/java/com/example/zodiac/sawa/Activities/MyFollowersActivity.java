@@ -20,7 +20,7 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
-import com.example.zodiac.sawa.SpringModels.OtherFollowesAndFollowingResponse;
+import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -38,8 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by raghadq on 5/2/2017.
  */
-
-/**
+ /**
  * Created by zodiac on 04/03/2017.
  */
 
@@ -47,8 +46,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MyFollowersActivity extends Activity {
 
 
-    public static List<UserModel> FreindsList;
-    public static List<OtherFollowesAndFollowingResponse> otherFriendList;
+    public static List<FollowesAndFollowingResponse> FriendsList;
+    public static List<FollowesAndFollowingResponse> otherFriendList;
     public static ArrayList<friend> LayoutFriendsList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
@@ -107,11 +106,11 @@ public class MyFollowersActivity extends Activity {
         if (source == 0) {
 
 
-            final Call<List<UserModel>> FriendsResponse = friendshipApi.getFollowers(GeneralAppInfo.getUserID());
-            FriendsResponse.enqueue(new Callback<List<UserModel>>() {
+            final Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowers(GeneralAppInfo.getUserID());
+            FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+                public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
                     progressBar.setVisibility(View.INVISIBLE);
 
                     Log.d("GetFriends", " Get friends " + response.code());
@@ -120,17 +119,16 @@ public class MyFollowersActivity extends Activity {
                         generalFunctions.showErrorMesaage(getApplicationContext());
                     } else {
 
-
-                        FreindsList = response.body();
+                        FriendsList = response.body();
                         otherFriendList=null;
                         LayoutFriendsList.clear();
-                        handleDateInAdapter(progressBar, noFriendsLayout, source,FreindsList.size());
+                        handleDateInAdapter(progressBar, noFriendsLayout, source,FriendsList.size());
                     }
                 }
 
 
                 @Override
-                public void onFailure(Call<List<UserModel>> call, Throwable t) {
+                public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
                     progressBar.setVisibility(View.INVISIBLE);
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
@@ -139,16 +137,16 @@ public class MyFollowersActivity extends Activity {
                 }
             });
         }else if(source==1||source==2){
-            Call<List<OtherFollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getOtherFollowers(friendId,GeneralAppInfo.getUserID());
+            Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getOtherFollowers(friendId,GeneralAppInfo.getUserID());
 
             if(source==2){
                 FriendsResponse = friendshipApi.getOtherFollowing(friendId,GeneralAppInfo.getUserID());
 
             }
-            FriendsResponse.enqueue(new Callback<List<OtherFollowesAndFollowingResponse>>() {
+            FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public void onResponse(Call<List<OtherFollowesAndFollowingResponse>> call, Response<List<OtherFollowesAndFollowingResponse>> response) {
+                public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
                     progressBar.setVisibility(View.INVISIBLE);
 
                     Log.d("GetFriends", " Get friends " + response.code());
@@ -159,7 +157,7 @@ public class MyFollowersActivity extends Activity {
 
 
                         otherFriendList = response.body();
-                        FreindsList=null;
+                        FriendsList=null;
                         LayoutFriendsList.clear();
                         handleDateInAdapter( progressBar, noFriendsLayout, source,otherFriendList.size());
                     }
@@ -167,7 +165,7 @@ public class MyFollowersActivity extends Activity {
 
 
                 @Override
-                public void onFailure(Call<List<OtherFollowesAndFollowingResponse>> call, Throwable t) {
+                public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
                     progressBar.setVisibility(View.INVISIBLE);
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
@@ -196,8 +194,9 @@ public class MyFollowersActivity extends Activity {
         String image="";
         String first_name="";
         String last_name="";
+        int state=-1;
 
-        if (FreindsList != null||noFriendsLayout!=null) {
+        if (FriendsList != null||noFriendsLayout!=null) {
             if (size == 0) {
 
                 noFriendsLayout.setVisibility(View.VISIBLE);
@@ -205,23 +204,25 @@ public class MyFollowersActivity extends Activity {
                 circle.setImageDrawable(getDrawable(R.drawable.no_friends));
 
             } else {
-                Log.d("GetFriends", " Friends are : " + FreindsList.size());
+                Log.d("GetFriends", " Friends are : " + FriendsList.size());
                 progressBar.setVisibility(View.GONE);
                 noFriendsLayout.setVisibility(View.GONE);
-                for (int i = 0; i < FreindsList.size(); i++) {
+                for (int i = 0; i < FriendsList.size(); i++) {
                     if(source==0){
-                        id=FreindsList.get(i).getId();
-                        image=FreindsList.get(i).getImage();
-                        first_name=FreindsList.get(i).getFirst_name();
-                        last_name=FreindsList.get(i).getLast_name();
+                        id=FriendsList.get(i).getUser().getId();
+                        image=FriendsList.get(i).getUser().getImage();
+                        first_name=FriendsList.get(i).getUser().getFirst_name();
+                        last_name=FriendsList.get(i).getUser().getLast_name();
+                        state=FriendsList.get(i).getState();
                     }else if(source==1||source==2) {
                         id=otherFriendList.get(i).getUser().getId();
                         image=otherFriendList.get(i).getUser().getImage();
                         first_name=otherFriendList.get(i).getUser().getFirst_name();
                         last_name=otherFriendList.get(i).getUser().getLast_name();
+                        state=otherFriendList.get(i).getState();
+
                     }
-                    LayoutFriendsList.add(new MyFollowersActivity.friend(id, image,
-                            first_name + " " + last_name));
+                    LayoutFriendsList.add(new MyFollowersActivity.friend(id, image,(first_name + " " + last_name), state));
                 }
                 recyclerView.setAdapter(new FastScrollAdapter(MyFollowersActivity.this, LayoutFriendsList, 2));
 
@@ -233,11 +234,13 @@ public class MyFollowersActivity extends Activity {
         int Id;
         String imageResourceId;
         String userName;
+        int state;
 
-        public friend(int Id, String imageResourceId, String userName) {
+        public friend(int Id, String imageResourceId, String userName , int state) {
             setImageResourceId(imageResourceId);
             setUserName(userName);
             setId(Id);
+            setState(state);
         }
 
         public int getId() {
@@ -263,6 +266,16 @@ public class MyFollowersActivity extends Activity {
         public void setUserName(String userName) {
             this.userName = userName;
         }
+
+
+        public int getState() {
+            return state;
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
+
 
     }
 }

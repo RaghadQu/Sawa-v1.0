@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,8 +13,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,12 +26,10 @@ import android.widget.Toast;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.RecyclerViewAdapters.MyAdapter;
-import com.example.zodiac.sawa.Services.FriendServices.FriendsClass;
-import com.example.zodiac.sawa.Services.FriendServices.NotFriendProfileClass;
-import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
+import com.example.zodiac.sawa.Services.FriendServices.FollowFunctions;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
+import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +40,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MyFriendProfileActivity extends AppCompatActivity {
+public class OtherProfileActivity extends AppCompatActivity {
     private static final int SELECTED_PICTURE = 100;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static ObjectAnimator anim;
@@ -59,66 +56,23 @@ public class MyFriendProfileActivity extends AppCompatActivity {
     TextView user_profile_name;
     TextView toolBarText;
     TextView aboutUsername;
-    TextView following,followers;
+    TextView following, followers;
     ImageView imageView; // View image in dialog
     Button friendStatus;
-    int image1 = R.drawable.image1;
-    int image2 = R.drawable.friends_icon;
-    int image3 = R.drawable.friends_icon;
-    int image4 = R.drawable.image1;
     TextView editBio;
     ImageView aboutFriendIcon;
-    String[] myDataset = {"Profile", "Friends", "Friend Requests", "Log out"};
-    int[] images = {image1, image2, image3, image4};
     ImageView coverPhoto;
     int Id1;
+    String SongUrl;
     private ProgressBar progressBar;
     private ProgressBar progressBar_button;
-   /* private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;*/
 
-     Dialog ConfirmDeletion;
-     Button NoBtn;
-     Button YesBtn;
-     TextView textMsg;
+    Dialog ConfirmDeletion;
+    Button NoBtn;
+    Button YesBtn;
+    TextView textMsg;
+    CircleImageView showOtherSong;
 
-
-    public static void verifyStoragePermissions(Activity activity) {
-
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
-    }
-
-    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
-                                   boolean filter) {
-        Log.d("width", "" + realImage.getWidth());
-        Log.d("height", "" + realImage.getHeight());
-        float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
-
-
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
-                height, filter);
-        return newBitmap;
-    }
-
-    public static Bitmap RotateBitmap(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +81,10 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_friend_profile);
         toolBarText = (TextView) findViewById(R.id.ToolbarText);
         user_profile_name = (TextView) findViewById(R.id.user_profile_name);
-        following=(TextView)findViewById(R.id.followingTxt);
-        followers=(TextView)findViewById(R.id.followerTxt);
+        following = (TextView) findViewById(R.id.followingTxt);
+        followers = (TextView) findViewById(R.id.followerTxt);
+        showOtherSong=(CircleImageView)findViewById(R.id.showSong) ;
+
 
         //get parameters
         Bundle b = getIntent().getExtras();
@@ -149,11 +105,11 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         friendStatus.setText(" ");
         aboutFriendIcon = (ImageView) findViewById(R.id.aboutFriendIcon);
         coverPhoto = (ImageView) findViewById(R.id.coverPhoto);
-        img.setOnClickListener(new View.OnClickListener() {
+   /*    img.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             }
-        });
+        });*/
         final Button confirmRequest = (Button) findViewById(R.id.ConfirmRequest);
         final Button deleteRequest = (Button) findViewById(R.id.deleteRequest);
         final Button myFollowState = (Button) findViewById(R.id.myFollowState);
@@ -180,7 +136,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         String imageUrl = GeneralAppInfo.SPRING_URL + "/" + mImageUrl;
         Picasso.with(getApplicationContext()).load(imageUrl).into(img);
 
-        ConfirmDeletion = new Dialog(MyFriendProfileActivity.this);
+        ConfirmDeletion = new Dialog(OtherProfileActivity.this);
         ConfirmDeletion.setContentView(R.layout.confirm_delete_friend_or_request_dialog);
         NoBtn = (Button) ConfirmDeletion.findViewById(R.id.NoBtn);
         YesBtn = (Button) ConfirmDeletion.findViewById(R.id.YesBtn);
@@ -190,7 +146,6 @@ public class MyFriendProfileActivity extends AppCompatActivity {
         Log.d("IDD1", "" + Id);
         GeneralFunctions generalFunctions = new GeneralFunctions();
         boolean isOnline = generalFunctions.isOnline(getApplicationContext());
-
 
         if (isOnline == false) {
             Toast.makeText(this, "no internet connection!",
@@ -221,20 +176,20 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                         progressBar_button.setVisibility(View.INVISIBLE);
                         if (FollowRelationState[1] == 0) {
 
-                            FriendsClass friendsClass = new FriendsClass();
+                            //    FriendsClass friendsClass = new FriendsClass();
 
                             if (FollowRelationState[0] != null) {
                                 Log.d("stateeee", "" + FollowRelationState[0]);
                                 if (FollowRelationState[0] == 0) {  // No relation
                                     GeneralAppInfo.friendMode = 0;
-                                    friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                    FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
 
                                 } else if (FollowRelationState[0] == 1) { // Follow Request Pending
                                     GeneralAppInfo.friendMode = 1;
-                                    friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                    FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
                                 } else if (FollowRelationState[0] == 2) { // Follower
                                     GeneralAppInfo.friendMode = 2;
-                                    friendsClass.setFollowRelationState(friendStatus, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                    FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
                                 }
                             }
                         } else {
@@ -243,21 +198,20 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                             myFollowState.setVisibility(View.VISIBLE);
                             otherFollowState.setVisibility(View.VISIBLE);
 
-
                             // myFollowState
-                            FriendsClass friendsClass = new FriendsClass();
+                            //   FriendsClass friendsClass = new FriendsClass();
                             if (FollowRelationState[0] != null) {
                                 Log.d("stateeee", "" + FollowRelationState[0]);
                                 if (FollowRelationState[0] == 0) {  // No relation
                                     GeneralAppInfo.friendMode = 0;
-                                    friendsClass.setFollowRelationState(myFollowState, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                    FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, Id1, getApplicationContext());
 
                                 } else if (FollowRelationState[0] == 1) { // Follow Request Pending
                                     GeneralAppInfo.friendMode = 1;
-                                    friendsClass.setFollowRelationState(myFollowState, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                    FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, Id1, getApplicationContext());
                                 } else if (FollowRelationState[0] == 2) { // Follower
                                     GeneralAppInfo.friendMode = 2;
-                                    friendsClass.setFollowRelationState(myFollowState, MyFriendProfileActivity.this, Id1, getApplicationContext());
+                                    FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, Id1, getApplicationContext());
                                 }
                             }
 
@@ -268,7 +222,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onClick(View view) {
-                                        textMsg.setText(finalMName + " sent you a follow request. Do you want to accept it?");
+                                        textMsg.setText("Do you want to accept " + finalMName + " follow request?");
                                         ConfirmDeletion.show();
 
                                         NoBtn.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +230,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
-
+                                                FollowFunctions.DeleteFriend(GeneralAppInfo.getUserID(), Id1);
                                             }
                                         });
 
@@ -285,6 +239,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
+                                                FollowFunctions.ConfirmFollowRequest(GeneralAppInfo.getUserID(), Id1);
                                             }
                                         });
                                     }
@@ -313,6 +268,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
+                                                FollowFunctions.DeleteFriend(GeneralAppInfo.getUserID(), Id1);
                                             }
                                         });
                                     }
@@ -328,7 +284,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<FriendResponseModel> call, Throwable t) {
-                    Log.d("stateeee", "fail "+ t.getMessage());
+                    Log.d("stateeee", "fail " + t.getMessage());
 
                 }
             });
@@ -349,7 +305,6 @@ public class MyFriendProfileActivity extends AppCompatActivity {
             editBio = (TextView) findViewById(R.id.editBio);
 
 
-
             img.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     imageView.setImageDrawable(img.getDrawable());
@@ -363,7 +318,6 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                     ViewImgDialog.show();
                 }
             });
-
 
 
             aboutFriendIcon.setOnClickListener(new View.OnClickListener() {
@@ -393,6 +347,16 @@ public class MyFriendProfileActivity extends AppCompatActivity {
             }
         });
 
+        showOtherSong.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
+                Bundle b = new Bundle();
+                b.putString("youtubeSongUrl",SongUrl);
+                i.putExtras(b);
+                startActivity(i);
+
+            }
+        });
 
     }
 
@@ -415,6 +379,7 @@ public class MyFriendProfileActivity extends AppCompatActivity {
                         bio.setText(response.body().getUserBio());
                         status.setText(response.body().getUserStatus());
                         song.setText(response.body().getUserSong());
+                        SongUrl = response.body().getUserSong();
                     }
                 }
             }

@@ -4,7 +4,7 @@ package com.example.zodiac.sawa.SpringModels;
  * Created by Rabee on 8/27/2017.
  */
 
-public class OtherFollowesAndFollowingResponse {
+public class FollowesAndFollowingResponse {
     UserModel user;
     int state;
     public UserModel getUser() {

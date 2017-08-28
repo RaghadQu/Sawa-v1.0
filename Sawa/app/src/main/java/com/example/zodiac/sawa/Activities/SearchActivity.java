@@ -112,7 +112,7 @@ public class SearchActivity extends AppCompatActivity {
                             Log.d("Not null", Integer.toString(userModelList.get(0).getId()));
                             for (int i = 0; i < userModelList.size(); i++) {
                                 LayoutFriendsList.add(new MyFollowersActivity.friend(Integer.valueOf(userModelList.get(i).getId()), userModelList.get(i).getImage(),
-                                        userModelList.get(i).getFirst_name() + " " + userModelList.get(i).getLast_name()));
+                                        userModelList.get(i).getFirst_name() + " " + userModelList.get(i).getLast_name(),0));
                                 recyclerView.setAdapter(new FastScrollAdapter(SearchActivity.this, LayoutFriendsList, 1));
                             }
                         }

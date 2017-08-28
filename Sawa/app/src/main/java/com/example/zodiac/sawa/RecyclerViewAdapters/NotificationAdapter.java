@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.Services.FriendServices.FreindsFunctions;
+import com.example.zodiac.sawa.Services.FriendServices.FollowFunctions;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.NotificationTabFragment;
 import com.example.zodiac.sawa.R;
@@ -204,7 +204,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         int friend_id = NotificationTabFragment.NotificationList.get(position).getFriend_id();
                         Context context = NotificationTabFragment.NotificationList.get(position).getContext();
 
-                        final FreindsFunctions freindsFunctions = new FreindsFunctions();
+                        final FollowFunctions freindsFunctions = new FollowFunctions();
                         freindsFunctions.startFriend(context, name, friend_id, image);
                     }
                 }

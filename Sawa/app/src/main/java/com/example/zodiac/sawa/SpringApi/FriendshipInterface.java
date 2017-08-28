@@ -2,7 +2,7 @@ package com.example.zodiac.sawa.SpringApi;
 
 import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
-import com.example.zodiac.sawa.SpringModels.OtherFollowesAndFollowingResponse;
+import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 
 import java.util.List;
@@ -24,23 +24,23 @@ public interface FriendshipInterface {
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getFollowers/{id}")
-    Call<List<UserModel>> getFollowers(@Path("id") int id);
+    Call<List<FollowesAndFollowingResponse>> getFollowers(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getOtherFollowers/{friend_id}/{id}")
-    Call<List<OtherFollowesAndFollowingResponse>> getOtherFollowers(@Path("friend_id") int friend_id, @Path("id") int id);
+    Call<List<FollowesAndFollowingResponse>> getOtherFollowers(@Path("friend_id") int friend_id, @Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getOtherFollowing/{friend_id}/{id}")
-    Call<List<OtherFollowesAndFollowingResponse>> getOtherFollowing(@Path("friend_id") int friend_id, @Path("id") int id);
+    Call<List<FollowesAndFollowingResponse>> getOtherFollowing(@Path("friend_id") int friend_id, @Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getFollowing/{id}")
-    Call<List<UserModel>> getFollowing(@Path("id") int id);
+    Call<List<FollowesAndFollowingResponse>> getFollowing(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getFollowRequest/{id}")
-    Call<List<UserModel>> getFollowRequest(@Path("id") int id);
+    Call<List<FollowesAndFollowingResponse>> getFollowRequest(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getFollowRelationState/{friend1_id}/{friend2_id}")

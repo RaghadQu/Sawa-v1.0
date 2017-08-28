@@ -14,17 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.zodiac.sawa.Activities.MyFollowingActivity;
-import com.example.zodiac.sawa.Activities.MyRequestsActivity;
-import com.example.zodiac.sawa.GeneralFunctions;
-import com.example.zodiac.sawa.Services.FriendServices.FreindsFunctions;
-import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.Activities.MyFollowersActivity;
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
+import com.example.zodiac.sawa.GeneralAppInfo;
+import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
+import com.example.zodiac.sawa.Services.FriendServices.FollowFunctions;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
@@ -76,55 +73,21 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
     @Override
     public void onBindViewHolder(final UserViewHolder holder, int position) {
-        final FreindsFunctions freindsFunctions = new FreindsFunctions();
+        final FollowFunctions friendsFunctions = new FollowFunctions();
         final MyFollowersActivity.friend user = userList.get(position);
-
+        final int FollowState= userList.get(position).getState();
         if(removeButtonFlag==0) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(GeneralAppInfo.SPRING_URL)
-                    .addConverterFactory(GsonConverterFactory.create()).build();
-            FriendshipInterface friendshipApi = retrofit.create(FriendshipInterface.class);
-
-            Call<FriendResponseModel> call = friendshipApi.getFollowRelationState(GeneralAppInfo.getUserID(), user.getId());
-            final Integer[] FriendshipState = new Integer[1];
-            call.enqueue(new Callback<FriendResponseModel>() {
-                @Override
-                public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
-                    if(response.code()==200){
-                    if(GeneralAppInfo.getUserID() == response.body().getFriend1_id().getId()){
-                        FriendshipState[0] =response.body().getFriend1_state();}
-                else
-                {
-                    FriendshipState[0] =response.body().getFriend2_state();
-                }
-
-                    Log.d("stateeee", "" + FriendshipState[0]);
-                    if (response.code() == 200) {
-                        if (FriendshipState[0] == 2) {
-                            holder.remove.setText("Following");
-                        }
-
-                    if (FriendshipState[0] == 0) {
-                        holder.remove.setText("Follow");
-                    }
-                    if (FriendshipState[0] == 1) {
-                        holder.remove.setText("Requested");
-                    }
-                }}
-                    else {
-                        GeneralFunctions generalFunctions = new GeneralFunctions();
-                        generalFunctions.showErrorMesaage(getApplicationContext());
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<FriendResponseModel> call, Throwable t) {
-                    Log.d("stateeee", " Failure ");
-
-                }
-            });
+            if (FollowState == 2) {
+                holder.remove.setText("Following");
+            }
+            if (FollowState == 0) {
+                holder.remove.setText("Follow");
+            }
+            if (FollowState == 1) {
+                holder.remove.setText("Requested");
+            }
         }
+
         holder.tvName.setText(user.getUserName());
 
         String image;
@@ -147,7 +110,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                 } else {
 
                     try {
-                        freindsFunctions.startFriend(mContext, user.getUserName(), user.getId(), user.getImageResourceId());
+                        friendsFunctions.startFriend(mContext, user.getUserName(), user.getId(), user.getImageResourceId());
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -164,7 +127,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                     mContext.startActivity(i);
                 } else {
                     try {
-                        freindsFunctions.startFriend(mContext, user.getUserName(), user.getId(), user.getImageResourceId());
+                        friendsFunctions.startFriend(mContext, user.getUserName(), user.getId(), user.getImageResourceId());
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -228,25 +191,6 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
                     final int position = getAdapterPosition();
                     if(userList.get(position)!= null) {
-
-                    /*    if(removeButtonFlag==2) {
-
-                            FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());
-                            FriendRequest.setFriend2_id( userList.get(position).getId());
-                            final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
-                            deleteCall.enqueue(new Callback<Integer>() {
-                                @Override
-                                public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                    Log.d("FastScrollResp", " " + response.code());
-                                }
-
-                                @Override
-                                public void onFailure(Call<Integer> call, Throwable t) {
-                                    Log.d("fail to get friends ", "Failure to Get friends");
-
-                                }
-                            });
-                        }*/
                         if (remove.getText().toString().equals("Follow"))
                         {
                             FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());

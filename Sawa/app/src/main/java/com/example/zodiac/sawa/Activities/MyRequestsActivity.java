@@ -20,6 +20,7 @@ import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.RequestScroll;
+import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.UserModel;
@@ -44,11 +45,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by zodiac on 04/03/2017.
  */
 
-
 public class MyRequestsActivity extends Activity {
 
-    public static List<UserModel> FreindsList;
-    public static ArrayList<friend> LayoutFriendsList = new ArrayList<>();
+    public static List<FollowesAndFollowingResponse> FriendsList;
+    public static ArrayList<MyFollowersActivity.friend> LayoutFriendsList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
     FriendshipInterface friendshipApi;
@@ -99,19 +99,19 @@ public class MyRequestsActivity extends Activity {
         } else {
             LayoutFriendsList.clear();
 
-            final Call<List<UserModel>> FriendsResponse = friendshipApi.getFollowRequest(GeneralAppInfo.getUserID());
-            FriendsResponse.enqueue(new Callback<List<UserModel>>() {
+            final Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowRequest(GeneralAppInfo.getUserID());
+            FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+                public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
                     progressBar.setVisibility(View.INVISIBLE);
                     Log.d("GetFriendRequests", " Get friends " + response.code() + LayoutFriendsList.size());
                     if (response.code() == 200) {
-                        FreindsList = response.body();
+                        FriendsList = response.body();
                         //    LayoutFriendsList.clear();
-                        if (FreindsList != null) {
+                        if (FriendsList != null) {
 
-                            if (FreindsList.size() == 0) {
+                            if (FriendsList.size() == 0) {
                                 CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
                                 circle.setImageDrawable(getDrawable(R.drawable.no_requests));
                                 noRequestsLaout.setVisibility(View.VISIBLE);
@@ -121,10 +121,10 @@ public class MyRequestsActivity extends Activity {
                                 noRequestsLaout.setVisibility(View.GONE);
                                 LayoutFriendsList.clear();
 
-                                for (int i = 0; i < FreindsList.size(); i++) {
-                                    LayoutFriendsList.add(new MyRequestsActivity.friend(FreindsList.get(i).getId(), FreindsList.get(i).getImage(),
-                                            FreindsList.get(i).getFirst_name() + " " + FreindsList.get(i).getLast_name()));
-                                }
+                                for (int i = 0; i < FriendsList.size(); i++) {
+                                    LayoutFriendsList.add(new MyFollowersActivity.friend(FriendsList.get(i).getUser().getId(), FriendsList.get(i).getUser().getImage(),
+                                            FriendsList.get(i).getUser().getFirst_name() + " " + FriendsList.get(i).getUser().getLast_name(),FriendsList.get(i).getState()));
+                         }
 
                             }
                         }
@@ -137,7 +137,7 @@ public class MyRequestsActivity extends Activity {
                 }
 
                 @Override
-                public void onFailure(Call<List<UserModel>> call, Throwable t) {
+                public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
                     progressBar.setVisibility(View.INVISIBLE);
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
@@ -158,45 +158,6 @@ public class MyRequestsActivity extends Activity {
                 return false;
             }
         });
-
-    }
-
-
-    public class friend {
-
-        int Id;
-        String imageResourceId;
-        String userName;
-
-        public friend(int Id, String imageResourceId, String userName) {
-            setImageResourceId(imageResourceId);
-            setId(Id);
-            setUserName(userName);
-        }
-
-        public int getId() {
-            return Id;
-        }
-
-        public void setId(int id) {
-            Id = id;
-        }
-
-        public String getImageResourceId() throws MalformedURLException {
-            return imageResourceId;
-        }
-
-        public void setImageResourceId(String imageResourceId) {
-            this.imageResourceId = imageResourceId;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
 
     }
 

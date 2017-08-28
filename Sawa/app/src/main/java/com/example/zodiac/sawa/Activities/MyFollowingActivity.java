@@ -20,6 +20,7 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
+import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -40,8 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyFollowingActivity extends Activity {
 
-
-    public static List<UserModel> FreindsList;
+    public static List<FollowesAndFollowingResponse> FriendList;
     public static ArrayList<MyFollowersActivity.friend> LayoutFriendsList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
@@ -83,11 +83,11 @@ public class MyFollowingActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        final Call<List<UserModel>> FriendsResponse = friendshipApi.getFollowing(GeneralAppInfo.getUserID());
-        FriendsResponse.enqueue(new Callback<List<UserModel>>() {
+        final Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowing(GeneralAppInfo.getUserID());
+        FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+            public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
                 progressBar.setVisibility(View.INVISIBLE);
 
                 Log.d("GetFriends", " Get friends " + response.code());
@@ -97,23 +97,23 @@ public class MyFollowingActivity extends Activity {
                 } else {
 
 
-                    FreindsList = response.body();
+                    FriendList = response.body();
                     LayoutFriendsList.clear();
-                    if (FreindsList != null) {
+                    if (FriendList != null) {
 
-                        if (FreindsList.size() == 0) {
+                        if (FriendList.size() == 0) {
 
                             noFriendsLayout.setVisibility(View.VISIBLE);
                             CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
                             circle.setImageDrawable(getDrawable(R.drawable.no_friends));
 
                         } else {
-                            Log.d("GetFriends", " Friends are : " + FreindsList.size());
+                            Log.d("GetFriends", " Friends are : " + FriendList.size());
                             progressBar.setVisibility(View.GONE);
                             noFriendsLayout.setVisibility(View.GONE);
-                            for (int i = 0; i < FreindsList.size(); i++) {
-                                LayoutFriendsList.add(new MyFollowersActivity.friend(FreindsList.get(i).getId(), FreindsList.get(i).getImage(),
-                                        FreindsList.get(i).getFirst_name() + " " + FreindsList.get(i).getLast_name()));
+                            for (int i = 0; i < FriendList.size(); i++) {
+                                LayoutFriendsList.add(new MyFollowersActivity.friend(FriendList.get(i).getUser().getId(), FriendList.get(i).getUser().getImage(),
+                                        FriendList.get(i).getUser().getFirst_name() + " " + FriendList.get(i).getUser().getLast_name(),FriendList.get(i).getState()));
                             }
                             recyclerView.setAdapter(new FastScrollAdapter(MyFollowingActivity.this, LayoutFriendsList, 2));
 
@@ -124,7 +124,7 @@ public class MyFollowingActivity extends Activity {
 
 
             @Override
-            public void onFailure(Call<List<UserModel>> call, Throwable t) {
+            public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(getApplicationContext());
@@ -148,41 +148,6 @@ public class MyFollowingActivity extends Activity {
     }
 
 
-    public static class friend {
-        int Id;
-        String imageResourceId;
-        String userName;
 
-        public friend(int Id, String imageResourceId, String userName) {
-            setImageResourceId(imageResourceId);
-            setUserName(userName);
-            setId(Id);
-        }
-
-        public int getId() {
-            return Id;
-        }
-
-        public void setId(int id) {
-            Id = id;
-        }
-
-        public String getImageResourceId() throws MalformedURLException {
-            return imageResourceId;
-        }
-
-        public void setImageResourceId(String imageResourceId) {
-            this.imageResourceId = imageResourceId;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
-
-    }
 }
 
