@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.zodiac.sawa.Activities.OtherProfileActivity;
@@ -17,6 +18,7 @@ import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,7 +93,48 @@ public class FollowFunctions {
 
     }
 
-    public static void ConfirmFollowRequest(int friend1_id, int friend2_id){
+    public static void DeleteFriendwithBtn(int friend1_id, int friend2_id , final Button FollowState, final Button myFollowState, final ImageView otherFollowState) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GeneralAppInfo.SPRING_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        FriendshipInterface FriendApi = retrofit.create(FriendshipInterface.class);
+
+        final FriendRequestModel FriendRequest = new FriendRequestModel();
+        FriendRequest.setFriend1_id(friend1_id);
+        FriendRequest.setFriend2_id(friend2_id);
+
+
+        final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
+        deleteCall.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+                    GeneralFunctions generalFunctions = new GeneralFunctions();
+                    generalFunctions.showErrorMesaage(getApplicationContext());
+                }else
+                {
+                    FollowState.setVisibility(View.VISIBLE);
+                    FollowState.setText(myFollowState.getText());
+                    myFollowState.setVisibility(View.INVISIBLE);
+                    otherFollowState.setVisibility(View.INVISIBLE);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Log.d("fail to get friends ", "Failure to Get friends");
+
+            }
+
+
+        });
+
+
+    }
+    public static void ConfirmFollowRequest(int friend1_id, int friend2_id , final ImageView otherFollowState){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GeneralAppInfo.SPRING_URL)
@@ -109,6 +152,12 @@ public class FollowFunctions {
                     if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
+                    }
+                    else
+                    {
+                        if(otherFollowState !=null){
+                            otherFollowState.setImageResource(R.drawable.follower_icon);
+                        }
                     }
 
                 }

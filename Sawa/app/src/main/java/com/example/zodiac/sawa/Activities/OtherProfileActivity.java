@@ -230,7 +230,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
-                                                FollowFunctions.DeleteFriend(GeneralAppInfo.getUserID(), Id1);
+                                                FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1,friendStatus,myFollowState,otherFollowState);
                                             }
                                         });
 
@@ -239,7 +239,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
-                                                FollowFunctions.ConfirmFollowRequest(GeneralAppInfo.getUserID(), Id1);
+                                                FollowFunctions.ConfirmFollowRequest(GeneralAppInfo.getUserID(), Id1, otherFollowState);
                                             }
                                         });
                                     }
@@ -268,7 +268,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
-                                                FollowFunctions.DeleteFriend(GeneralAppInfo.getUserID(), Id1);
+                                                FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1,friendStatus,myFollowState,otherFollowState);
                                             }
                                         });
                                     }

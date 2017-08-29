@@ -113,7 +113,6 @@ public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
         youTubePlayerFragment = new YouTubePlayerView(YoutubePlayerDialogActivity.this);
         youTubePlayerFragment.initialize(api_key, YoutubePlayerDialogActivity.this);
         addContentView(youTubePlayerFragment, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        //  addContentView(layout,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         youTubePlayerFragment.setVisibility(View.VISIBLE);
 

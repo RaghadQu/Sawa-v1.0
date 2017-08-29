@@ -180,7 +180,7 @@
                 android:visibility="visible" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/editSong"
+                android:id="@+id/showSong"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
