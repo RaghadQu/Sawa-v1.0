@@ -43,6 +43,7 @@ import com.example.zodiac.sawa.Services.ImageConverterService;
 import com.example.zodiac.sawa.SpringModels.*;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.ImageInterface;
+import com.example.zodiac.sawa.YoutubePlayerDialogActivity;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;

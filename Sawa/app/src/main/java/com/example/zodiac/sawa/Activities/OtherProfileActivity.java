@@ -31,6 +31,7 @@ import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
+import com.example.zodiac.sawa.YoutubePlayerDialogActivity;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -362,16 +363,30 @@ public class OtherProfileActivity extends AppCompatActivity {
 
             }
         });
+        final String finalMName1 = mName;
         followerTxt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("source",1);
                 b.putInt("friendId",Id1);
+                b.putString("friendName", finalMName1);
                 i.putExtras(b);
                 startActivity(i);
             }
         });
+        followingTxt.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("source",2);
+                b.putInt("friendId",Id1);
+                b.putString("friendName", finalMName1);
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
+
 
     }
 
