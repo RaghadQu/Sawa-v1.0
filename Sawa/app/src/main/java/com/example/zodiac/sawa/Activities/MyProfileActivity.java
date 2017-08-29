@@ -340,16 +340,14 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             imageView = (ImageView) ViewImgDialog.findViewById(R.id.ImageView);
 
             img = (ImageView) findViewById(R.id.user_profile_photo);
-            // imageView.setImageURI();
-            //  String imageUrl = uploadImage.getUserImageFromDB(GeneralAppInfo.getUserID(), img, MyProfileActivity.this, 1, anim);
-            mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
-            mRecyclerView.setNestedScrollingEnabled(false);
-
-            mRecyclerView.setHasFixedSize(true);
-            mLayoutManager = new LinearLayoutManager(this);
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            mAdapter = new MyAdapter(this, myDataset, images);
-            mRecyclerView.setAdapter(mAdapter);
+//            mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
+//            mRecyclerView.setNestedScrollingEnabled(false);
+//
+//            mRecyclerView.setHasFixedSize(true);
+//            mLayoutManager = new LinearLayoutManager(this);
+//            mRecyclerView.setLayoutManager(mLayoutManager);
+//            mAdapter = new MyAdapter(this, myDataset, images);
+//            mRecyclerView.setAdapter(mAdapter);
             //set click listener for edit bio
             editBio = (TextView) findViewById(R.id.editBio);
             toolBarText = (TextView) findViewById(R.id.toolBarText);
@@ -461,6 +459,9 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                 public void onClick(View v) {
 
                     Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("source",0);
+                    i.putExtras(b);
                     startActivity(i);
                 }
             });

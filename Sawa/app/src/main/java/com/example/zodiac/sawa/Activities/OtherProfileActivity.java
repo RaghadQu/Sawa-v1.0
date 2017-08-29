@@ -72,6 +72,8 @@ public class OtherProfileActivity extends AppCompatActivity {
     Button YesBtn;
     TextView textMsg;
     CircleImageView showOtherSong;
+    TextView followerTxt , followingTxt;
+
 
 
     @Override
@@ -84,6 +86,9 @@ public class OtherProfileActivity extends AppCompatActivity {
         following = (TextView) findViewById(R.id.followingTxt);
         followers = (TextView) findViewById(R.id.followerTxt);
         showOtherSong=(CircleImageView)findViewById(R.id.showSong) ;
+        followerTxt = ( TextView) findViewById(R.id.followerTxt);
+        followingTxt = ( TextView) findViewById(R.id.followingTxt);
+
 
 
         //get parameters
@@ -355,6 +360,16 @@ public class OtherProfileActivity extends AppCompatActivity {
                 i.putExtras(b);
                 startActivity(i);
 
+            }
+        });
+        followerTxt.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("source",1);
+                b.putInt("friendId",Id1);
+                i.putExtras(b);
+                startActivity(i);
             }
         });
 
