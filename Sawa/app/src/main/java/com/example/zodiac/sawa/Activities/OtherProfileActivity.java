@@ -1,5 +1,5 @@
 package com.example.zodiac.sawa.Activities;
-
+import com.example.zodiac.sawa.Activities.YoutubePlayerDialogActivity;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -31,9 +31,7 @@ import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
-import com.example.zodiac.sawa.YoutubePlayerDialogActivity;
 import com.squareup.picasso.Picasso;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -358,6 +356,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
                 Bundle b = new Bundle();
                 b.putString("youtubeSongUrl",SongUrl);
+                Log.d("YoutubePlayerSone ",SongUrl);
                 i.putExtras(b);
                 startActivity(i);
 

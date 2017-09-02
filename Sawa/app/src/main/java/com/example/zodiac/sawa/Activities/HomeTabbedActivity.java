@@ -439,9 +439,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(context, MyFollowersActivity.class);
-                        Bundle b = new Bundle();
-                        b.putInt("source",0);
-                        i.putExtras(b);
                         startActivity(i);
                     }
                 });

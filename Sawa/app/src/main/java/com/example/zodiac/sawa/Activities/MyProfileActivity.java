@@ -43,7 +43,6 @@ import com.example.zodiac.sawa.Services.ImageConverterService;
 import com.example.zodiac.sawa.SpringModels.*;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.ImageInterface;
-import com.example.zodiac.sawa.YoutubePlayerDialogActivity;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -514,7 +513,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             editSong.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("EditSong", " Edit Song youtubePlayer");
-                    Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MyYoutubeActivity.class);
                     startActivity(i);
 
                 }
