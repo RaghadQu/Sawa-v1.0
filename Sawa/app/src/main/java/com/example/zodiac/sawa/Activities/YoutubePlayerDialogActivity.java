@@ -98,6 +98,7 @@ public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
         String youtubeSongUrl = "";
         if (b != null) {
             youtubeSongUrl = b.getString("youtubeSongUrl");
+            Log.d("Youtube link is ",youtubeSongUrl);
             if(youtubeSongUrl!=null){
             String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
             Pattern compiledPattern = Pattern.compile(pattern);

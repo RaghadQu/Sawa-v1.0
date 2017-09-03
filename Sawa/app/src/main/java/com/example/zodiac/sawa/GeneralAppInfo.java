@@ -8,7 +8,7 @@ public class GeneralAppInfo {
     public static String BACKEND_URL = "http://cb2d8852.ngrok.io/Sawa/public/index.php/";
     public static String IMAGE_URL = "http://cb2d8852.ngrok.io/Sawa/public/";
     //   http://a2203e01.ngrok.io/_437.022828770496916832227_1341475782539973_288842465026282085_n.jpg
-    public static String SPRING_URL = "http://3449239b.ngrok.io";
+    public static String SPRING_URL = "http://3bed6812.ngrok.io";
     public static int notifications_counter = 0;
     public static int home_tab_position = 0;
     public static int notifications_tab_position = 1;

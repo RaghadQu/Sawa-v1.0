@@ -1,6 +1,12 @@
 package com.example.zodiac.sawa.SpringApi;
 
-import com.example.zodiac.sawa.SpringModels.*;
+import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
+import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
+import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.SignOutModel;
+import com.example.zodiac.sawa.SpringModels.SignUpModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
@@ -14,6 +20,10 @@ public interface AuthInterface {
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/user/signIn")
     Call<UserModel> signIn(@Body SignInModel signInModel);
+
+    @Headers("Cache-Control: max-age=64000")
+    @POST("/api/v1/user/update-password")
+    Call<UserModel> updatePassword(@Body SignInModel signInModel);
 
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/user/signUp")

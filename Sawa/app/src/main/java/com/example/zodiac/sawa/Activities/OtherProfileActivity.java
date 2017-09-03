@@ -63,7 +63,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     ImageView aboutFriendIcon;
     ImageView coverPhoto;
     int Id1;
-    String SongUrl;
+    static String  youtubeSongUrl ;
     private ProgressBar progressBar;
     private ProgressBar progressBar_button;
 
@@ -356,7 +356,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
                 Bundle b = new Bundle();
-                b.putString("youtubeSongUrl",SongUrl);
+                b.putString("youtubeSongUrl",youtubeSongUrl);
                 i.putExtras(b);
                 startActivity(i);
 
@@ -372,6 +372,17 @@ public class OtherProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        following.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("source",2);
+                b.putInt("friendId",Id1);
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
+
 
     }
 
@@ -394,7 +405,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                         bio.setText(response.body().getUserBio());
                         status.setText(response.body().getUserStatus());
                         song.setText(response.body().getUserSong());
-                        SongUrl = response.body().getUserSong();
+                        youtubeSongUrl = response.body().getUserSong();
+                        Log.d("youtubeSongUrl is",youtubeSongUrl);
                     }
                 }
             }

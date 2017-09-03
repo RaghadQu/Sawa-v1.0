@@ -80,10 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
-        YoYo.with(Techniques.SlideInLeft)
-                .duration(700)
-                .repeat(3)
-                .playOn(findViewById(R.id.AppName));
+
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
                 .repeat(0)
@@ -221,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             signInModel.setPassword(passEditText.getText().toString());
             if (valid(signInModel.getEmail(), signInModel.getPassword()) == 0) {
                 LoggingInDialog.show();
+
                 final Call<UserModel> userModelCall = service.signIn(signInModel);
                 userModelCall.enqueue(new Callback<UserModel>() {
                     @Override
@@ -302,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             passEditText.setError("Password is required");
             flag = 1;
         } else if (password.length() < 8) {
-            passEditText.setError("Password must contain at least 8 characters");
+            passEditText.setError("Invalid password");
             flag = 1;
         }
         if ((email.trim().equals(""))) {
@@ -314,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Matcher m = p.matcher(email);
             boolean b = m.matches();
             if (!b) {
-                emailEditText.setError("Email is not valid");
+                emailEditText.setError("Invalid email");
                 flag = 1;
             }
         }

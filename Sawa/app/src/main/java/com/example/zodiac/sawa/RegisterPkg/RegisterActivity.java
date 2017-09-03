@@ -1,15 +1,19 @@
 package com.example.zodiac.sawa.RegisterPkg;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.zodiac.sawa.Activities.MainActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
@@ -42,6 +46,9 @@ public class RegisterActivity extends Activity {
     String mobileNumber;
     String userGender;
     String userBirthDate;
+    Dialog LoggingInDialog;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,6 +136,9 @@ public class RegisterActivity extends Activity {
         signUpModel.setGender(getUserGender());
         signUpModel.setBirthdate(getUserBirthDate());
         Log.d("Birthdate1", getUserBirthDate().toString().trim());
+        LoggingInDialog = new Dialog(this);
+        LoggingInDialog.setContentView(R.layout.logging_in_dialog);
+        LoggingInDialog.show();
 
         AuthInterface authInterface;
         Retrofit retrofit = new Retrofit.Builder()
@@ -146,14 +156,28 @@ public class RegisterActivity extends Activity {
                 int statusCode = response.code();
                 UserModel userModel = response.body();
                 Log.d("SignUpNew", response.code() + " ");
+                SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
                 if (response.code() == 200) {
                     updateAbout("", "", "");
                     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profileimage);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); // what 90 does ??
                     byte[] image = stream.toByteArray();
+                    GeneralAppInfo.setUserID(userModel.getId());
+                    sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", userModel.getEmail());
+                    editor.putInt("id", GeneralAppInfo.getUserID());
+                    editor.putString("isLogined", "1");
+                    editor.apply();
                     Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+                    LoggingInDialog.dismiss();
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     startActivity(i);
+                    finish();
+
                 } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());

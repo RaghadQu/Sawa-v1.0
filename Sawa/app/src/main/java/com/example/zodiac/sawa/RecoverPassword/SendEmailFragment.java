@@ -72,7 +72,9 @@ public class SendEmailFragment extends android.app.Fragment {
                                     BS.setRecievedEmail(recievedEmail.getText().toString());
                                     BS.setUniqueID(uniqueID);
                                     BS.execute("");
+
                                     ((RecoverPass) getActivity()).setUniqueID(uniqueID);
+                                    ((RecoverPass) getActivity()).setEmail(recievedEmail.getText().toString());
                                     android.app.Fragment f = new CheckCodeFragment();
                                     ((RecoverPass) getActivity()).replaceFragmnets(f);
 

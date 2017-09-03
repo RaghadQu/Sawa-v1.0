@@ -22,6 +22,7 @@ public class RecoverPass extends Activity {
     Button btn;
     String uniqueID;
     int counter = 0;
+    String email;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,5 +50,13 @@ public class RecoverPass extends Activity {
         ft.replace(R.id.your_placeholder, f);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

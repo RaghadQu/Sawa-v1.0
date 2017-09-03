@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,12 +36,12 @@ import android.widget.Toast;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.RecyclerViewAdapters.MyAdapter;
 import com.example.zodiac.sawa.Services.ImageConverterService;
-import com.example.zodiac.sawa.Services.ImageConverterService;
-import com.example.zodiac.sawa.SpringModels.*;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.ImageInterface;
+import com.example.zodiac.sawa.SpringModels.AboutUserRequestModel;
+import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -311,11 +310,13 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                 public void afterTextChanged(Editable editable) {
 
                     String pattern = "https://m.youtube.com/watch?v=";
+                    String pattern1 = "https://www.youtube.com/watch?v=";
                     String s = String.valueOf(songTxt.getText());
                     int i = s.indexOf(pattern);
+                    int j = s.indexOf(pattern1);
                     Log.d("II", "" + i);
 
-                    if (i == 0 && youtubeFlag == 0) {
+                    if ((i >= 0 && youtubeFlag == 0) || (j >= 0 && youtubeFlag == 0)) {
                         String[] split = s.split("v=");
                         video_id = split[1];
                         youTubePlayerView = new YouTubePlayerView(MyProfileActivity.this);
@@ -460,7 +461,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 
                     Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                     Bundle b = new Bundle();
-                    b.putInt("source",0);
+                    b.putInt("source", 0);
                     i.putExtras(b);
                     startActivity(i);
                 }
@@ -672,7 +673,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         });
 
     }
-	
-	
-	 
+
+
 }
