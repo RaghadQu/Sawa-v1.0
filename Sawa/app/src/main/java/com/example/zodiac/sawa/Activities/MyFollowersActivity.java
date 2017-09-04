@@ -38,7 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by raghadq on 5/2/2017.
  */
- /**
+/**
  * Created by zodiac on 04/03/2017.
  */
 
@@ -105,47 +105,47 @@ public class MyFollowersActivity extends Activity {
         recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-         Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowers(GeneralAppInfo.getUserID());
+        Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowers(GeneralAppInfo.getUserID());
 
         if (source == 1) {
 
 
-         FriendsResponse = friendshipApi.getOtherFollowers(friendId,GeneralAppInfo.getUserID());
+            FriendsResponse = friendshipApi.getOtherFollowers(friendId,GeneralAppInfo.getUserID());
         }else if (source == 2) {
 
 
             FriendsResponse = friendshipApi.getOtherFollowing(friendId,GeneralAppInfo.getUserID());
         }
-            FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
-                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
-                    progressBar.setVisibility(View.INVISIBLE);
+        FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
+                progressBar.setVisibility(View.INVISIBLE);
 
-                    Log.d("GetFriends", " Get friends " + response.code());
-                    if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
-                        GeneralFunctions generalFunctions = new GeneralFunctions();
-                        generalFunctions.showErrorMesaage(getApplicationContext());
-                    } else {
-
-                        FriendsList = response.body();
-                        otherFriendList = null;
-                        LayoutFriendsList.clear();
-                        handleDateInAdapter(progressBar, noFriendsLayout, source
-                        );
-                    }
-                }
-
-
-                @Override
-                public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
-                    progressBar.setVisibility(View.INVISIBLE);
+                Log.d("GetFriends", " Get friends " + response.code());
+                if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
-                    Log.d("fail to get friends ", "Failure to Get friends");
+                } else {
 
+                    FriendsList = response.body();
+                    otherFriendList = null;
+                    LayoutFriendsList.clear();
+                    handleDateInAdapter(progressBar, noFriendsLayout, source
+                    );
                 }
-            });
+            }
+
+
+            @Override
+            public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
+                GeneralFunctions generalFunctions = new GeneralFunctions();
+                generalFunctions.showErrorMesaage(getApplicationContext());
+                Log.d("fail to get friends ", "Failure to Get friends");
+
+            }
+        });
 
 //
         toolbarText.setOnTouchListener(new View.OnTouchListener() {
@@ -181,11 +181,11 @@ public class MyFollowersActivity extends Activity {
                 progressBar.setVisibility(View.GONE);
                 noFriendsLayout.setVisibility(View.GONE);
                 for (int i = 0; i < FriendsList.size(); i++) {
-                        id=FriendsList.get(i).getUser().getId();
-                        image=FriendsList.get(i).getUser().getImage();
-                        first_name=FriendsList.get(i).getUser().getFirst_name();
-                        last_name=FriendsList.get(i).getUser().getLast_name();
-                        state=FriendsList.get(i).getState();
+                    id=FriendsList.get(i).getUser().getId();
+                    image=FriendsList.get(i).getUser().getImage();
+                    first_name=FriendsList.get(i).getUser().getFirst_name();
+                    last_name=FriendsList.get(i).getUser().getLast_name();
+                    state=FriendsList.get(i).getState();
 
                     LayoutFriendsList.add(new MyFollowersActivity.friend(id, image,(first_name + " " + last_name), state));
                 }

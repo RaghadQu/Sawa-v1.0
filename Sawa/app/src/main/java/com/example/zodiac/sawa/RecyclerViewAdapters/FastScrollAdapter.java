@@ -76,7 +76,12 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
         final FollowFunctions friendsFunctions = new FollowFunctions();
         final MyFollowersActivity.friend user = userList.get(position);
         final int FollowState= userList.get(position).getState();
-        if(removeButtonFlag==0) {
+        if(userList.get(position).getId()== GeneralAppInfo.getUserID())
+        {
+            holder.remove.setVisibility(View.INVISIBLE);
+
+        }else{
+
             if (FollowState == 2) {
                 holder.remove.setText("Following");
             }

@@ -36,6 +36,7 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.NotificationAdapter;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -122,6 +123,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.clear();
                     editor.commit();
+                    LoginManager.getInstance().logOut();
                     Intent i = new Intent(context, MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
@@ -439,9 +441,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(context, MyFollowersActivity.class);
-                        Bundle b = new Bundle();
-                        b.putInt("source",0);
-                        i.putExtras(b);
                         startActivity(i);
                     }
                 });

@@ -1,5 +1,5 @@
 package com.example.zodiac.sawa.Activities;
-
+import com.example.zodiac.sawa.Activities.YoutubePlayerDialogActivity;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -32,7 +32,6 @@ import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.squareup.picasso.Picasso;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -357,27 +356,32 @@ public class OtherProfileActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
                 Bundle b = new Bundle();
                 b.putString("youtubeSongUrl",youtubeSongUrl);
+                b.putString("youtubeSongUrl",youtubeSongUrl);
+                Log.d("YoutubePlayerSone ",youtubeSongUrl);
                 i.putExtras(b);
                 startActivity(i);
 
             }
         });
+        final String finalMName1 = mName;
         followerTxt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("source",1);
                 b.putInt("friendId",Id1);
+                b.putString("friendName", finalMName1);
                 i.putExtras(b);
                 startActivity(i);
             }
         });
-        following.setOnClickListener(new View.OnClickListener() {
+        followingTxt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("source",2);
                 b.putInt("friendId",Id1);
+       b.putString("friendName", finalMName1);
                 i.putExtras(b);
                 startActivity(i);
             }

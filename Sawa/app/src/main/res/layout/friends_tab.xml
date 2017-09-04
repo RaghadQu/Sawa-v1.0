@@ -74,7 +74,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginTop="-1dp"
                 android:fontFamily="cursive"
-                android:text="   No Requests To Show"
+                android:text="   No Followers To Show"
                 android:textAlignment="center"
                 android:textColor="#878787"
                 android:textSize="24dp" />

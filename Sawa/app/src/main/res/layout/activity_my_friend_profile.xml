@@ -210,7 +210,7 @@
                 android:id="@+id/followerTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="70dp"
                 android:clickable="true"
                 android:padding="10dp"
                 android:text="Follower"
@@ -222,7 +222,7 @@
                 android:layout_width="0.1dp"
                 android:layout_height="33dp"
                 android:layout_marginBottom="3dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="38dp"
                 android:layout_marginTop="3dp"
                 android:background="#ACACAC" />
 
@@ -230,7 +230,7 @@
                 android:id="@+id/followingTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="55dp"
+                android:layout_marginLeft="45dp"
                 android:clickable="true"
                 android:padding="10dp"
                 android:text="Following"

@@ -66,10 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SignInButton signInButton;
     CircleImageView fb, google;
     GoogleApiClient googleApiClient;
-    Dialog LoggingInDialog;
+    static Dialog LoggingInDialog;
     Dialog progressDialog;
     private EditText emailEditText;
     private EditText passEditText;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -330,6 +331,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (requestCode == 9001) {
             // data.getStringExtra("")
+            LoggingInDialog.show();
+
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
             com.google.android.gms.plus.model.people.Person person= Plus.PeopleApi.getCurrentPerson(googleApiClient);
@@ -425,6 +428,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     editor.putInt("id", GeneralAppInfo.getUserID());
                     editor.putString("isLogined", "1");
                     editor.apply();
+                    LoggingInDialog.dismiss();
 
                     Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
                     startActivity(i);
