@@ -17,11 +17,7 @@ import com.example.zodiac.sawa.R;
 
 public class RecoverPass extends Activity {
 
-    Dialog dialog;
-    EditText recievedEmail, codeText;
-    Button btn;
     String uniqueID;
-    int counter = 0;
     String email;
 
     @Override

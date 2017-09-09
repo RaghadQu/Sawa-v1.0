@@ -59,6 +59,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     private static final int SELECTED_PICTURE = 100;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
+    String songUrl;
     public static ObjectAnimator anim;
     static UserModel userInfo;
     static ImageView img;
@@ -71,7 +72,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     public String video_id = "rzLKwtC5q1k";
-    YouTubePlayerView youTubePlayerView;
     int youtubeFlag = 0;
     TextView followerTxt, followingTxt, newPostTxt;
     TextView profileBio;
@@ -293,63 +293,10 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             editMySong.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
             songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
-            //Youtube viewer for song edit text
-            songTxt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                    String pattern = "https://m.youtube.com/watch?v=";
-                    String pattern1 = "https://www.youtube.com/watch?v=";
-                    String s = String.valueOf(songTxt.getText());
-                    int i = s.indexOf(pattern);
-                    int j = s.indexOf(pattern1);
-                    Log.d("II", "" + i);
-
-                    if ((i >= 0 && youtubeFlag == 0) || (j >= 0 && youtubeFlag == 0)) {
-                        String[] split = s.split("v=");
-                        video_id = split[1];
-                        youTubePlayerView = new YouTubePlayerView(MyProfileActivity.this);
-                        youTubePlayerView.initialize(api_key, MyProfileActivity.this);
-
-                        addContentView(youTubePlayerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                        youTubePlayerView.setVisibility(View.VISIBLE);
-                        youTubePlayerView.initialize(api_key, MyProfileActivity.this);
-                        youtubeFlag = 1;
-                    } else if (i == -1 && youtubeFlag == 0) {
-                        //youTubePlayerView.setVisibility(View.INVISIBLE);
-
-                    }
-
-
-                }
-            });
-            //
             saveSong = (Button) editMySong.findViewById(R.id.saveSong);
-
             imageView = (ImageView) ViewImgDialog.findViewById(R.id.ImageView);
 
             img = (ImageView) findViewById(R.id.user_profile_photo);
-//            mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
-//            mRecyclerView.setNestedScrollingEnabled(false);
-//
-//            mRecyclerView.setHasFixedSize(true);
-//            mLayoutManager = new LinearLayoutManager(this);
-//            mRecyclerView.setLayoutManager(mLayoutManager);
-//            mAdapter = new MyAdapter(this, myDataset, images);
-//            mRecyclerView.setAdapter(mAdapter);
-            //set click listener for edit bio
             editBio = (TextView) findViewById(R.id.editBio);
             toolBarText = (TextView) findViewById(R.id.toolBarText);
 
@@ -515,6 +462,11 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                 public void onClick(View v) {
                     Log.d("EditSong", " Edit Song youtubePlayer");
                     Intent i = new Intent(getApplicationContext(), MyYoutubeActivity.class);
+                    Bundle b = new Bundle();
+                    if(songUrl!= null) {
+                        b.putString("youtubeSongUrl", songUrl);
+                    }
+                    i.putExtras(b);
                     startActivity(i);
 
                 }
@@ -591,6 +543,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                             bioTxt.setText(response.body().getUserBio());
                             statusTxt.setText(response.body().getUserStatus());
                             songTxt.setText(response.body().getUserSong());
+                            songUrl=response.body().getUserSong();
 
                         }
                     }

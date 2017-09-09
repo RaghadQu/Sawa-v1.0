@@ -13,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Dialog progressDialog;
     private EditText emailEditText;
     private EditText passEditText;
+    TextView AppTitle;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).addApi(Plus.API)
                 .build();
+
 
         signInButton = (SignInButton) findViewById(R.id.loginWithGoogleBtn);
         signInButton.setOnClickListener(this);
@@ -207,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void checkLogin(View arg0) {
 
         final GeneralFunctions generalFunctions = new GeneralFunctions();
-        boolean isOnline = generalFunctions.isOnline(getApplicationContext());
+        final boolean isOnline = generalFunctions.isOnline(getApplicationContext());
 
 
         if (isOnline == false) {
@@ -272,6 +275,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFailure(Call<UserModel> call, Throwable t) {
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
+                        LoggingInDialog.dismiss();
+                        if (isOnline == false) {
+                            Toast.makeText(MainActivity.this, "no internet connection!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                         Log.d("----", " Error " + t.getMessage());
 
 
@@ -332,7 +340,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == 9001) {
             // data.getStringExtra("")
             LoggingInDialog.show();
-
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
             com.google.android.gms.plus.model.people.Person person= Plus.PeopleApi.getCurrentPerson(googleApiClient);
