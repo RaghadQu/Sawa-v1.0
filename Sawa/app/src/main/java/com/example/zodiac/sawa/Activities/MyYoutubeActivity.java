@@ -129,7 +129,6 @@ public class MyYoutubeActivity extends YouTubeBaseActivity implements
 
 
             }
-s
             @Override
             public void afterTextChanged(Editable editable) {
 

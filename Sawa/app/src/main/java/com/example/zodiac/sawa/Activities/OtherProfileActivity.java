@@ -51,7 +51,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     CircleImageView img;
     Dialog ViewImgDialog;
     Dialog AboutFriendDialog;
-    TextView about_status, about_bio, about_song;
+    TextView about_status, about_bio;
     TextView user_profile_name;
     TextView toolBarText;
     TextView aboutUsername;
@@ -109,13 +109,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         friendStatus.setText(" ");
         aboutFriendIcon = (ImageView) findViewById(R.id.aboutFriendIcon);
         coverPhoto = (ImageView) findViewById(R.id.coverPhoto);
-   /*    img.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
 
-            }
-        });*/
-        final Button confirmRequest = (Button) findViewById(R.id.ConfirmRequest);
-        final Button deleteRequest = (Button) findViewById(R.id.deleteRequest);
         final Button myFollowState = (Button) findViewById(R.id.myFollowState);
         final ImageView otherFollowState = (ImageView) findViewById(R.id.otherFollowState);
 
@@ -179,8 +173,6 @@ public class OtherProfileActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.INVISIBLE);
                         progressBar_button.setVisibility(View.INVISIBLE);
                         if (FollowRelationState[1] == 0) {
-
-                            //    FriendsClass friendsClass = new FriendsClass();
 
                             if (FollowRelationState[0] != null) {
                                 Log.d("stateeee", "" + FollowRelationState[0]);
@@ -279,8 +271,9 @@ public class OtherProfileActivity extends AppCompatActivity {
                                 });
                             }
 
+
                         }
-                        fillAbout(about_bio, about_status, about_song, Id1);
+                        fillAbout(about_bio, about_status, Id1);
 
 
                     }
@@ -288,7 +281,9 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<FriendResponseModel> call, Throwable t) {
-                    Log.d("stateeee", "fail " + t.getMessage());
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar_button.setVisibility(View.INVISIBLE);
+                    Log.d("OtherActivityProfile"," Error"+ t.getMessage());
 
                 }
             });
@@ -303,7 +298,6 @@ public class OtherProfileActivity extends AppCompatActivity {
             AboutFriendDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             about_bio = (TextView) AboutFriendDialog.findViewById(R.id.Bio);
             about_status = (TextView) AboutFriendDialog.findViewById(R.id.status);
-            about_song = (TextView) AboutFriendDialog.findViewById(R.id.Song);
             aboutUsername = (TextView) AboutFriendDialog.findViewById(R.id.aboutUsername);
             aboutUsername.setText("About " + mName);
             editBio = (TextView) findViewById(R.id.editBio);
@@ -356,8 +350,6 @@ public class OtherProfileActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
                 Bundle b = new Bundle();
                 b.putString("youtubeSongUrl",youtubeSongUrl);
-                b.putString("youtubeSongUrl",youtubeSongUrl);
-                Log.d("YoutubePlayerSone ",youtubeSongUrl);
                 i.putExtras(b);
                 startActivity(i);
 
@@ -390,7 +382,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
     }
 
-    public void fillAbout(final TextView bio, final TextView status, final TextView song, final int ID) {
+    public void fillAbout(final TextView bio, final TextView status, final int ID) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -408,7 +400,6 @@ public class OtherProfileActivity extends AppCompatActivity {
                         editBio.setText(response.body().getUserBio());
                         bio.setText(response.body().getUserBio());
                         status.setText(response.body().getUserStatus());
-                        song.setText(response.body().getUserSong());
                         youtubeSongUrl = response.body().getUserSong();
                         Log.d("youtubeSongUrl is",youtubeSongUrl);
                     }
