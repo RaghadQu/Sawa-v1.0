@@ -24,8 +24,11 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecoverPassword.RecoverPass;
 import com.example.zodiac.sawa.RegisterPkg.RegisterActivity;
-import com.example.zodiac.sawa.SpringModels.*;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
+import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
+import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -44,7 +47,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
-import com.google.api.services.people.v1.model.Person;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -331,12 +333,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (requestCode == 9001) {
             // data.getStringExtra("")
-            LoggingInDialog.show();
 
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
-            com.google.android.gms.plus.model.people.Person person= Plus.PeopleApi.getCurrentPerson(googleApiClient);
-            Log.i("", "Gender: " + person.getGender());
+            if (googleApiClient.hasConnectedApi(Plus.API))
+            {    LoggingInDialog.show();
+
+                com.google.android.gms.plus.model.people.Person person= Plus.PeopleApi.getCurrentPerson(googleApiClient);
+                Log.i("", "Gender: " + person.getGender());
+            }
+
         } else {
             progressDialog.dismiss();
             callbackManager.onActivityResult(requestCode, responseCode, data);
