@@ -125,13 +125,14 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
         CircleImageView ivProfile;
         TextView tvName;
         Button remove;
-        Button confirmReuqest;
+        Button confirmReuqest , stateBtn;
 
 
         public UserViewHolder(View itemView) {
             super(itemView);
             ivProfile = (CircleImageView) itemView.findViewById(R.id.image);
             tvName = (TextView) itemView.findViewById(R.id.Name);
+            stateBtn = (Button) itemView.findViewById(R.id.stateBtn);
             remove = (Button) itemView.findViewById(R.id.deleteRequest);
             friendFunction = new FollowFunctions();
             remove.setOnClickListener(new View.OnClickListener() {
@@ -157,9 +158,11 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 if (MyRequestsActivity.recyclerView.findViewHolderForPosition(position) != null) {
-                                    MyRequestsActivity.recyclerView.removeViewAt(position);
-                                    MyRequestsActivity.FriendsList.remove(position);
-                                    MyRequestsActivity.LayoutFriendsList.remove(position);
+                                //    MyRequestsActivity.recyclerView.removeViewAt(position);
+                                  //  MyRequestsActivity.FriendsList.remove(position);
+                                    //MyRequestsActivity.LayoutFriendsList.remove(position);
+                                    changeButtonState(position);
+
                                 }
                             }
                             @Override
@@ -170,8 +173,8 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
 
 
                         });
-
                     }
+
                 }
             });
 
@@ -202,9 +205,11 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 Log.d("----- Added ", "added" + response.code());
                                 //    MyRequestsActivity.recyclerView.removeViewAt(position);
-                                MyRequestsActivity.FriendsList.remove(position);
-                                MyRequestsActivity.LayoutFriendsList.remove(position);
-                                notifyItemRemoved(position);
+                               // MyRequestsActivity.FriendsList.remove(position);
+                              //  MyRequestsActivity.LayoutFriendsList.remove(position);
+                               // notifyItemRemoved(position);
+                                changeButtonState(position);
+
                             }
 
                             @Override
@@ -219,6 +224,26 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
 
                 }
             });
+        }
+
+        public void changeButtonState(int position){
+            confirmReuqest.setVisibility(View.INVISIBLE);
+            remove.setVisibility(View.INVISIBLE);
+            stateBtn.setVisibility(View.VISIBLE);
+
+            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==0)
+            {
+                stateBtn.setText("Follow");
+            }
+            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==1)
+            {
+                stateBtn.setText("Requested");
+            }
+            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==2)
+            {
+                stateBtn.setText("Following");
+            }
+
         }
     }
 }
