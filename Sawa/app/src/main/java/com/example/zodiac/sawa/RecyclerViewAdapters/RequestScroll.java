@@ -160,6 +160,7 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                                     MyRequestsActivity.recyclerView.removeViewAt(position);
                                     MyRequestsActivity.FriendsList.remove(position);
                                     MyRequestsActivity.LayoutFriendsList.remove(position);
+
                                 }
                             }
                             @Override

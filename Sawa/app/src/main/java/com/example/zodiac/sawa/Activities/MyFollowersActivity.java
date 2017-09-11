@@ -21,7 +21,6 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
-import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.net.MalformedURLException;
@@ -34,14 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-/**
- * Created by raghadq on 5/2/2017.
- */
-/**
- * Created by zodiac on 04/03/2017.
- */
-
 
 public class MyFollowersActivity extends Activity {
 
@@ -124,6 +115,7 @@ public class MyFollowersActivity extends Activity {
 
             final Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowers(GeneralAppInfo.getUserID());
             final int finalSource = source;
+            final int finalSource2 = source;
             FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
@@ -142,10 +134,11 @@ public class MyFollowersActivity extends Activity {
                         if (FriendsList!=null){
                             if(FriendsList.size()==0)
                             {
+                                noFollowersLayout.setVisibility(View.VISIBLE);
                                 CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
                                 circle.setImageDrawable(getDrawable(R.drawable.no_friends));
+
                                 Log.d("MyFollowerActivity","size 0 layout set");
-                                noFollowersLayout.setVisibility(View.VISIBLE);
                             }else{
                                 handleDateInAdapter(progressBar, noFriendsLayout, finalSource,FriendsList);
                             }}
@@ -170,6 +163,7 @@ public class MyFollowersActivity extends Activity {
 
             }
             final int finalSource1 = source;
+            final int finalSource3 = source;
             FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
@@ -193,10 +187,17 @@ public class MyFollowersActivity extends Activity {
 
                             if(otherFriendList.size()==0)
                             {
-                                Log.d("otherFollowing", " Response  zero");
+                                noFollowersLayout.setVisibility(View.VISIBLE);
                                 CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
-                                circle.setImageDrawable(getDrawable(R.drawable.no_requests));
-                                noFriendsLayout.setVisibility(View.VISIBLE);
+                                circle.setImageDrawable(getDrawable(R.drawable.no_friends));
+                                TextView textBody = ( TextView) findViewById(R.id.TextBody);
+
+                                if(finalSource1 ==2)
+                                {
+                                    textBody.setText("   No Following To Show");
+                                }
+                                Log.d("otherFollowing", " Response  zero");
+
                             }else{
                                 Log.d("otherFollowing", " Response not  zero");
 

@@ -1,17 +1,12 @@
 package com.example.zodiac.sawa.Activities;
-import com.example.zodiac.sawa.Activities.YoutubePlayerDialogActivity;
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -32,6 +27,10 @@ import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.squareup.picasso.Picasso;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -160,16 +159,22 @@ public class OtherProfileActivity extends AppCompatActivity {
             call.enqueue(new Callback<FriendResponseModel>() {
                 @Override
                 public void onResponse(Call<FriendResponseModel> call, final Response<FriendResponseModel> response) {
-                    Log.d("GetState", "get Friend State code is " + response.code());
                     if (response.code() == 200) {
-                        if (GeneralAppInfo.getUserID() == response.body().getFriend1_id().getId()) {
-                            FollowRelationState[0] = response.body().getFriend1_state();
-                            FollowRelationState[1] = response.body().getFriend2_state();
+                        if (response.body().getFriend1_id() == null ) {
+                            GeneralAppInfo.friendMode = 0;
+                            progressBar.setVisibility(View.INVISIBLE);
+                            progressBar_button.setVisibility(View.INVISIBLE);
+                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
                         } else {
-                            FollowRelationState[0] = response.body().getFriend2_state();
-                            FollowRelationState[1] = response.body().getFriend1_state();
+                            if (GeneralAppInfo.getUserID() == response.body().getFriend1_id().getId()) {
+                                FollowRelationState[0] = response.body().getFriend1_state();
+                                FollowRelationState[1] = response.body().getFriend2_state();
+                            } else {
+                                FollowRelationState[0] = response.body().getFriend2_state();
+                                FollowRelationState[1] = response.body().getFriend1_state();
 
-                        }
+                            }
+
                         progressBar.setVisibility(View.INVISIBLE);
                         progressBar_button.setVisibility(View.INVISIBLE);
                         if (FollowRelationState[1] == 0) {
@@ -226,7 +231,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
-                                                FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1,friendStatus,myFollowState,otherFollowState);
+                                                FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1, friendStatus, myFollowState, otherFollowState);
                                             }
                                         });
 
@@ -264,19 +269,20 @@ public class OtherProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View view) {
                                                 ConfirmDeletion.dismiss();
-                                                FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1,friendStatus,myFollowState,otherFollowState);
+                                                FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1, friendStatus, myFollowState, otherFollowState);
                                             }
                                         });
                                     }
                                 });
                             }
 
-
                         }
+                        }
+
                         fillAbout(about_bio, about_status, Id1);
 
-
                     }
+
                 }
 
                 @Override
@@ -347,11 +353,27 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         showOtherSong.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
-                Bundle b = new Bundle();
-                b.putString("youtubeSongUrl",youtubeSongUrl);
-                i.putExtras(b);
-                startActivity(i);
+               // Log.d("OtherProfileActivity", " Youtube " +youtubeSongUrl);
+                String pattern = "https?:\\/\\/(?:[0-9A-Z-]+\\.)?(?:youtu\\.be\\/|youtube\\.com\\S*[^\\w\\-\\s])([\\w\\-]{11})(?=[^\\w\\-]|$)(?![?=&+%\\w]*(?:['\"][^<>]*>|<\\/a>))[?=&+%\\w]*";
+
+                Pattern compiledPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+                Matcher matcher = compiledPattern.matcher(youtubeSongUrl);
+                int flag=0;
+                while(matcher.find()) {
+                   Log.d("OtherProfileActivity", " Youtube " + matcher.group());
+                    Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("youtubeSongUrl",youtubeSongUrl);
+                    i.putExtras(b);
+                    startActivity(i);
+                    flag=1;
+                }
+              if(flag==0)
+                {
+                    Toast.makeText(OtherProfileActivity.this, "No song ",
+                            Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });
@@ -391,7 +413,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         call.enqueue(new Callback<AboutUserResponseModel>() {
             @Override
             public void onResponse(Call<AboutUserResponseModel> call, Response<AboutUserResponseModel> response) {
-                Log.d("AboutUserFill", "Success  " + response.code());
+                Log.d("AboutUserFill", "Success  " + response.code()+ " " + ID) ;
 
                 if (response != null) {
                     if (response.body() != null) {
