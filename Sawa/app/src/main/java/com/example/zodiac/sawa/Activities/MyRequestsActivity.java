@@ -123,7 +123,7 @@ public class MyRequestsActivity extends Activity {
 
                                 for (int i = 0; i < FriendsList.size(); i++) {
                                     LayoutFriendsList.add(new MyFollowersActivity.friend(FriendsList.get(i).getUser().getId(), FriendsList.get(i).getUser().getImage(),
-                                            FriendsList.get(i).getUser().getFirst_name() + " " + FriendsList.get(i).getUser().getLast_name(),FriendsList.get(i).getState()));
+                                            FriendsList.get(i).getUser().getFirst_name() + " " + FriendsList.get(i).getUser().getLast_name(),FriendsList.get(i).getFriend1State()));
                          }
 
                             }

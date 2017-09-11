@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
@@ -81,58 +82,70 @@ public class MyFollowingActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        final Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowing(GeneralAppInfo.getUserID());
-        FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
-                progressBar.setVisibility(View.INVISIBLE);
 
-                Log.d("GetFriends", " Get friends " + response.code());
-                if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
-                    GeneralFunctions generalFunctions = new GeneralFunctions();
-                    generalFunctions.showErrorMesaage(getApplicationContext());
-                } else {
+        GeneralFunctions generalFunctions = new GeneralFunctions();
+        boolean isOnline = generalFunctions.isOnline(getApplicationContext());
+
+        if (isOnline == false) {
+            progressBar.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, "no internet connection!",
+                    Toast.LENGTH_LONG).show();
+        } else {
+
+            final Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowing(GeneralAppInfo.getUserID());
+            FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
+                    progressBar.setVisibility(View.INVISIBLE);
+
+                    Log.d("GetFriends", " Get friends " + response.code());
+                    if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+                        GeneralFunctions generalFunctions = new GeneralFunctions();
+                        generalFunctions.showErrorMesaage(getApplicationContext());
+                    } else {
 
 
-                    FriendList = response.body();
-                    LayoutFriendsList.clear();
-                    if (FriendList != null) {
 
-                        if (FriendList.size() == 0) {
 
-                            noFriendsLayout.setVisibility(View.VISIBLE);
-                            CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
-                            TextView textBody = ( TextView) findViewById(R.id.TextBody);
-                            circle.setImageDrawable(getDrawable(R.drawable.no_friends));
-                            textBody.setText("   No Following To Show");
 
-                        } else {
-                            Log.d("GetFriends", " Friends are : " + FriendList.size());
-                            progressBar.setVisibility(View.GONE);
-                            noFriendsLayout.setVisibility(View.GONE);
-                            for (int i = 0; i < FriendList.size(); i++) {
-                                LayoutFriendsList.add(new MyFollowersActivity.friend(FriendList.get(i).getUser().getId(), FriendList.get(i).getUser().getImage(),
-                                        FriendList.get(i).getUser().getFirst_name() + " " + FriendList.get(i).getUser().getLast_name(),FriendList.get(i).getState()));
+                        FriendList = response.body();
+                        LayoutFriendsList.clear();
+                        if (FriendList != null) {
+
+                            if (FriendList.size() == 0) {
+                                noFriendsLayout.setVisibility(View.VISIBLE);
+                                CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
+                                TextView textBody = ( TextView) findViewById(R.id.TextBody);
+                                circle.setImageDrawable(getDrawable(R.drawable.no_friends));
+                                textBody.setText("   No Following To Show");
+
+                            } else {
+                                Log.d("GetFriends", " Friends are : " + FriendList.size());
+                                progressBar.setVisibility(View.GONE);
+                                noFriendsLayout.setVisibility(View.GONE);
+                                for (int i = 0; i < FriendList.size(); i++) {
+                                    LayoutFriendsList.add(new MyFollowersActivity.friend(FriendList.get(i).getUser().getId(), FriendList.get(i).getUser().getImage(),
+                                            FriendList.get(i).getUser().getFirst_name() + " " + FriendList.get(i).getUser().getLast_name(), FriendList.get(i).getFriend1State()));
+                                }
+                                recyclerView.setAdapter(new FastScrollAdapter(MyFollowingActivity.this, LayoutFriendsList, 2));
+
                             }
-                            recyclerView.setAdapter(new FastScrollAdapter(MyFollowingActivity.this, LayoutFriendsList, 2));
-
                         }
                     }
                 }
-            }
 
 
-            @Override
-            public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
-                progressBar.setVisibility(View.INVISIBLE);
-                GeneralFunctions generalFunctions = new GeneralFunctions();
-                generalFunctions.showErrorMesaage(getApplicationContext());
-                Log.d("fail to get friends ", "Failure to Get friends");
+                @Override
+                public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    GeneralFunctions generalFunctions = new GeneralFunctions();
+                    generalFunctions.showErrorMesaage(getApplicationContext());
+                    Log.d("fail to get friends ", "Failure to Get friends");
 
-            }
-        });
-
+                }
+            });
+        }
         toolbarText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

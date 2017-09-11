@@ -168,6 +168,6 @@ public class GeneralFunctions {
 
     public void showErrorMesaage(Context context) {
         Toast.makeText(context, "Something went worng",
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_SHORT).show();
     }
 }

@@ -25,12 +25,10 @@ import com.example.zodiac.sawa.Services.FriendServices.FollowFunctions;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
-import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
+import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
 import com.squareup.picasso.Picasso;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +59,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     ImageView aboutFriendIcon;
     ImageView coverPhoto;
     int Id1;
-    static String  youtubeSongUrl ;
+    static String youtubeSongUrl;
     private ProgressBar progressBar;
     private ProgressBar progressBar_button;
 
@@ -70,8 +68,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     Button YesBtn;
     TextView textMsg;
     CircleImageView showOtherSong;
-    TextView followerTxt , followingTxt;
-
+    TextView followerTxt, followingTxt;
 
 
     @Override
@@ -83,10 +80,9 @@ public class OtherProfileActivity extends AppCompatActivity {
         user_profile_name = (TextView) findViewById(R.id.user_profile_name);
         following = (TextView) findViewById(R.id.followingTxt);
         followers = (TextView) findViewById(R.id.followerTxt);
-        showOtherSong=(CircleImageView)findViewById(R.id.showSong) ;
-        followerTxt = ( TextView) findViewById(R.id.followerTxt);
-        followingTxt = ( TextView) findViewById(R.id.followingTxt);
-
+        showOtherSong = (CircleImageView) findViewById(R.id.showSong);
+        followerTxt = (TextView) findViewById(R.id.followerTxt);
+        followingTxt = (TextView) findViewById(R.id.followingTxt);
 
 
         //get parameters
@@ -145,6 +141,8 @@ public class OtherProfileActivity extends AppCompatActivity {
         boolean isOnline = generalFunctions.isOnline(getApplicationContext());
 
         if (isOnline == false) {
+            progressBar.setVisibility(View.INVISIBLE);
+            progressBar_button.setVisibility(View.INVISIBLE);
             Toast.makeText(this, "no internet connection!",
                     Toast.LENGTH_LONG).show();
         } else {
@@ -152,34 +150,23 @@ public class OtherProfileActivity extends AppCompatActivity {
                     .baseUrl(GeneralAppInfo.SPRING_URL)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             FriendshipInterface getFreindApi = retrofit.create(FriendshipInterface.class);
-            Call<FriendResponseModel> call = getFreindApi.getFollowRelationState(GeneralAppInfo.getUserID(), Id);
+            Call<FollowesAndFollowingResponse> call = getFreindApi.getFollowRelationState(GeneralAppInfo.getUserID(), Id);
             final Integer[] FollowRelationState = new Integer[2];
 
             final String finalMName = mName;
-            call.enqueue(new Callback<FriendResponseModel>() {
+            call.enqueue(new Callback<FollowesAndFollowingResponse>() {
                 @Override
-                public void onResponse(Call<FriendResponseModel> call, final Response<FriendResponseModel> response) {
-                    if (response.code() == 200) {
-                        if (response.body().getFriend1_id() == null ) {
-                            GeneralAppInfo.friendMode = 0;
-                            progressBar.setVisibility(View.INVISIBLE);
-                            progressBar_button.setVisibility(View.INVISIBLE);
-                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
-                        } else {
-                            if (GeneralAppInfo.getUserID() == response.body().getFriend1_id().getId()) {
-                                FollowRelationState[0] = response.body().getFriend1_state();
-                                FollowRelationState[1] = response.body().getFriend2_state();
-                            } else {
-                                FollowRelationState[0] = response.body().getFriend2_state();
-                                FollowRelationState[1] = response.body().getFriend1_state();
 
-                            }
+                public void onResponse(Call<FollowesAndFollowingResponse> call, final Response<FollowesAndFollowingResponse> response) {
+                    Log.d("GetState", "get Friend State code is " + response.code());
+                    if (response.code() == 200) {
+                        FollowRelationState[0] = response.body().getFriend1State();
+                        FollowRelationState[1] = response.body().getFriend2State();
 
                         progressBar.setVisibility(View.INVISIBLE);
                         progressBar_button.setVisibility(View.INVISIBLE);
                         if (FollowRelationState[1] == 0) {
 
-                            if (FollowRelationState[0] != null) {
                                 Log.d("stateeee", "" + FollowRelationState[0]);
                                 if (FollowRelationState[0] == 0) {  // No relation
                                     GeneralAppInfo.friendMode = 0;
@@ -192,7 +179,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                     GeneralAppInfo.friendMode = 2;
                                     FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
                                 }
-                            }
+
                         } else {
 
                             friendStatus.setVisibility(View.INVISIBLE);
@@ -201,7 +188,6 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                             // myFollowState
                             //   FriendsClass friendsClass = new FriendsClass();
-                            if (FollowRelationState[0] != null) {
                                 Log.d("stateeee", "" + FollowRelationState[0]);
                                 if (FollowRelationState[0] == 0) {  // No relation
                                     GeneralAppInfo.friendMode = 0;
@@ -214,7 +200,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                     GeneralAppInfo.friendMode = 2;
                                     FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, Id1, getApplicationContext());
                                 }
-                            }
+
 
                             if (FollowRelationState[1] == 1) // follower request Pending ( follower sent request)
                             {
@@ -283,13 +269,13 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                     }
 
-                }
+
 
                 @Override
-                public void onFailure(Call<FriendResponseModel> call, Throwable t) {
+                public void onFailure(Call<FollowesAndFollowingResponse> call, Throwable t) {
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar_button.setVisibility(View.INVISIBLE);
-                    Log.d("OtherActivityProfile"," Error"+ t.getMessage());
+                    Log.d("OtherActivityProfile", " Error" + t.getMessage());
 
                 }
             });
@@ -331,6 +317,42 @@ public class OtherProfileActivity extends AppCompatActivity {
                     AboutFriendDialog.show();
                 }
             });
+
+            showOtherSong.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("youtubeSongUrl", youtubeSongUrl);
+                    i.putExtras(b);
+                    startActivity(i);
+
+                }
+            });
+            final String finalMName1 = mName;
+            followerTxt.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("source", 1);
+                    b.putInt("friendId", Id1);
+                    b.putString("friendName", finalMName1);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
+            followingTxt.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("source", 2);
+                    b.putInt("friendId", Id1);
+                    b.putString("friendName", finalMName1);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
+
+
         }
 
         toolBarText.setOnTouchListener(new View.OnTouchListener() {
@@ -351,55 +373,6 @@ public class OtherProfileActivity extends AppCompatActivity {
             }
         });
 
-        showOtherSong.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-               // Log.d("OtherProfileActivity", " Youtube " +youtubeSongUrl);
-                String pattern = "https?:\\/\\/(?:[0-9A-Z-]+\\.)?(?:youtu\\.be\\/|youtube\\.com\\S*[^\\w\\-\\s])([\\w\\-]{11})(?=[^\\w\\-]|$)(?![?=&+%\\w]*(?:['\"][^<>]*>|<\\/a>))[?=&+%\\w]*";
-
-                Pattern compiledPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-                Matcher matcher = compiledPattern.matcher(youtubeSongUrl);
-                int flag=0;
-                while(matcher.find()) {
-                   Log.d("OtherProfileActivity", " Youtube " + matcher.group());
-                    Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
-                    Bundle b = new Bundle();
-                    b.putString("youtubeSongUrl",youtubeSongUrl);
-                    i.putExtras(b);
-                    startActivity(i);
-                    flag=1;
-                }
-              if(flag==0)
-                {
-                    Toast.makeText(OtherProfileActivity.this, "No song ",
-                            Toast.LENGTH_LONG).show();
-                }
-
-
-            }
-        });
-        final String finalMName1 = mName;
-        followerTxt.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("source",1);
-                b.putInt("friendId",Id1);
-                b.putString("friendName", finalMName1);
-                i.putExtras(b);
-                startActivity(i);
-            }
-        });
-        followingTxt.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("source",2);
-                b.putInt("friendId",Id1);
-       b.putString("friendName", finalMName1);
-                i.putExtras(b);
-                startActivity(i);
-            }
-        });
 
 
     }
@@ -423,7 +396,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                         bio.setText(response.body().getUserBio());
                         status.setText(response.body().getUserStatus());
                         youtubeSongUrl = response.body().getUserSong();
-                        Log.d("youtubeSongUrl is",youtubeSongUrl);
+                        Log.d("youtubeSongUrl is", youtubeSongUrl);
                     }
                 }
             }
