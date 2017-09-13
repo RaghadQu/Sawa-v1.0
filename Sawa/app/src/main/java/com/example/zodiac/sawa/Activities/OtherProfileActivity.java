@@ -29,7 +29,8 @@ import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
 import com.squareup.picasso.Picasso;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -249,6 +250,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
         });
 
 
+
     }
 
     public void fillAbout(final TextView bio, final TextView status, final int ID) {
@@ -260,7 +262,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
         call.enqueue(new Callback<AboutUserResponseModel>() {
             @Override
             public void onResponse(Call<AboutUserResponseModel> call, Response<AboutUserResponseModel> response) {
-                Log.d("AboutUserFill", "Success  " + response.code());
+                Log.d("AboutUserFill", "Success  " + response.code()+ " " + ID) ;
 
                 if (response != null) {
                     if (response.body() != null) {

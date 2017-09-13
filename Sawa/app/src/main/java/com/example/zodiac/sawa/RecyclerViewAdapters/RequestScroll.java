@@ -158,10 +158,16 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 if (MyRequestsActivity.recyclerView.findViewHolderForPosition(position) != null) {
+<<<<<<< HEAD
+                                    MyRequestsActivity.recyclerView.removeViewAt(position);
+                                    MyRequestsActivity.FriendsList.remove(position);
+                                    MyRequestsActivity.LayoutFriendsList.remove(position);
+=======
                                 //    MyRequestsActivity.recyclerView.removeViewAt(position);
                                   //  MyRequestsActivity.FriendsList.remove(position);
                                     //MyRequestsActivity.LayoutFriendsList.remove(position);
                                     changeButtonState(position);
+>>>>>>> 3a6c00d6cbb8b89a83f5d2863ecff899f52647db
 
                                 }
                             }

@@ -22,10 +22,8 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
-import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,15 +106,19 @@ public class MyFollowingActivity extends Activity {
                     } else {
 
 
+
+
+
                         FriendList = response.body();
                         LayoutFriendsList.clear();
                         if (FriendList != null) {
 
                             if (FriendList.size() == 0) {
-
                                 noFriendsLayout.setVisibility(View.VISIBLE);
                                 CircleImageView circle = (CircleImageView) findViewById(R.id.circle);
+                                TextView textBody = ( TextView) findViewById(R.id.TextBody);
                                 circle.setImageDrawable(getDrawable(R.drawable.no_friends));
+                                textBody.setText("   No Following To Show");
 
                             } else {
                                 Log.d("GetFriends", " Friends are : " + FriendList.size());

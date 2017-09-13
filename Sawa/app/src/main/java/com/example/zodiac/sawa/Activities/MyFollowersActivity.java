@@ -24,7 +24,6 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
-import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.net.MalformedURLException;
@@ -41,107 +40,102 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by raghadq on 5/2/2017.
  */
-/**
- * Created by zodiac on 04/03/2017.
- */
+    /**
+     * Created by zodiac on 04/03/2017.
+     */
+
+    public class MyFollowersActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
 
 
-public class MyFollowersActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
+        public static List<FollowesAndFollowingResponse> FriendsList;
+        public static List<FollowesAndFollowingResponse> otherFriendList;
+        public static ArrayList<friend> LayoutFriendsList = new ArrayList<>();
+        public static FastScrollRecyclerView recyclerView;
+        public static RecyclerView.Adapter adapter;
+        LinearLayout noFriendsLayout;
+        FriendshipInterface friendshipApi;
+        TextView toolbarText, FriendshipTypeLabel;
+        LinearLayout noFollowersLayout;
+        SwipeRefreshLayout swipeRefreshLayout;
+        ProgressBar progressBar;
+        int source = 0;
+        int friendId;
 
 
-    public static List<FollowesAndFollowingResponse> FriendsList;
-    public static List<FollowesAndFollowingResponse> otherFriendList;
-    public static ArrayList<friend> LayoutFriendsList = new ArrayList<>();
-    public static FastScrollRecyclerView recyclerView;
-    public static RecyclerView.Adapter adapter;
-    LinearLayout noFriendsLayout;
-    FriendshipInterface friendshipApi;
-    TextView toolbarText, FriendshipTypeLabel;
-    LinearLayout noFollowersLayout;
-    SwipeRefreshLayout swipeRefreshLayout;
-    ProgressBar progressBar;
-    int source = 0;
-    int friendId;
+        @Override
+        protected void onResume() {
 
+            super.onResume();
+            this.onCreate(null);
+        }
 
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.friends_tab);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GeneralAppInfo.SPRING_URL)
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            toolbarText = (TextView) findViewById(R.id.toolBarText);
+            FriendshipTypeLabel = (TextView) findViewById(R.id.FriendshipTabType);
+            swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
-    @Override
-    protected void onResume() {
+            swipeRefreshLayout.setOnRefreshListener(this);
+            //source var to indicate if we need to list our followers or other following or followers
+            //0 source ->our followers
+            //1 source ->indicate others followers
+            //2 source indicate ->others following
+            // or other values
 
-        super.onResume();
-        this.onCreate(null);
-    }
+            Bundle b = getIntent().getExtras();
+            friendId = -1;
+            String friendName = "";
+            if (b != null) {
+                source = b.getInt("source");
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.friends_tab);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.SPRING_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        toolbarText = (TextView) findViewById(R.id.toolBarText);
-        FriendshipTypeLabel = (TextView) findViewById(R.id.FriendshipTabType);
-        swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+                if (source == 1 || source == 2) {
+                    Log.d("source: ", "" + source);
+                    friendId = b.getInt("friendId");
+                    friendName = b.getString("friendName");
+                    if (source == 1) {
+                        FriendshipTypeLabel.setText(friendName + " Followers");
+                    } else {
+                        FriendshipTypeLabel.setText(friendName + " Following");
 
-        swipeRefreshLayout.setOnRefreshListener(this);
-        //source var to indicate if we need to list our followers or other following or followers
-        //0 source ->our followers
-        //1 source ->indicate others followers
-        //2 source indicate ->others following
-        // or other values
-
-        Bundle b = getIntent().getExtras();
-         friendId = -1;
-        String friendName="";
-        if (b != null) {
-            source = b.getInt("source");
-
-            if (source == 1 || source == 2) {
-                Log.d("source: ", "" + source);
-                friendId = b.getInt("friendId");
-                friendName = b.getString("friendName");
-                if(source ==1 )
-                {
-                    FriendshipTypeLabel.setText(friendName+" Followers");
-                }
-                else
-                {
-                    FriendshipTypeLabel.setText(friendName+" Following");
+                    }
+                } else {
+                    FriendshipTypeLabel.setText("Followers");
 
                 }
             }
-            else
-            {
-                FriendshipTypeLabel.setText("Followers");
+            friendshipApi = retrofit.create(FriendshipInterface.class);
+            noFollowersLayout = (LinearLayout) findViewById(R.id.no_friends_Layout);
+            progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
+            progressBar.setProgress(0);
+            progressBar.setMax(100);
+            ObjectAnimator anim;
+            anim = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
+            anim.setDuration(2000);
+            anim.setInterpolator(new DecelerateInterpolator());
+            anim.start();
 
+            adapter = new FastScrollAdapter(this, LayoutFriendsList, 0);
+            noFriendsLayout = (LinearLayout) findViewById(R.id.no_friends_Layout);
+            recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+
+            GeneralFunctions generalFunctions = new GeneralFunctions();
+            boolean isOnline = generalFunctions.isOnline(getApplicationContext());
+
+
+            if (isOnline == false) {
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(this, "no internet connection!",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                getFollowerView();
             }
-        }
-        friendshipApi = retrofit.create(FriendshipInterface.class);
-        noFollowersLayout=(LinearLayout)findViewById(R.id.no_friends_Layout);
-        progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
-        progressBar.setProgress(0);
-        progressBar.setMax(100);
-        ObjectAnimator anim;
-        anim = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
-        anim.setDuration(2000);
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.start();
 
-        adapter = new FastScrollAdapter(this, LayoutFriendsList, 0);
-         noFriendsLayout = (LinearLayout) findViewById(R.id.no_friends_Layout);
-        recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-        GeneralFunctions generalFunctions = new GeneralFunctions();
-        boolean isOnline = generalFunctions.isOnline(getApplicationContext());
-
-        if (isOnline == false) {
-            progressBar.setVisibility(View.INVISIBLE);
-            Toast.makeText(this, "no internet connection!",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            getFollowerView();
-        }
 
             toolbarText.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -156,7 +150,8 @@ public class MyFollowersActivity extends Activity implements SwipeRefreshLayout.
                 }
             });
 
-    }
+
+        }
 
     @Override
     public void onRefresh() {
