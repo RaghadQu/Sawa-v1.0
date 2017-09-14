@@ -52,6 +52,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import com.example.zodiac.sawa.Services.BadgeViewService;
+
 import static com.example.zodiac.sawa.R.id.container;
 import com.example.zodiac.sawa.SpringModels.*;
 
@@ -66,7 +67,9 @@ public class HomeTabbedActivity extends AppCompatActivity {
     static TabLayout tabLayout;
     static TextView userName;
     static Context context;
+    static int tabNumber;
     /**
+     *
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
@@ -395,7 +398,8 @@ public class HomeTabbedActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
 
 
-            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+              if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+                HomeTabbedActivity.tabNumber =1;
                 GeneralFunctions.getSharedPreferences(getContext());
                 View rootView = inflater.inflate(R.layout.fragment_home, container, false);
                 FloatingActionButton addPost = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -411,6 +415,8 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 });
                 return rootView;
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
+                  HomeTabbedActivity.tabNumber =2;
+
                 //NotificationTab;
                 View rootView = inflater.inflate(R.layout.notification_tab, container, false);
                 NotificationTabFragment.NotificationList = new ArrayList<>();
@@ -422,6 +428,8 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 return rootView;
 
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
+                  HomeTabbedActivity.tabNumber =3;
+
                 GeneralFunctions.getSharedPreferences(getContext());
                 View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
                 userName = (TextView) rootView.findViewById(R.id.userName);
@@ -508,5 +516,18 @@ public class HomeTabbedActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        if(HomeTabbedActivity.tabNumber != 1){
+
+    }
+    else
+        {
+            super.onBackPressed();
+        }
+
+
+    }
 
 }

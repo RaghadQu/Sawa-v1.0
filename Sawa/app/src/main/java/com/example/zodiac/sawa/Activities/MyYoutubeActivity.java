@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -95,7 +96,7 @@ public class MyYoutubeActivity extends YouTubeBaseActivity implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.my_youtube_activity_dialog);
-        youTubePlayerFragment = (YouTubePlayerView) findViewById(R.id.youtubeplayerfragment);
+      //  youTubePlayerFragment = new YouTubePlayerView();
         youTubePlayerFragment = new YouTubePlayerView(this);
         youtubeEdit = (EditText) findViewById(R.id.youtubeText);
         Bundle b = getIntent().getExtras();
@@ -135,21 +136,27 @@ public class MyYoutubeActivity extends YouTubeBaseActivity implements
                 String pattern = "https://m.youtube.com/watch?v=";
                 String pattern1 = "https://www.youtube.com/watch?v=";
                 String s = String.valueOf(youtubeEdit.getText());
-                int i = s.indexOf(pattern);
-                int j = s.indexOf(pattern1);
-                Log.d("youtubeFlag", "i " + i + "j "+j +"Falg "+ youtubeFlag);
-
-                if ((i >= 0 && youtubeFlag == 0) || (j >= 0 && youtubeFlag == 0)) {
-                    String[] split = s.split("v=");
-                    video_id = split[1];
-                    youTubePlayerFragment.initialize(api_key, MyYoutubeActivity.this);
-                    youTubePlayerFragment.setVisibility(View.VISIBLE);
-                    Log.d("YoutubeActivity"," "+ video_id + " "+i+" "+j);
-                                     //  youTubePlayerFragment.cut
-                    youtubeFlag = 1;
+                if(s.trim().equals("")){
+                  //
+                    youTubePlayerFragment.setVisibility(View.GONE);
+                    ((ViewGroup)youTubePlayerFragment.getParent()).removeView(youTubePlayerFragment);
                 }
+                else {
+                    int i = s.indexOf(pattern);
+                    int j = s.indexOf(pattern1);
+                    Log.d("youtubeFlag", "i " + i + "j " + j + "Falg " + youtubeFlag);
 
+                    if ((i >= 0 && youtubeFlag == 0) || (j >= 0 && youtubeFlag == 0)) {
+                        String[] split = s.split("v=");
+                        video_id = split[1];
+                        youTubePlayerFragment.initialize(api_key, MyYoutubeActivity.this);
+                        youTubePlayerFragment.setVisibility(View.VISIBLE);
+                        Log.d("YoutubeActivity", " " + video_id + " " + i + " " + j);
+                        //  youTubePlayerFragment.cut
+                        youtubeFlag = 1;
+                    }
 
+                }
             }
         });
 
