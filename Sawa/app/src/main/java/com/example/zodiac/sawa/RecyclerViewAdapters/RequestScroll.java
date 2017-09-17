@@ -163,7 +163,6 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                                   //  MyRequestsActivity.FriendsList.remove(position);
                                     //MyRequestsActivity.LayoutFriendsList.remove(position);
                                     changeButtonState(position);
-
                                 }
                             }
                             @Override
@@ -232,7 +231,7 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
             remove.setVisibility(View.INVISIBLE);
             stateBtn.setVisibility(View.VISIBLE);
 
-            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==0)
+            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==0 )
             {
                 stateBtn.setText("Follow");
             }
