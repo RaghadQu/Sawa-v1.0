@@ -9,13 +9,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,9 +34,10 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.NotificationTabFragment;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.NotificationAdapter;
-import com.example.zodiac.sawa.SettingTabFragment;
-import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
+import com.example.zodiac.sawa.Services.BadgeViewService;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.SpringModels.SignOutModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -51,9 +50,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import com.example.zodiac.sawa.Services.BadgeViewService;
+
 import static com.example.zodiac.sawa.R.id.container;
-import com.example.zodiac.sawa.SpringModels.*;
 
 public class HomeTabbedActivity extends AppCompatActivity {
 
@@ -149,7 +147,10 @@ public class HomeTabbedActivity extends AppCompatActivity {
     public static void getUserInfo() {
         Log.d("InfoUser", " Enter here ");
 
-        Retrofit retrofit = new Retrofit.Builder()
+        userInfo = GeneralAppInfo.generalUserInfo.getUser();
+        Log.d("InfoUser", " " + userInfo.getFirst_name());
+        userName.setText((userInfo.getFirst_name() + " " + userInfo.getLast_name()));
+     /*   Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
         AboutUserInterface service = retrofit.create(AboutUserInterface.class);
@@ -179,7 +180,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(HomeTabbedActivity.context);
             }
-        });
+        });*/
 
     }
 

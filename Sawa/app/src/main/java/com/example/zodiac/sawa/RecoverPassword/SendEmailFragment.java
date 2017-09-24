@@ -13,11 +13,11 @@ import android.widget.EditText;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.SpringModels.SignInModel;
-import com.example.zodiac.sawa.SpringModels.UserModel;
-import com.example.zodiac.sawa.SpringApi.AuthInterface;
-import com.example.zodiac.sawa.Services.ValidationService;
 import com.example.zodiac.sawa.Services.EmailSenderService.BackgroungSender;
+import com.example.zodiac.sawa.Services.ValidationService;
+import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
+import com.example.zodiac.sawa.SpringModels.SignInModel;
 
 import java.util.UUID;
 
@@ -63,10 +63,10 @@ public class SendEmailFragment extends android.app.Fragment {
                         final SignInModel signInModel = new SignInModel();
                         signInModel.setEmail(recievedEmail.getText().toString());
                         signInModel.setPassword("@(-_-)@");
-                        final Call<UserModel> userModelCall = service.signIn(signInModel);
-                        userModelCall.enqueue(new Callback<UserModel>() {
+                        final Call<GeneralUserInfoModel> userModelCall = service.signIn(signInModel);
+                        userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
                             @Override
-                            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                            public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
                                 if (response.code() != 204) {
                                     BackgroungSender BS = new BackgroungSender();
                                     BS.setRecievedEmail(recievedEmail.getText().toString());
@@ -87,7 +87,7 @@ public class SendEmailFragment extends android.app.Fragment {
                             }
 
                             @Override
-                            public void onFailure(Call<UserModel> call, Throwable t) {
+                            public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                                 GeneralFunctions generalFunctions = new GeneralFunctions();
                                 generalFunctions.showErrorMesaage(getActivity().getApplicationContext());
                                 Log.d("Email.PassRecover", " Error " + t.getMessage());

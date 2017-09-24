@@ -13,7 +13,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +24,11 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecoverPassword.RecoverPass;
 import com.example.zodiac.sawa.RegisterPkg.RegisterActivity;
-import com.example.zodiac.sawa.SpringModels.*;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
+import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
+import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
+import com.example.zodiac.sawa.SpringModels.SignInModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -45,7 +47,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
-import com.google.api.services.people.v1.model.Person;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -223,20 +224,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (valid(signInModel.getEmail(), signInModel.getPassword()) == 0) {
                 LoggingInDialog.show();
 
-                final Call<UserModel> userModelCall = service.signIn(signInModel);
-                userModelCall.enqueue(new Callback<UserModel>() {
+                final Call<GeneralUserInfoModel> userModelCall = service.signIn(signInModel);
+                userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
                     @Override
-                    public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                    public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
 
 
                         int statusCode = response.code();
                         Log.d("-----", " enter request " + statusCode);
-                        UserModel userModel = response.body();
+                        GeneralUserInfoModel userModel = response.body();
                         SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
                         if (statusCode == 200) {
 
-                            GeneralAppInfo.setUserID(Integer.valueOf(userModel.getId()));
+                            GeneralAppInfo.setUserID(Integer.valueOf(userModel.getUser().getId()));
                             sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("email", emailEditText.getText().toString());
@@ -244,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             editor.putInt("id", GeneralAppInfo.getUserID());
                             editor.putString("isLogined", "1");
                             editor.apply();
-
+                            GeneralAppInfo.generalUserInfo= response.body();
                             Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
                             LoggingInDialog.dismiss();
                             startActivity(i);
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onFailure(Call<UserModel> call, Throwable t) {
+                    public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
                         LoggingInDialog.dismiss();
@@ -415,19 +416,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         Log.d("-----", " enter here");
 
-        final Call<UserModel> userModelCall = service.loginWithGoogle(loginWIthGoogleModel);
-        userModelCall.enqueue(new Callback<UserModel>() {
+        final Call<GeneralUserInfoModel> userModelCall = service.loginWithGoogle(loginWIthGoogleModel);
+        userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
             @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+            public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
 
 
                 int statusCode = response.code();
-                UserModel userModel = response.body();
+                GeneralUserInfoModel userModel = response.body();
                 //SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
                 if (statusCode == 200 || statusCode == 202) {
 
-                    GeneralAppInfo.setUserID(Integer.valueOf(userModel.getId()));
+                    GeneralAppInfo.setUserID(Integer.valueOf(userModel.getUser().getId()));
                     //sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("email", emailEditText.getText().toString());
@@ -455,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
+            public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(getApplicationContext());
                 Log.d("----", " Error " + t.getMessage());
@@ -470,19 +471,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
-        final Call<UserModel> userModelCall = service.loginWithFacebook(loginWithFacebookModel);
-        userModelCall.enqueue(new Callback<UserModel>() {
+        final Call<GeneralUserInfoModel> userModelCall = service.loginWithFacebook(loginWithFacebookModel);
+        userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
             @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+            public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
                 int statusCode = response.code();
                 Log.d("-----", " enter request " + statusCode);
-                UserModel userModel = response.body();
+                GeneralUserInfoModel userModel = response.body();
                 //SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
                 if (statusCode == 200 || statusCode == 202) {
-                    Log.d("-----", " enter here" + userModel.getId());
+                    Log.d("-----", " enter here" + userModel.getUser().getId());
 
-                    GeneralAppInfo.setUserID(Integer.valueOf(userModel.getId()));
+                    GeneralAppInfo.setUserID(Integer.valueOf(userModel.getUser().getId()));
                     //sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("email", emailEditText.getText().toString());
@@ -508,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
+            public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(getApplicationContext());
                 Log.d("FACEBOOKFACEOOK", "facebook failure " + t.getMessage());
