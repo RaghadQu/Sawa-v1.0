@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
@@ -47,6 +48,11 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -189,7 +195,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
-    public static void getUserInfo() {
+    public  void getUserInfo() {
         Log.d("InfoUser", " Enter here ");
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -214,7 +220,10 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     Log.d("InfoUser", " " + imageUrl);
 
                     progressBar.setVisibility(View.INVISIBLE);
-                    Picasso.with(context).load(imageUrl).into(img);
+
+                    Bitmap image = getBitmapfromUrl(imageUrl);
+                    img.setImageBitmap(image);
+                   // Picasso.with(context).load(imageUrl).into(img);
                     String coverUrl = GeneralAppInfo.SPRING_URL + "/" + userInfo.getCover_image();
                     Picasso.with(context).load(coverUrl).into(coverImage);
 
@@ -615,7 +624,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 Log.d("ImagesCode ", " " + response.code());
-                MyProfileActivity.getUserInfo();
+                getUserInfo();
             }
 
             @Override
@@ -627,5 +636,25 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 
     }
 
+    public Bitmap getBitmapfromUrl(String imageUrl)
+    {
+        try
+        {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            return bitmap;
+
+        } catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+
+        }
+    }
 
 }

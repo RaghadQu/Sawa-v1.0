@@ -196,11 +196,25 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
 
             showOtherSong.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
-                    Bundle b = new Bundle();
-                    b.putString("youtubeSongUrl", youtubeSongUrl);
-                    i.putExtras(b);
-                    startActivity(i);
+
+                    int flag =0 ;
+                    String pattern = "https?:\\/\\/(?:[0-9A-Z-]+\\.)?(?:youtu\\.be\\/|youtube\\.com\\S*[^\\w\\-\\s])([\\w\\-]{11})(?=[^\\w\\-]|$)(?![?=&+%\\w]*(?:['\"][^<>]*>|<\\/a>))[?=&+%\\w]*";
+                    Pattern compiledPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+                    Matcher matcher = compiledPattern.matcher(youtubeSongUrl);
+                    if(matcher.find()) {
+                        flag =1 ;
+                    }
+
+                    if(flag==1) {
+                        Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("youtubeSongUrl", youtubeSongUrl);
+                        i.putExtras(b);
+                        startActivity(i);
+                    }
+                    else {
+                        Toast.makeText(OtherProfileActivity.this,"No song",Toast.LENGTH_SHORT);
+                    }
 
                 }
             });
@@ -227,30 +241,21 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                     startActivity(i);
                 }
             });
-
-
         }
 
         toolBarText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Log.d("---", " Clicked on Text");
-
                 final int DRAWABLE_LEFT = 0;
-
                 if (event.getX() <= (toolBarText.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
                     Log.d("---", " Clicked on left");
                     finish();
-
                     return true;
                 }
-
                 return false;
             }
         });
-
-
-
     }
 
     public void fillAbout(final TextView bio, final TextView status, final int ID) {
@@ -276,13 +281,11 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<AboutUserResponseModel> call, Throwable t) {
                 Log.d("AboutUserFill", "Failure " + t.getMessage() + " " + ID);
             }
         });
-
     }
 
     @Override

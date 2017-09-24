@@ -42,9 +42,9 @@
             android:layout_marginTop="1dp"
             android:background="@drawable/remove_friend_style"
             android:clickable="true"
-            android:text="Following"
             android:textAllCaps="false"
             android:textSize="14dp"
+            android:visibility="invisible"
 
 
             />
