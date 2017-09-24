@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="0dp"
             android:datePickerMode="spinner"
-            android:endYear="2100"
+            android:endYear="2017"
             android:orientation="vertical"
             android:spinnersShown="true"
             android:startYear="1900"

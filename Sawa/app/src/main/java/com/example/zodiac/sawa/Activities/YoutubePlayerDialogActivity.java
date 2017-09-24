@@ -15,18 +15,11 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by exalt on 8/1/2017.
- */
-
 public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
         YouTubePlayer.OnInitializedListener {
-    public static final String API_KEY = "your api kery from google";
-    private static final int RQS_ErrorDialog = 1;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
     public String video_id;
     String log = "";
-    private YouTubePlayer youTubePlayer;
     private YouTubePlayerView youTubePlayerFragment;
     private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
         @Override
@@ -107,8 +100,6 @@ public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
                 video_id= matcher.group();
             }}
         }
-        //  LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-        // LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.edit_song, null, false);
 
         youTubePlayerFragment = (YouTubePlayerView) findViewById(R.id.youtubeplayerfragment);
         youTubePlayerFragment = new YouTubePlayerView(YoutubePlayerDialogActivity.this);

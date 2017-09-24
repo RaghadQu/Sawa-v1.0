@@ -20,7 +20,9 @@ public interface AboutUserInterface {
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/user/addAboutUser")
     Call<AboutUserResponseModel> addNewAboutUser(@Body AboutUserRequestModel aboutUserModel);
-
+    @Headers("Cache-Control: max-age=64000")
+    @POST("/api/v1/user/editUserSong")
+    Call<AboutUserResponseModel> editUserSong(@Body AboutUserRequestModel aboutUserModel);
     @GET("/api/v1/user/getAbout/{id}")
     Call<AboutUserResponseModel> getAboutUser(@Path("id") int id);
 

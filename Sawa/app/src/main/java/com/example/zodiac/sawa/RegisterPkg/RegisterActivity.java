@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.zodiac.sawa.Activities.MainActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
@@ -127,6 +128,7 @@ public class RegisterActivity extends Activity {
     }
 
     public void SignUp() {
+        GeneralFunctions generalFunctions=new GeneralFunctions();
         SignUpModel signUpModel = new SignUpModel();
         signUpModel.setFirst_name(getFirstName());
         signUpModel.setLast_name(getLastName());
@@ -138,61 +140,68 @@ public class RegisterActivity extends Activity {
         Log.d("Birthdate1", getUserBirthDate().toString().trim());
         LoggingInDialog = new Dialog(this);
         LoggingInDialog.setContentView(R.layout.logging_in_dialog);
-        LoggingInDialog.show();
+        boolean isOnline = generalFunctions.isOnline(getApplicationContext());
 
-        AuthInterface authInterface;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.SPRING_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        authInterface = retrofit.create(AuthInterface.class);
-
-
-        final Call<UserModel> signResponse = authInterface.signUp(signUpModel);
-        signResponse.enqueue(new Callback<UserModel>() {
+        if (isOnline == false) {
+            Toast.makeText(this, "no internet connection!",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            LoggingInDialog.show();
 
 
-            @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                int statusCode = response.code();
-                UserModel userModel = response.body();
-                Log.d("SignUpNew", response.code() + " ");
-                SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+            AuthInterface authInterface;
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GeneralAppInfo.SPRING_URL)
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            authInterface = retrofit.create(AuthInterface.class);
 
-                if (response.code() == 200) {
-                    updateAbout("", "", "");
-                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profileimage);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); // what 90 does ??
-                    byte[] image = stream.toByteArray();
-                    GeneralAppInfo.setUserID(userModel.getId());
-                    sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("email", userModel.getEmail());
-                    editor.putInt("id", GeneralAppInfo.getUserID());
-                    editor.putString("isLogined", "1");
-                    editor.apply();
-                    Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
-                    LoggingInDialog.dismiss();
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    startActivity(i);
-                    finish();
+            final Call<UserModel> signResponse = authInterface.signUp(signUpModel);
+            signResponse.enqueue(new Callback<UserModel>() {
 
-                } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+
+                @Override
+                public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                    int statusCode = response.code();
+                    UserModel userModel = response.body();
+                    Log.d("SignUpNew", response.code() + " ");
+                    SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
+                    if (response.code() == 200) {
+                        updateAbout("", "", "");
+                        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profileimage);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); // what 90 does ??
+                        byte[] image = stream.toByteArray();
+                        GeneralAppInfo.setUserID(userModel.getId());
+                        sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("email", userModel.getEmail());
+                        editor.putInt("id", GeneralAppInfo.getUserID());
+                        editor.putString("isLogined", "1");
+                        editor.apply();
+                        Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+                        LoggingInDialog.dismiss();
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        startActivity(i);
+                        finish();
+
+                    } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+                        GeneralFunctions generalFunctions = new GeneralFunctions();
+                        generalFunctions.showErrorMesaage(getApplicationContext());
+                    } else Log.d("valid", "already added");
+
+                }
+
+                @Override
+                public void onFailure(Call<UserModel> call, Throwable t) {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
-                } else Log.d("valid", "already added");
-
-            }
-
-            @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
-                GeneralFunctions generalFunctions = new GeneralFunctions();
-                generalFunctions.showErrorMesaage(getApplicationContext());
-                Log.d("notvalid", "valid" + t.getMessage());
-            }
-        });
-
+                    Log.d("notvalid", "valid" + t.getMessage());
+                }
+            });
+        }
     }
 	
 	 public static void updateAbout(final String bioText, final String statusText, final String songText) {

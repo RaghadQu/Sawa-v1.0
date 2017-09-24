@@ -465,12 +465,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     }
                 });
 
-                //     mRecyclerView = (RecyclerView) rootView.findViewById(R.id.Viewer);
-                //   mRecyclerView.setHasFixedSize(true);
-                // mLayoutManager = new LinearLayoutManager(getContext());
-                //mRecyclerView.setLayoutManager(mLayoutManager);
-                //MyAdapter settingAdapter = new MyAdapter(getContext(), myDataset, images);
-                //mRecyclerView.setAdapter(settingAdapter);
                 return rootView;
 
             } else {

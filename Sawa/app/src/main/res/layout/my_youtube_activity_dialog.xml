@@ -16,12 +16,13 @@
             android:layout_height="wrap_content" />
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="YoutubeUrl"
+            android:layout_height="60dp"
+            android:padding="2dp"
             android:id="@+id/youtubeText"
             android:minLines="2"
             />
         <Button
+            android:id="@+id/saveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00444444"

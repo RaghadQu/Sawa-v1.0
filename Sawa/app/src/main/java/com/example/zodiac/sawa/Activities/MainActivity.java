@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Dialog progressDialog;
     private EditText emailEditText;
     private EditText passEditText;
+    TextView AppTitle;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).addApi(Plus.API)
                 .build();
 
+
         signInButton = (SignInButton) findViewById(R.id.loginWithGoogleBtn);
         signInButton.setOnClickListener(this);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog = new Dialog(MainActivity.this);
         progressDialog.setContentView(R.layout.facebook_progress_dialog);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
+//Login with face book
         callbackManager = CallbackManager.Factory.create();
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void checkLogin(View arg0) {
 
         final GeneralFunctions generalFunctions = new GeneralFunctions();
-        boolean isOnline = generalFunctions.isOnline(getApplicationContext());
+        final boolean isOnline = generalFunctions.isOnline(getApplicationContext());
 
 
         if (isOnline == false) {
@@ -240,6 +242,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("email", emailEditText.getText().toString());
                             editor.putString("password", passEditText.getText().toString());
+                            editor.putString("profileImage", userModel.getImage());
+                            editor.putString("coverImage", userModel.getCover_image());
+
                             editor.putInt("id", GeneralAppInfo.getUserID());
                             editor.putString("isLogined", "1");
                             editor.apply();
@@ -274,6 +279,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFailure(Call<UserModel> call, Throwable t) {
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
+                        LoggingInDialog.dismiss();
+                        if (isOnline == false) {
+                            Toast.makeText(MainActivity.this, "no internet connection!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                         Log.d("----", " Error " + t.getMessage());
 
 
@@ -334,12 +344,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == 9001) {
             // data.getStringExtra("")
 
+            LoggingInDialog.show();
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
-            if (googleApiClient.hasConnectedApi(Plus.API))
-            {    LoggingInDialog.show();
+            if (googleApiClient.hasConnectedApi(Plus.API)) {
+                LoggingInDialog.show();
 
-                com.google.android.gms.plus.model.people.Person person= Plus.PeopleApi.getCurrentPerson(googleApiClient);
+                com.google.android.gms.plus.model.people.Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
                 Log.i("", "Gender: " + person.getGender());
             }
 

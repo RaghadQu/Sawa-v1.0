@@ -36,7 +36,6 @@ public class PasswordFragment extends android.app.Fragment {
 
             @Override
             public void onClick(View view) {
-                String userEmail = Password.getText().toString();
                 if ((Password.getText().toString().trim().equals(""))) {
                     Password.setError("Password is required");
                 } else if (Password.getText().toString().length() < 8) {

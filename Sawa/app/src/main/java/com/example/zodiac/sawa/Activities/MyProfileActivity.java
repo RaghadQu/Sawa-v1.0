@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -59,6 +60,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     private static final int SELECTED_PICTURE = 100;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
+    String songUrl;
     public static ObjectAnimator anim;
     static UserModel userInfo;
     static ImageView img;
@@ -71,7 +73,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     public String video_id = "rzLKwtC5q1k";
-    YouTubePlayerView youTubePlayerView;
     int youtubeFlag = 0;
     TextView followerTxt, followingTxt, newPostTxt;
     TextView profileBio;
@@ -209,12 +210,12 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     MyProfileActivity.userInfo = response.body();
                     Log.d("InfoUser", " " + userInfo.getFirst_name());
                     userName.setText((userInfo.getFirst_name() + " " + userInfo.getLast_name()));
-
-                    String imageUrl = GeneralAppInfo.SPRING_URL + "/" + userInfo.getImage();
-                    Log.d("InfoUser", " " + imageUrl);
-
-                    progressBar.setVisibility(View.INVISIBLE);
-                    Picasso.with(context).load(imageUrl).into(img);
+//
+//                    String imageUrl = GeneralAppInfo.SPRING_URL + "/" + userInfo.getImage();
+//                    Log.d("InfoUser", " " + imageUrl);
+//
+//                    progressBar.setVisibility(View.INVISIBLE);
+//                    Picasso.with(context).load(imageUrl).into(img);
                     String coverUrl = GeneralAppInfo.SPRING_URL + "/" + userInfo.getCover_image();
                     Picasso.with(context).load(coverUrl).into(coverImage);
 
@@ -260,8 +261,16 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         profileBio = (TextView) findViewById(R.id.profileBio);
         userName = (TextView) findViewById(R.id.user_profile_name);
         coverProgressBar = (ProgressBar) findViewById(R.id.coverProgressBar);
+        img = (ImageView) findViewById(R.id.user_profile_photo);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String profileImageUrl = sharedPreferences.getString("profileImage","");
 
+        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + profileImageUrl;
+        Log.d("InfoUser", " " + imageUrl);
+
+        //progressBar.setVisibility(View.INVISIBLE);
+        Picasso.with(context).load(imageUrl).into(img);
         if (isOnline == false) {
             Toast.makeText(this, "no internet connection!",
                     Toast.LENGTH_LONG).show();
@@ -293,63 +302,10 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             editMySong.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
             songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
-            //Youtube viewer for song edit text
-            songTxt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                    String pattern = "https://m.youtube.com/watch?v=";
-                    String pattern1 = "https://www.youtube.com/watch?v=";
-                    String s = String.valueOf(songTxt.getText());
-                    int i = s.indexOf(pattern);
-                    int j = s.indexOf(pattern1);
-                    Log.d("II", "" + i);
-
-                    if ((i >= 0 && youtubeFlag == 0) || (j >= 0 && youtubeFlag == 0)) {
-                        String[] split = s.split("v=");
-                        video_id = split[1];
-                        youTubePlayerView = new YouTubePlayerView(MyProfileActivity.this);
-                        youTubePlayerView.initialize(api_key, MyProfileActivity.this);
-
-                        addContentView(youTubePlayerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                        youTubePlayerView.setVisibility(View.VISIBLE);
-                        youTubePlayerView.initialize(api_key, MyProfileActivity.this);
-                        youtubeFlag = 1;
-                    } else if (i == -1 && youtubeFlag == 0) {
-                        //youTubePlayerView.setVisibility(View.INVISIBLE);
-
-                    }
-
-
-                }
-            });
-            //
             saveSong = (Button) editMySong.findViewById(R.id.saveSong);
-
             imageView = (ImageView) ViewImgDialog.findViewById(R.id.ImageView);
 
-            img = (ImageView) findViewById(R.id.user_profile_photo);
-//            mRecyclerView = (RecyclerView) findViewById(R.id.Viewer);
-//            mRecyclerView.setNestedScrollingEnabled(false);
-//
-//            mRecyclerView.setHasFixedSize(true);
-//            mLayoutManager = new LinearLayoutManager(this);
-//            mRecyclerView.setLayoutManager(mLayoutManager);
-//            mAdapter = new MyAdapter(this, myDataset, images);
-//            mRecyclerView.setAdapter(mAdapter);
-            //set click listener for edit bio
+          //  img = (ImageView) findViewById(R.id.user_profile_photo);
             editBio = (TextView) findViewById(R.id.editBio);
             toolBarText = (TextView) findViewById(R.id.toolBarText);
 
@@ -367,6 +323,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     RemovePic.setText("Remove Profile Picture");
                     changePic.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
+                            verifyStoragePermissions(MyProfileActivity.this);
+
                             imgClick.dismiss();
                             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, 100);
@@ -410,6 +368,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 
                     changePic.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
+                            verifyStoragePermissions(MyProfileActivity.this);
+
                             imgClick.dismiss();
                             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, 200);
@@ -515,6 +475,11 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                 public void onClick(View v) {
                     Log.d("EditSong", " Edit Song youtubePlayer");
                     Intent i = new Intent(getApplicationContext(), MyYoutubeActivity.class);
+                    Bundle b = new Bundle();
+                    if(songUrl!= null) {
+                        b.putString("youtubeSongUrl", songUrl);
+                    }
+                    i.putExtras(b);
                     startActivity(i);
 
                 }
@@ -544,7 +509,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         if (resultCode == RESULT_OK && (requestCode == 100 || requestCode == 200)) {
             imageuri = data.getData();
             try {
-                verifyStoragePermissions(this);
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 String path = generalFunctions.getRealPathFromURI(this, imageuri);
                 Log.d("Path", path);
@@ -557,15 +521,20 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     img.setImageBitmap(bitmap);
                 }
                 if (requestCode == 200) {
+                    Log.d("requestCode","Uploading cover image...");
+
                     coverImage.setImageBitmap(bitmap);
                 }
                 ImageConverterService imageConverter = new ImageConverterService();
                 byte[] image = imageConverter.getBytes(bitmap);
                 String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
                 Log.d("XX", "arrive");
+                GeneralFunctions generalFunctions1=new GeneralFunctions();
+               generalFunctions.uploadImagetoDB(GeneralAppInfo.getUserID(),  path, bitmap, requestCode, coverProgressBar);
+
             } catch (Exception e) {
-                Toast toast = Toast.makeText(this, "Image is large", Toast.LENGTH_SHORT);
-                toast.show();
+                Log.d("XX", "Image cannot be uploaded");
+
             }
         }
     }
@@ -591,6 +560,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                             bioTxt.setText(response.body().getUserBio());
                             statusTxt.setText(response.body().getUserStatus());
                             songTxt.setText(response.body().getUserSong());
+                            songUrl=response.body().getUserSong();
 
                         }
                     }
