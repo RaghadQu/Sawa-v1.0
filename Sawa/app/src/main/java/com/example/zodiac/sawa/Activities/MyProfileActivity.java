@@ -62,8 +62,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
     public static ObjectAnimator anim;
     static UserModel userInfo;
-    static Context context;
-    private static ProgressBar progressBar;
+    Context context;
+    ProgressBar progressBar;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -222,6 +222,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         img = (ImageView) findViewById(R.id.user_profile_photo);
         editBio = (TextView) findViewById(R.id.editBio);
         toolBarText = (TextView) findViewById(R.id.toolBarText);
+        progressBar = (ProgressBar) findViewById(R.id.profilePictureProgressBar);
         getUserInfo();
 
 //        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
@@ -238,7 +239,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             Toast.makeText(this, "no internet connection!",
                     Toast.LENGTH_LONG).show();
         } else {
-            progressBar = (ProgressBar) findViewById(R.id.profilePictureProgressBar);
             progressBar.setProgress(0);
             progressBar.setMax(100);
             anim = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
