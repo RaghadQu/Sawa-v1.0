@@ -31,7 +31,7 @@
 
         <Button
             android:id="@+id/ConfirmRequest"
-            android:layout_width="40dp"
+            android:layout_width="41dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/left_corners"
@@ -40,12 +40,26 @@
 
         <Button
             android:id="@+id/deleteRequest"
-            android:layout_width="40dp"
+            android:layout_width="41dp"
             android:layout_height="30dp"
             android:layout_marginLeft="-2dp"
             android:background="@drawable/rigth_corners"
             android:drawableLeft="@mipmap/deletemark2"
             android:paddingLeft="10dp" />
+
+        <Button
+            android:id="@+id/stateBtn"
+            android:layout_width="82dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="-80dp"
+            android:background="@drawable/remove_friend_style"
+            android:visibility="invisible"
+            android:textColor="#000"
+            android:text="Requested"
+            android:textAllCaps="false"
+             />
+
+
 
     </LinearLayout>
 

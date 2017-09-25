@@ -61,12 +61,10 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         view = LayoutInflater.from(mContext).inflate(R.layout.freinds_recycle_view, null);
         viewHolder = new UserViewHolder(view);
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GeneralAppInfo.BACKEND_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
         service = retrofit.create(FriendshipInterface.class);
-
         return viewHolder;
     }
 
@@ -75,13 +73,15 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
     public void onBindViewHolder(final UserViewHolder holder, int position) {
         final FollowFunctions friendsFunctions = new FollowFunctions();
         final MyFollowersActivity.friend user = userList.get(position);
-        final int FollowState= userList.get(position).getState();
-        if(userList.get(position).getId()== GeneralAppInfo.getUserID())
-        {
+        final int FollowState = userList.get(position).getState();
+        if (userList.get(position).getId() == GeneralAppInfo.getUserID()) {
             holder.remove.setVisibility(View.INVISIBLE);
 
-        }else{
+        } else {
 
+            if(FollowState != -1  )
+            {
+                holder.remove.setVisibility(View.VISIBLE);
             if (FollowState == 2) {
                 holder.remove.setText("Following");
             }
@@ -90,6 +90,12 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
             }
             if (FollowState == 1) {
                 holder.remove.setText("Requested");
+            }
+        }
+        else
+            {
+                holder.remove.setVisibility(View.INVISIBLE);
+
             }
         }
 
@@ -141,8 +147,6 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
         });
 
 
-
-
     }
 
     @Override
@@ -164,12 +168,26 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
 
         public UserViewHolder(View itemView) {
+
             super(itemView);
+
             ivProfile = (CircleImageView) itemView.findViewById(R.id.image);
             tvName = (TextView) itemView.findViewById(R.id.Name);
             remove = (Button) view.findViewById(R.id.Remove);
+            if (removeButtonFlag != 2) {
+                remove.setVisibility(View.VISIBLE);
+                if (removeButtonFlag == 0) // From MyFollowersActivity
+                {
+                    remove.setText("");
+                }
+                if (removeButtonFlag == 1) //From MyFollowingActivity
+                {
 
-            final Dialog ConfirmDeletion = new Dialog(mContext);
+                    remove.setText("Following");
+                }
+
+
+                final Dialog ConfirmDeletion = new Dialog(mContext);
             ConfirmDeletion.setContentView(R.layout.confirm_delete_friend_or_request_dialog);
             final Button NoBtn = (Button) ConfirmDeletion.findViewById(R.id.NoBtn);
             final Button YesBtn = (Button) ConfirmDeletion.findViewById(R.id.YesBtn);
@@ -180,114 +198,103 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
             final FriendshipInterface FriendApi = retrofit.create(FriendshipInterface.class);
             final FriendRequestModel FriendRequest = new FriendRequestModel();
 
-            if(removeButtonFlag == 0) // From MyFollowersActivity
-            {
-                remove.setText("");
-            }
-            if(removeButtonFlag ==1 ) //From MyFollowingActivity
-            {
-                remove.setText("Following");
-            }
 
-            remove.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
+                remove.setOnClickListener(new View.OnClickListener() {
 
-                    final int position = getAdapterPosition();
-                    if(userList.get(position)!= null) {
-                        if (remove.getText().toString().equals("Follow"))
-                        {
-                            FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());
-                            FriendRequest.setFriend2_id(userList.get(position).getId());
-                            final Call<FriendResponseModel> FollowCall = FriendApi.sendFollowRequest(FriendRequest);
-                            FollowCall.enqueue(new Callback<FriendResponseModel>() {
-                                @Override
-                                public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
-                                    Log.d("FastScrollResp", " " + response.code());
-                                    if (response.code() == 200) {
-                                        remove.setText("Requested");
-                                    } else {
-                                        GeneralFunctions generalFunctions = new GeneralFunctions();
-                                        generalFunctions.showErrorMesaage(getApplicationContext());
+                    @Override
+                    public void onClick(View v) {
+
+                        final int position = getAdapterPosition();
+                        if (userList.get(position) != null) {
+                            if (remove.getText().toString().equals("Follow")) {
+                                FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());
+                                FriendRequest.setFriend2_id(userList.get(position).getId());
+                                final Call<FriendResponseModel> FollowCall = FriendApi.sendFollowRequest(FriendRequest);
+                                FollowCall.enqueue(new Callback<FriendResponseModel>() {
+                                    @Override
+                                    public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
+                                        Log.d("FastScrollResp", " " + response.code());
+                                        if (response.code() == 200) {
+                                            remove.setText("Requested");
+                                        } else {
+                                            GeneralFunctions generalFunctions = new GeneralFunctions();
+                                            generalFunctions.showErrorMesaage(getApplicationContext());
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<FriendResponseModel> call, Throwable t) {
-                                    Log.d("FastScrollResp ", "Failure "+t.getMessage());
+                                    @Override
+                                    public void onFailure(Call<FriendResponseModel> call, Throwable t) {
+                                        Log.d("FastScrollResp ", "Failure " + t.getMessage());
 
-                                }
-                            });
-                        }
-                        else if (remove.getText().toString().equals("Following"))
-                        {
-                            String confirmMsg=" Are you sure you want to unfollow "+ userList.get(position).getUserName() + " ?";
-                            TextView textMsg = (TextView) ConfirmDeletion.findViewById(R.id.TextMsg);
-                            textMsg.setText(confirmMsg);
-                            ConfirmDeletion.show();
-                                    NoBtn.setOnClickListener(new View.OnClickListener() {
+                                    }
+                                });
+                            } else if (remove.getText().toString().equals("Following")) {
+                                String confirmMsg = " Are you sure you want to unfollow " + userList.get(position).getUserName() + " ?";
+                                TextView textMsg = (TextView) ConfirmDeletion.findViewById(R.id.TextMsg);
+                                textMsg.setText(confirmMsg);
+                                ConfirmDeletion.show();
+                                NoBtn.setOnClickListener(new View.OnClickListener() {
 
-                                        @Override
-                                        public void onClick(View view) {
-                                            ConfirmDeletion.dismiss();
+                                    @Override
+                                    public void onClick(View view) {
+                                        ConfirmDeletion.dismiss();
 
-                                        }
-                                    });
+                                    }
+                                });
 
-                                    YesBtn.setOnClickListener(new View.OnClickListener() {
+                                YesBtn.setOnClickListener(new View.OnClickListener() {
 
-                                        @Override
-                                        public void onClick(View view) {
-                                            ConfirmDeletion.dismiss();
-                                            callDeleteApi(position,remove);
+                                    @Override
+                                    public void onClick(View view) {
+                                        ConfirmDeletion.dismiss();
+                                        callDeleteApi(position, remove);
 
-                                        }
-                                    });
-                        }
-                        else if (remove.getText().toString().equals("Requested")){
-                           callDeleteApi(position,remove);
+                                    }
+                                });
+                            } else if (remove.getText().toString().equals("Requested")) {
+                                callDeleteApi(position, remove);
+                            }
+
                         }
 
                     }
+                });
 
-                }
-            });
 
+            }
 
         }
-
-
     }
 
-public void callDeleteApi(int position , final TextView remove){
+    public void callDeleteApi(int position, final TextView remove) {
+        Log.d("FastScrollAdapter"," 5");
 
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(GeneralAppInfo.SPRING_URL)
-            .addConverterFactory(GsonConverterFactory.create()).build();
-    FriendshipInterface FriendApi = retrofit.create(FriendshipInterface.class);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GeneralAppInfo.SPRING_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        FriendshipInterface FriendApi = retrofit.create(FriendshipInterface.class);
 
-    final FriendRequestModel FriendRequest = new FriendRequestModel();
-    FriendRequest.setFriend1_id( userList.get(position).getId());
-    FriendRequest.setFriend2_id(GeneralAppInfo.getUserID());
-    final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
-    deleteCall.enqueue(new Callback<Integer>() {
-        @Override
-        public void onResponse(Call<Integer> call, Response<Integer> response) {
-            Log.d("FastScrollResp", " " + response.code());
-            if(response.code()==200){
-                remove.setText("Follow");
+        final FriendRequestModel FriendRequest = new FriendRequestModel();
+        FriendRequest.setFriend1_id(userList.get(position).getId());
+        FriendRequest.setFriend2_id(GeneralAppInfo.getUserID());
+        final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
+        deleteCall.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Log.d("FastScrollResp", " " + response.code());
+                if (response.code() == 200) {
+                    remove.setText("Follow");
+                } else {
+                    GeneralFunctions generalFunctions = new GeneralFunctions();
+                    generalFunctions.showErrorMesaage(getApplicationContext());
+                }
             }
-            else {
-                GeneralFunctions generalFunctions = new GeneralFunctions();
-                generalFunctions.showErrorMesaage(getApplicationContext());
-            }
-        }
 
-        @Override
-        public void onFailure(Call<Integer> call, Throwable t) {
-            Log.d("fail to get friends ", "Failure to Get friends");
-        }
-    });
-}
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Log.d("fail to get friends ", "Failure to Get friends");
+            }
+        });
+    }
 }

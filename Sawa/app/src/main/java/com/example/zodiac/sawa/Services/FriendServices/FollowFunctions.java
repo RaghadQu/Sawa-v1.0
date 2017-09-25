@@ -210,7 +210,7 @@ public class FollowFunctions {
         if (GeneralAppInfo.friendMode == 0)
             friendStatus.setText("Follow");
         if (GeneralAppInfo.friendMode == 1)
-            friendStatus.setText("Pending");
+            friendStatus.setText("Requested");
         if (GeneralAppInfo.friendMode == 2)
             friendStatus.setText("Following");
 
@@ -250,7 +250,7 @@ public class FollowFunctions {
                             GeneralAppInfo.friendMode = 0;
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
-                            friendFunction.DeleteFriend(GeneralAppInfo.getUserID(), Id);
+                            friendFunction.DeleteFriend(Id, GeneralAppInfo.getUserID());
 
 
                         }
@@ -275,17 +275,18 @@ public class FollowFunctions {
                         @Override
                         public void onClick(View view) {
                             GeneralAppInfo.friendMode = 0;
-                            //        recyclerView.setVisibility(View.GONE);
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
-                            friendFunction.DeleteFriend(GeneralAppInfo.getUserID(), Id);
+                            friendFunction.DeleteFriend(Id,GeneralAppInfo.getUserID());
                         }
                     });
                 }
                 //not friend state
                 else if (GeneralAppInfo.friendMode == 0) {
+                    Log.d("OtherActivityProfile","Requested");
+
                     GeneralAppInfo.friendMode = 1;
-                    friendStatus.setText("Pending");
+                    friendStatus.setText("Requested");
                     FollowFunctions.addNewFriendShip(GeneralAppInfo.getUserID(), Id);
                 }
             }

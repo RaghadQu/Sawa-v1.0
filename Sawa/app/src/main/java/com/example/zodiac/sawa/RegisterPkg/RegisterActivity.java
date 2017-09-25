@@ -14,17 +14,16 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.zodiac.sawa.Activities.MainActivity;
+import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
-import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
+import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserRequestModel;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
+import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.SignUpModel;
-import com.example.zodiac.sawa.SpringModels.UserModel;
-import com.example.zodiac.sawa.SpringApi.AuthInterface;
 
 import java.io.ByteArrayOutputStream;
 
@@ -156,14 +155,14 @@ public class RegisterActivity extends Activity {
             authInterface = retrofit.create(AuthInterface.class);
 
 
-            final Call<UserModel> signResponse = authInterface.signUp(signUpModel);
-            signResponse.enqueue(new Callback<UserModel>() {
+            final Call<GeneralUserInfoModel> signResponse = authInterface.signUp(signUpModel);
+            signResponse.enqueue(new Callback<GeneralUserInfoModel>() {
 
 
                 @Override
-                public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
                     int statusCode = response.code();
-                    UserModel userModel = response.body();
+                    GeneralUserInfoModel userModel = response.body();
                     Log.d("SignUpNew", response.code() + " ");
                     SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
@@ -173,10 +172,10 @@ public class RegisterActivity extends Activity {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); // what 90 does ??
                         byte[] image = stream.toByteArray();
-                        GeneralAppInfo.setUserID(userModel.getId());
+                        GeneralAppInfo.setUserID(userModel.getUser().getId());
                         sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("email", userModel.getEmail());
+                        editor.putString("email", userModel.getUser().getEmail());
                         editor.putInt("id", GeneralAppInfo.getUserID());
                         editor.putString("isLogined", "1");
                         editor.apply();
@@ -195,7 +194,7 @@ public class RegisterActivity extends Activity {
                 }
 
                 @Override
-                public void onFailure(Call<UserModel> call, Throwable t) {
+                public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
                     Log.d("notvalid", "valid" + t.getMessage());

@@ -1,7 +1,7 @@
 package com.example.zodiac.sawa.Activities;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
         YouTubePlayer.OnInitializedListener {
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
-    public String video_id;
+    public String video_id= "";
     String log = "";
     private YouTubePlayerView youTubePlayerFragment;
     private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
@@ -84,14 +84,11 @@ public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.youtube_activity_dialog);
-        video_id = "LwLABSm0yYc";
-
 
         Bundle b = getIntent().getExtras();
         String youtubeSongUrl = "";
         if (b != null) {
             youtubeSongUrl = b.getString("youtubeSongUrl");
-            Log.d("Youtube link is ",youtubeSongUrl);
             if(youtubeSongUrl!=null){
             String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
             Pattern compiledPattern = Pattern.compile(pattern);

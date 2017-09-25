@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
-import com.example.zodiac.sawa.R;
+import com.example.zodiac.sawa. R;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserRequestModel;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
@@ -112,7 +113,7 @@ public class MyYoutubeActivity extends YouTubeBaseActivity implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.my_youtube_activity_dialog);
-        youTubePlayerFragment = (YouTubePlayerView) findViewById(R.id.youtubeplayerfragment);
+        //  youTubePlayerFragment = new YouTubePlayerView();
         youTubePlayerFragment = new YouTubePlayerView(this);
         youtubeEdit = (EditText) findViewById(R.id.youtubeText);
         saveBtn = (Button) findViewById(R.id.saveBtn);
@@ -190,13 +191,13 @@ public class MyYoutubeActivity extends YouTubeBaseActivity implements
                     }
 
                     //  youTubePlayerFragment.cut
+
+
                 }
 
 
             }
         });
-
-
     }
 
     @Override

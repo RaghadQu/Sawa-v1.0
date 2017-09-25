@@ -176,7 +176,7 @@ public class GeneralFunctions {
 
     public void showErrorMesaage(Context context) {
         Toast.makeText(context, "Something went worng",
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_SHORT).show();
     }
 
     public void uploadImagetoDB(int user_id,  String path, Bitmap bitmap, int requestCode, final ProgressBar imageProgressBar) {
@@ -209,7 +209,7 @@ public class GeneralFunctions {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 Log.d("ImagesCode ", " " + response.code());
-                MyProfileActivity.getUserInfo();
+               // MyProfileActivity.getUserInfo();
                 imageProgressBar.setVisibility(View.INVISIBLE);
 
             }

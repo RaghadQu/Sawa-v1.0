@@ -44,7 +44,7 @@ public interface FriendshipInterface {
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getFollowRelationState/{friend1_id}/{friend2_id}")
-    Call<FriendResponseModel> getFollowRelationState(@Path("friend1_id") int friend1_id, @Path("friend2_id") int friend2_id);
+    Call<FollowesAndFollowingResponse> getFollowRelationState(@Path("friend1_id") int friend1_id, @Path("friend2_id") int friend2_id);
 
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/friend/sendFollowRequest")

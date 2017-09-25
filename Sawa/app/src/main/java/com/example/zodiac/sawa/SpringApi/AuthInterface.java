@@ -1,5 +1,6 @@
 package com.example.zodiac.sawa.SpringApi;
 
+import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
 import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
 import com.example.zodiac.sawa.SpringModels.SignInModel;
@@ -19,7 +20,7 @@ import retrofit2.http.POST;
 public interface AuthInterface {
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/user/signIn")
-    Call<UserModel> signIn(@Body SignInModel signInModel);
+    Call<GeneralUserInfoModel> signIn(@Body SignInModel signInModel);
 
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/user/update-password")
@@ -27,13 +28,13 @@ public interface AuthInterface {
 
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/user/signUp")
-    Call<UserModel> signUp(@Body SignUpModel signUpModel);
+    Call<GeneralUserInfoModel> signUp(@Body SignUpModel signUpModel);
 
     @POST("/api/v1/user/login-with-google")
-    Call<UserModel> loginWithGoogle(@Body LoginWIthGoogleModel loginWIthGoogleModel);
+    Call<GeneralUserInfoModel> loginWithGoogle(@Body LoginWIthGoogleModel loginWIthGoogleModel);
 
     @POST("/api/v1/user/login-with-facebook")
-    Call<UserModel> loginWithFacebook(@Body LoginWithFacebookModel loginWithFacebookModel);
+    Call<GeneralUserInfoModel> loginWithFacebook(@Body LoginWithFacebookModel loginWithFacebookModel);
 
     @POST("/api/v1/user/signOut")
     Call<Integer> signOut(@Body SignOutModel signOutModel);

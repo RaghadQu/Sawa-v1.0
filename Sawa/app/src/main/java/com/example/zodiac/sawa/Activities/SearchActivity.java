@@ -1,5 +1,6 @@
 package com.example.zodiac.sawa.Activities;
 
+import android.animation.ObjectAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -8,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
@@ -31,18 +35,32 @@ public class SearchActivity extends AppCompatActivity {
     public static ArrayList<MyFollowersActivity.friend> LayoutFriendsList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
-    SearchView searchView;
+    static SearchView mSearchView;
     SearchInterface searchInterface;
+    static  ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        SearchView mSearchView = (SearchView) findViewById(R.id.search);
+         mSearchView = (SearchView) findViewById(R.id.search);
         //mSearchView.setSelected(true);
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setIconified(false);
+        LayoutFriendsList.clear();
         //   mSearchView.setFocusable(true);
+//        progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
+//        progressBar.setProgress(0);
+//        progressBar.setMax(100);
+//
+//        ObjectAnimator anim;
+//        anim = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
+//        anim.setDuration(2000);
+//        anim.setInterpolator(new DecelerateInterpolator());
+//        anim.start();
+//        progressBar.setVisibility(View.INVISIBLE);
+
 
         adapter = new FastScrollAdapter(this, LayoutFriendsList, 1);
         recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
@@ -64,10 +82,16 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
 
                 Log.d("Enter the query", " Enter search change " + s + " here is the change");
-                if (s.length() == 0) {
+                if (mSearchView.getQuery().length() == 0) {
+                    Log.d("Enter the query", "empty");
+
                     LayoutFriendsList.clear();
                     recyclerView.setAdapter(new FastScrollAdapter(SearchActivity.this, LayoutFriendsList, 1));
-                } else sendSearchQuery(s);
+                } else {
+                    Log.d("Enter the sendSearchQuery", "empty");
+
+                    sendSearchQuery(s);
+                }
 
 
                 return false;
@@ -77,8 +101,20 @@ public class SearchActivity extends AppCompatActivity {
 
 
     }
+    protected void onResume() {
+        super.onResume();
+        if (mSearchView.getQuery().length() == 0) {
+            Log.d("Enter the query onResume", "empty");
+
+            LayoutFriendsList.clear();
+            recyclerView.setAdapter(new FastScrollAdapter(SearchActivity.this, LayoutFriendsList, 1));
+        } else {
+            sendSearchQuery(mSearchView.getQuery().toString());
+        }
+    }
 
     public void sendSearchQuery(String word) {
+      //  progressBar.setVisibility(View.VISIBLE);
         LayoutFriendsList.clear();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -112,9 +148,13 @@ public class SearchActivity extends AppCompatActivity {
                             Log.d("Not null", Integer.toString(userModelList.get(0).getId()));
                             for (int i = 0; i < userModelList.size(); i++) {
                                 LayoutFriendsList.add(new MyFollowersActivity.friend(Integer.valueOf(userModelList.get(i).getId()), userModelList.get(i).getImage(),
-                                        userModelList.get(i).getFirst_name() + " " + userModelList.get(i).getLast_name(),0));
-                                recyclerView.setAdapter(new FastScrollAdapter(SearchActivity.this, LayoutFriendsList, 1));
+                                        userModelList.get(i).getFirst_name() + " " + userModelList.get(i).getLast_name(),-1));
+                                //progressBar.setVisibility(View.INVISIBLE);
                             }
+                            recyclerView.setAdapter(new FastScrollAdapter(SearchActivity.this, LayoutFriendsList, 2));
+
+
+
                         }
                     }
                 }
