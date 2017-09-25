@@ -62,9 +62,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
     public static ObjectAnimator anim;
     static UserModel userInfo;
-    static ImageView img;
-    static ImageView coverImage;
-    static TextView userName;
     static Context context;
     private static ProgressBar progressBar;
     private static String[] PERMISSIONS_STORAGE = {
@@ -72,6 +69,9 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     public String video_id = "rzLKwtC5q1k";
+    ImageView img;
+    ImageView coverImage;
+    TextView userName;
     String songUrl;
     int youtubeFlag = 0;
     TextView followerTxt, followingTxt, newPostTxt;
@@ -190,21 +190,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
-    public void getUserInfo() {
-        Log.d("InfoUser", " Enter here " + GeneralAppInfo.getGeneralUserInfo().getUser());
-        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
-
-        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
-        Log.d("InfoUser", " " + imageUrl);
-        progressBar.setVisibility(View.INVISIBLE);
-        Bitmap image = getBitmapfromUrl(imageUrl);
-        img.setImageBitmap(image);
-        // Picasso.with(context).load(imageUrl).into(img);
-        String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
-        Picasso.with(context).load(coverUrl).into(coverImage);
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -216,7 +201,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getUserInfo();
         setContentView(R.layout.activity_my_profile);
         context = this;
         GeneralFunctions generalFunctions = new GeneralFunctions();
@@ -235,20 +219,20 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         coverProgressBar = (ProgressBar) findViewById(R.id.coverProgressBar);
         songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
         saveSong = (Button) editMySong.findViewById(R.id.saveSong);
-
         img = (ImageView) findViewById(R.id.user_profile_photo);
         editBio = (TextView) findViewById(R.id.editBio);
         toolBarText = (TextView) findViewById(R.id.toolBarText);
+        getUserInfo();
 
-        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
-        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
-        //   progressBar.setVisibility(View.INVISIBLE);
-        Bitmap image = getBitmapfromUrl(imageUrl);
-        img.setImageBitmap(image);
-        // Picasso.with(context).load(imageUrl).into(img);
-        String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
-        Picasso.with(context).load(coverUrl).into(coverImage);
-        profileBio.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
+//        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
+//        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
+//        //   progressBar.setVisibility(View.INVISIBLE);
+//        Bitmap image = getBitmapfromUrl(imageUrl);
+//        img.setImageBitmap(image);
+//        // Picasso.with(context).load(imageUrl).into(img);
+//        String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
+//        Picasso.with(context).load(coverUrl).into(coverImage);
+//        profileBio.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
 
         if (isOnline == false) {
             Toast.makeText(this, "no internet connection!",
@@ -498,6 +482,18 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                 toast.show();
             }
         }
+    }
+
+    public void getUserInfo() {
+        Log.d("InfoUser", " Enter here " + GeneralAppInfo.getGeneralUserInfo().getUser());
+        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
+        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
+        Log.d("InfoUser", " " + imageUrl);
+        progressBar.setVisibility(View.INVISIBLE);
+        Picasso.with(context).load(imageUrl).into(img);
+        String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
+        Picasso.with(context).load(coverUrl).into(coverImage);
+
     }
 
     public void fillAbout() {
