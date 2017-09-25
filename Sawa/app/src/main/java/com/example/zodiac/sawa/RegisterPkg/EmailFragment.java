@@ -14,10 +14,11 @@ import android.widget.ProgressBar;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Services.ValidationService;
-import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
+import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.Services.ValidationService;
 
 import retrofit2.Call;
 import retrofit2.Callback;

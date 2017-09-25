@@ -99,20 +99,9 @@ public class EditProfileActivity extends Activity {
     }
 
     public void FillUserInfo() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.SPRING_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        service = retrofit.create(AboutUserInterface.class);
 
-        final Call<UserModel> userModelCall = service.getUserInfo(GeneralAppInfo.getUserID());
-        userModelCall.enqueue(new Callback<UserModel>() {
-            @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                String userBirthdate = "";
-
-                int statusCode = response.code();
-                if (statusCode == 200) {
-                    userModel = response.body();
+                    String userBirthdate="";
+                    userModel = GeneralAppInfo.generalUserInfo.getUser();
                     firstName.setText(userModel.getFirst_name());
                     lastName.setText(userModel.getLast_name());
                     if (userModel.getGender().equals("female"))
@@ -131,16 +120,7 @@ public class EditProfileActivity extends Activity {
                     String month = separated[1];
                     String day = separated[2];
                     birthDate.updateDate(Integer.valueOf(year), Integer.valueOf(month) - 1, Integer.valueOf(day));
-                }
-            }
 
-            @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
-                GeneralFunctions generalFunctions = new GeneralFunctions();
-                generalFunctions.showErrorMesaage(getApplicationContext());
-                Log.d("----", " Error " + t.getMessage());
-            }
-        });
 
     }
 }

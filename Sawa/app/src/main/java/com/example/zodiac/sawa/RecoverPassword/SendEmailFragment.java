@@ -13,11 +13,12 @@ import android.widget.EditText;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Services.EmailSenderService.BackgroungSender;
-import com.example.zodiac.sawa.Services.ValidationService;
-import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
+import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.Services.ValidationService;
+import com.example.zodiac.sawa.Services.EmailSenderService.BackgroungSender;
 
 import java.util.UUID;
 

@@ -33,6 +33,7 @@ import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
 import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
 import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -51,6 +52,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,29 +68,28 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+    static Dialog LoggingInDialog;
     LoginButton loginButton;
     AuthInterface service;
     CallbackManager callbackManager;
     SignInButton signInButton;
     CircleImageView fb, google;
     GoogleApiClient googleApiClient;
-    static Dialog LoggingInDialog;
     Dialog progressDialog;
+    TextView AppTitle;
     private EditText emailEditText;
     private EditText passEditText;
-    TextView AppTitle;
-
+    SharedPreferences sharedPreferences ;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.gc();
+        sharedPreferences= getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         GeneralFunctions generalFunctions = new GeneralFunctions();
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
-
-
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
                 .repeat(0)
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).addApi(Plus.API)
                 .build();
 
-
         signInButton = (SignInButton) findViewById(R.id.loginWithGoogleBtn);
         signInButton.setOnClickListener(this);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -120,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog.setContentView(R.layout.facebook_progress_dialog);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 //Login with face book
+
         callbackManager = CallbackManager.Factory.create();
+
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -152,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d("Facebook gender", "" + object.getString("gender"));
                             //  Log.d("Facebook gender", "" + object.getString("user_birthday"));
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -162,22 +163,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location"); // Parámetros que pedimos a facebook
                 request.setParameters(parameters);
                 request.executeAsync();
-
-
             }
 
             @Override
             public void onCancel() {
                 Log.d("Facebook token ", "Canceld");
-
-
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d("FACEBOOK", "facebook " + error.getMessage());
-
-
             }
         });
         //Sign in with google section
@@ -189,18 +184,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //end section
 
         //check if the user is already signed in
-        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         int id = sharedPreferences.getInt("id", -1);
         String isLogined = sharedPreferences.getString("isLogined", "");
         GeneralAppInfo.setUserID(id);
 
-
         if ((isLogined.equals("1"))) {
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString("generalUserInfo","");
+            GeneralAppInfo.setGeneralUserInfo(gson.fromJson(json, GeneralUserInfoModel.class));
+            Log.d("Logged",GeneralAppInfo.getGeneralUserInfo()+ " " +json);
             Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
             startActivity(i);
             finish();
         }
-
 
         emailEditText = (EditText) findViewById(R.id.username);
         passEditText = (EditText) findViewById(R.id.password);
@@ -216,10 +212,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final GeneralFunctions generalFunctions = new GeneralFunctions();
         final boolean isOnline = generalFunctions.isOnline(getApplicationContext());
-
-
-        if (isOnline == false) {
-            Toast.makeText(this, "no internet connection!",
+       if (isOnline == false) {
+             Toast.makeText(this, "no internet connection!",
                     Toast.LENGTH_LONG).show();
         } else {
             final SignInModel signInModel = new SignInModel();
@@ -242,40 +236,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (statusCode == 200) {
 
                             GeneralAppInfo.setUserID(Integer.valueOf(generalUserInfoModel.getUser().getId()));
-                            sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("email", emailEditText.getText().toString());
-                            editor.putString("password", passEditText.getText().toString());
-                            editor.putString("profileImage", generalUserInfoModel.getUser().getImage());
-                            editor.putString("coverImage", generalUserInfoModel.getUser().getCover_image());
+                            GeneralUserInfoModel generalUserModel = response.body();
 
-                            editor.putInt("id", GeneralAppInfo.getUserID());
-                            editor.putString("isLogined", "1");
-                            editor.apply();
-                            GeneralAppInfo.generalUserInfo= response.body();
-                            Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
-                            LoggingInDialog.dismiss();
-                            startActivity(i);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            if (statusCode == 200) {
 
-                            finish();
+                                GeneralAppInfo.setGeneralUserInfo(generalUserModel);
+                                GeneralAppInfo.setUserID(Integer.valueOf(generalUserModel.getUser().getId()));
+                                sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                Gson gson = new Gson();
+                                String json = gson.toJson(generalUserModel);
+                                editor.putString("generalUserInfo", json);
+                                editor.putString("email", emailEditText.getText().toString());
+                                editor.putString("password", passEditText.getText().toString());
+                                editor.putString("profileImage", generalUserInfoModel.getUser().getImage());
+                                editor.putString("coverImage", generalUserInfoModel.getUser().getCover_image());
+
+                                editor.putInt("id", GeneralAppInfo.getUserID());
+                                editor.putString("isLogined", "1");
+                                editor.apply();
+                                Log.d("Logged", " sign in " + json);
+
+                                Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+                                LoggingInDialog.dismiss();
+                                startActivity(i);
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                                finish();
 
 
-                        } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+                            } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
 
-                            LoggingInDialog.dismiss();
-                            generalFunctions.showErrorMesaage(getApplicationContext());
-                        } else {
-                            LoggingInDialog.dismiss();
-                            YoYo.with(Techniques.Shake)
-                                    .duration(700)
-                                    .repeat(0)
-                                    .playOn(findViewById(R.id.username));
-                            YoYo.with(Techniques.Shake)
-                                    .duration(700)
-                                    .repeat(0)
-                                    .playOn(findViewById(R.id.password));
-                            emailEditText.setError("Invalid Email or Password");
+                                LoggingInDialog.dismiss();
+                                generalFunctions.showErrorMesaage(getApplicationContext());
+                            } else {
+                                LoggingInDialog.dismiss();
+                                YoYo.with(Techniques.Shake)
+                                        .duration(700)
+                                        .repeat(0)
+                                        .playOn(findViewById(R.id.username));
+                                YoYo.with(Techniques.Shake)
+                                        .duration(700)
+                                        .repeat(0)
+                                        .playOn(findViewById(R.id.password));
+                                emailEditText.setError("Invalid Email or Password");
+                            }
                         }
                     }
 
@@ -358,6 +363,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("", "Gender: " + person.getGender());
             }
 
+            com.google.android.gms.plus.model.people.Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
+            Log.i("", "Gender: " + person.getGender());
         } else {
             progressDialog.dismiss();
             callbackManager.onActivityResult(requestCode, responseCode, data);
@@ -407,15 +414,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             loginWIthGoogleModel.setFirstName(account.getGivenName());
             loginWIthGoogleModel.setLastName(account.getFamilyName());
             loginWIthGoogleModel.setGender("male");
-
             loginWIthGoogleModel.setId(userId);
-
             loginWIthGoogleModel.setImage(account.getPhotoUrl().toString());
-
             loginWithGoogle(loginWIthGoogleModel);
             Log.d("account.photo", account.getPhotoUrl().toString());
             Log.d("Google email", email);
-
             Log.d("account.getIdToken();", account.getIdToken());
             Log.d("account.getIdToken();", account.getServerAuthCode());
 
@@ -424,10 +427,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void loginWithGoogle(LoginWIthGoogleModel loginWIthGoogleModel) {
-        Log.d("-----", " enter here");
 
-        final SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        Log.d("-----", " enter here");
+       // final SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
         final Call<GeneralUserInfoModel> userModelCall = service.loginWithGoogle(loginWIthGoogleModel);
         userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
@@ -436,14 +437,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 int statusCode = response.code();
-                GeneralUserInfoModel userModel = response.body();
+                GeneralUserInfoModel generalUserModel = response.body();
                 //SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
                 if (statusCode == 200 || statusCode == 202) {
 
-                    GeneralAppInfo.setUserID(Integer.valueOf(userModel.getUser().getId()));
-                    //sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                    GeneralAppInfo.setUserID(Integer.valueOf(generalUserModel.getUser().getId()));
+                    GeneralAppInfo.setGeneralUserInfo(generalUserModel);
+                    sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                    Gson gson = new Gson();
+                    String json = gson.toJson(generalUserModel);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("generalUserInfo", json);
                     editor.putString("email", emailEditText.getText().toString());
                     editor.putString("password", passEditText.getText().toString());
                     editor.putInt("id", GeneralAppInfo.getUserID());
@@ -482,23 +487,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void loginWithFacebook(LoginWithFacebookModel loginWithFacebookModel) {
 
-        final SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+      //  final SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
         final Call<GeneralUserInfoModel> userModelCall = service.loginWithFacebook(loginWithFacebookModel);
         userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
             @Override
             public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
                 int statusCode = response.code();
-                Log.d("-----", " enter request " + statusCode);
-                GeneralUserInfoModel userModel = response.body();
-                //SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                GeneralUserInfoModel generalUserModel = response.body();
 
                 if (statusCode == 200 || statusCode == 202) {
-                    Log.d("-----", " enter here" + userModel.getUser().getId());
-
-                    GeneralAppInfo.setUserID(Integer.valueOf(userModel.getUser().getId()));
-                    //sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                    GeneralAppInfo.setUserID(Integer.valueOf(generalUserModel.getUser().getId()));
+                    GeneralAppInfo.setGeneralUserInfo(generalUserModel);
+                    sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                    Gson gson = new Gson();
+                    String json = gson.toJson(generalUserModel);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("generalUserInfo", json);
                     editor.putString("email", emailEditText.getText().toString());
                     editor.putString("password", passEditText.getText().toString());
                     editor.putInt("id", GeneralAppInfo.getUserID());
@@ -525,7 +530,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(getApplicationContext());
-                Log.d("FACEBOOKFACEOOK", "facebook failure " + t.getMessage());
 
 
             }

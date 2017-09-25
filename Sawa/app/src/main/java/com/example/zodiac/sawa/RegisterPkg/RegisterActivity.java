@@ -14,16 +14,19 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
+import com.example.zodiac.sawa.Activities.MainActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
+import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
-import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserRequestModel;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.SignUpModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
+import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 
@@ -162,31 +165,36 @@ public class RegisterActivity extends Activity {
                 @Override
                 public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
                     int statusCode = response.code();
-                    GeneralUserInfoModel userModel = response.body();
+                    GeneralUserInfoModel generalUserModel = response.body();
                     Log.d("SignUpNew", response.code() + " ");
                     SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
                     if (response.code() == 200) {
-                        updateAbout("", "", "");
+                        LoggingInDialog.dismiss();
                         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profileimage);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); // what 90 does ??
                         byte[] image = stream.toByteArray();
-                        GeneralAppInfo.setUserID(userModel.getUser().getId());
+                        GeneralAppInfo.setUserID(Integer.valueOf(generalUserModel.getUser().getId()));
+                        GeneralAppInfo.setGeneralUserInfo(generalUserModel);
                         sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                        Gson gson = new Gson();
+                        String json = gson.toJson(generalUserModel);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("email", userModel.getUser().getEmail());
+                        editor.putString("generalUserInfo", json);
+                        sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                        editor.putString("email", generalUserModel.getUser().getEmail());
                         editor.putInt("id", GeneralAppInfo.getUserID());
                         editor.putString("isLogined", "1");
                         editor.apply();
                         Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
-                        LoggingInDialog.dismiss();
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         startActivity(i);
                         finish();
 
                     } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+                        LoggingInDialog.dismiss();
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
                     } else Log.d("valid", "already added");
@@ -195,6 +203,7 @@ public class RegisterActivity extends Activity {
 
                 @Override
                 public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
+                    LoggingInDialog.dismiss();
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
                     Log.d("notvalid", "valid" + t.getMessage());
@@ -202,29 +211,6 @@ public class RegisterActivity extends Activity {
             });
         }
     }
-	
-	 public static void updateAbout(final String bioText, final String statusText, final String songText) {
-        AboutUserRequestModel aboutUserModel = new AboutUserRequestModel(GeneralAppInfo.getUserID(), bioText, statusText, songText);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.SPRING_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        AboutUserInterface aboutUserApi = retrofit.create(AboutUserInterface.class);
-
-        Call<AboutUserResponseModel> call = aboutUserApi.addNewAboutUser(aboutUserModel);
-        call.enqueue(new Callback<AboutUserResponseModel>() {
-            @Override
-            public void onResponse(Call<AboutUserResponseModel> call, Response<AboutUserResponseModel> response) {
-                Log.d("AboutUserUpdate", "Done successfully");
-            }
-
-            @Override
-            public void onFailure(Call<AboutUserResponseModel> call, Throwable t) {
-                Log.d("AboutUserUpdate", "Failure " + t.getMessage());
-            }
-        });
-
-    }
-
 
 }
 

@@ -1,8 +1,6 @@
 package com.example.zodiac.sawa.SpringModels;
 
-/**
- * Created by exalt on 9/24/2017.
- */
+import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 
 public class GeneralUserInfoModel {
 

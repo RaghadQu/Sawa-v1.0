@@ -42,6 +42,7 @@ import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -51,9 +52,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import com.example.zodiac.sawa.Services.BadgeViewService;
-
 
 import static com.example.zodiac.sawa.R.id.container;
 
@@ -70,7 +68,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
     static Context context;
     static int tabNumber;
     /**
-     *
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
@@ -156,7 +153,9 @@ public class HomeTabbedActivity extends AppCompatActivity {
 //        userInfo = GeneralAppInfo.generalUserInfo.getUser();
 //        Log.d("InfoUser", " " + userInfo.getFirst_name());
 //        userName.setText((userInfo.getFirst_name() + " " + userInfo.getLast_name()));
-       Retrofit retrofit = new Retrofit.Builder()
+        Log.d("InfoUser", " Enter here ");
+
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
         AboutUserInterface service = retrofit.create(AboutUserInterface.class);
@@ -252,19 +251,13 @@ public class HomeTabbedActivity extends AppCompatActivity {
         GeneralFunctions generalFunctions = new GeneralFunctions();
         generalFunctions.storeUserIdWithDeviceId(GeneralAppInfo.getUserID(), android_id);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         imageView = (ImageView) findViewById(R.id.imageView);
-
         mViewPager.setOffscreenPageLimit(10);
-
         sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         TabLayout.Tab tab = tabLayout.getTabAt(1);
         tab.setIcon(R.drawable.notification);
@@ -360,6 +353,8 @@ public class HomeTabbedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -397,13 +392,13 @@ public class HomeTabbedActivity extends AppCompatActivity {
             return fragment;
         }
 
-          @Override
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
 
-              if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
-                HomeTabbedActivity.tabNumber =1;
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+                HomeTabbedActivity.tabNumber = 1;
                 GeneralFunctions.getSharedPreferences(getContext());
                 View rootView = inflater.inflate(R.layout.fragment_home, container, false);
                 FloatingActionButton addPost = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -419,7 +414,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 });
                 return rootView;
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
-                  HomeTabbedActivity.tabNumber =2;
+                HomeTabbedActivity.tabNumber = 2;
 
                 //NotificationTab;
                 View rootView = inflater.inflate(R.layout.notification_tab, container, false);
@@ -432,19 +427,24 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 return rootView;
 
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
-                  HomeTabbedActivity.tabNumber =3;
+                HomeTabbedActivity.tabNumber = 3;
 
                 GeneralFunctions.getSharedPreferences(getContext());
                 View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
                 userName = (TextView) rootView.findViewById(R.id.userName);
-                getUserInfo();
-                CircleImageView followerIcon, followingIcon, reqeustsIcon, settingsIcon, logoutIcon;
+                userName.setText(GeneralAppInfo.generalUserInfo.getUser().getFirst_name()+ " " +GeneralAppInfo.generalUserInfo.getUser().getLast_name());
+               // getUserInfo();
+                CircleImageView profilePicture, followerIcon, followingIcon, reqeustsIcon, settingsIcon, logoutIcon;
+                profilePicture = (CircleImageView) rootView.findViewById(R.id.profile_picture);
+                Picasso.with(context).load(GeneralAppInfo.SPRING_URL+'/'+GeneralAppInfo.generalUserInfo.getUser().getImage()).into(profilePicture);
                 followerIcon = (CircleImageView) rootView.findViewById(R.id.followersIcon);
                 followingIcon = (CircleImageView) rootView.findViewById(R.id.FollowingIcon);
                 reqeustsIcon = (CircleImageView) rootView.findViewById(R.id.RequestsIcon);
                 settingsIcon = (CircleImageView) rootView.findViewById(R.id.settingsIcon);
                 logoutIcon = (CircleImageView) rootView.findViewById(R.id.logoutIcon);
                 LinearLayout showProfileLayout = (LinearLayout) rootView.findViewById(R.id.showProfileLayout);
+                profilePicture.setImageBitmap(GeneralAppInfo.getUserProfilePicture());
+
 
 
                 showProfileLayout.setOnClickListener(new View.OnClickListener() {
@@ -518,20 +518,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return " ";
         }
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        if(HomeTabbedActivity.tabNumber != 1){
-
-    }
-    else
-        {
-            super.onBackPressed();
-        }
-
-
     }
 
 }
