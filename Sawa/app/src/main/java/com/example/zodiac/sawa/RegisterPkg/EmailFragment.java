@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
+import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.SignInModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
@@ -69,10 +70,10 @@ public class EmailFragment extends android.app.Fragment {
                     final SignInModel signInModel = new SignInModel();
                     signInModel.setEmail(email.getText().toString());
                     signInModel.setPassword("@(-_-)@");
-                    final Call<UserModel> userModelCall = service.signIn(signInModel);
-                    userModelCall.enqueue(new Callback<UserModel>() {
+                    final Call<GeneralUserInfoModel> userModelCall = service.signIn(signInModel);
+                    userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
                         @Override
-                        public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
                             checkEmailProgress.setVisibility(View.INVISIBLE);
 
                             Log.d("EmailChecker", " " + response.code());
@@ -89,7 +90,7 @@ public class EmailFragment extends android.app.Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<UserModel> call, Throwable t) {
+                        public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                             GeneralFunctions generalFunctions = new GeneralFunctions();
                             generalFunctions.showErrorMesaage(getActivity().getApplicationContext());
                             checkEmailProgress.setVisibility(View.INVISIBLE);

@@ -19,8 +19,6 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -29,7 +27,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,12 +43,10 @@ import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -65,7 +60,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     private static final int SELECTED_PICTURE = 100;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
-    String songUrl;
     public static ObjectAnimator anim;
     static UserModel userInfo;
     static ImageView img;
@@ -78,6 +72,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     public String video_id = "rzLKwtC5q1k";
+    String songUrl;
     int youtubeFlag = 0;
     TextView followerTxt, followingTxt, newPostTxt;
     TextView profileBio;
@@ -195,52 +190,18 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
-    public  void getUserInfo() {
-        Log.d("InfoUser", " Enter here ");
+    public void getUserInfo() {
+        Log.d("InfoUser", " Enter here " + GeneralAppInfo.getGeneralUserInfo().getUser());
+        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.SPRING_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        AboutUserInterface service = retrofit.create(AboutUserInterface.class);
-        Log.d("InfoUser", " Enter before call ");
-
-        final Call<UserModel> userModelCall = service.getUserInfo(GeneralAppInfo.getUserID());
-        userModelCall.enqueue(new Callback<UserModel>() {
-            @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-
-                Log.d("InfoUser", " " + response.code());
-                int statusCode = response.code();
-                if (statusCode == 200) {
-                    MyProfileActivity.userInfo = response.body();
-                    Log.d("InfoUser", " " + userInfo.getFirst_name());
-                    userName.setText((userInfo.getFirst_name() + " " + userInfo.getLast_name()));
-
-                    String imageUrl = GeneralAppInfo.SPRING_URL + "/" + userInfo.getImage();
-                    Log.d("InfoUser", " " + imageUrl);
-
-                    progressBar.setVisibility(View.INVISIBLE);
-
-                    Bitmap image = getBitmapfromUrl(imageUrl);
-                    img.setImageBitmap(image);
-                   // Picasso.with(context).load(imageUrl).into(img);
-                    String coverUrl = GeneralAppInfo.SPRING_URL + "/" + userInfo.getCover_image();
-                    Picasso.with(context).load(coverUrl).into(coverImage);
-
-
-                } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
-                    GeneralFunctions generalFunctions = new GeneralFunctions();
-                    generalFunctions.showErrorMesaage(MyProfileActivity.context);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
-                GeneralFunctions generalFunctions = new GeneralFunctions();
-                generalFunctions.showErrorMesaage(MyProfileActivity.context);
-                Log.d("----", " Error " + t.getMessage());
-            }
-        });
+        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
+        Log.d("InfoUser", " " + imageUrl);
+        progressBar.setVisibility(View.INVISIBLE);
+        Bitmap image = getBitmapfromUrl(imageUrl);
+        img.setImageBitmap(image);
+        // Picasso.with(context).load(imageUrl).into(img);
+        String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
+        Picasso.with(context).load(coverUrl).into(coverImage);
 
     }
 
@@ -268,8 +229,26 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         coverImage = (ImageView) findViewById(R.id.coverImage);
         profileBio = (TextView) findViewById(R.id.profileBio);
         userName = (TextView) findViewById(R.id.user_profile_name);
+        editMySong = new Dialog(this);
+        editMySong.setContentView(R.layout.edit_song_profile_dialog);
+        editMySong.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         coverProgressBar = (ProgressBar) findViewById(R.id.coverProgressBar);
+        songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
+        saveSong = (Button) editMySong.findViewById(R.id.saveSong);
 
+        img = (ImageView) findViewById(R.id.user_profile_photo);
+        editBio = (TextView) findViewById(R.id.editBio);
+        toolBarText = (TextView) findViewById(R.id.toolBarText);
+
+        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
+        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
+        //   progressBar.setVisibility(View.INVISIBLE);
+        Bitmap image = getBitmapfromUrl(imageUrl);
+        img.setImageBitmap(image);
+        // Picasso.with(context).load(imageUrl).into(img);
+        String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
+        Picasso.with(context).load(coverUrl).into(coverImage);
+        profileBio.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
 
         if (isOnline == false) {
             Toast.makeText(this, "no internet connection!",
@@ -282,12 +261,14 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             anim.setDuration(2000);
             anim.setInterpolator(new DecelerateInterpolator());
             anim.start();
-            progressBar.setVisibility(View.VISIBLE);
+            //   progressBar.setVisibility(View.VISIBLE);
             imgClick = new Dialog(this);
             imgClick.setContentView(R.layout.profile_picture_dialog);
 
             ViewImgDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             ViewImgDialog.setContentView(R.layout.view_profilepic_dialog);
+            imageView = (ImageView) ViewImgDialog.findViewById(R.id.ImageView);
+
 
             editMyBio = new Dialog(this);
             editMyBio.setContentView(R.layout.edit_my_bio_dialog);
@@ -297,17 +278,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             statusTxt = (EditText) editMyBio.findViewById(R.id.statusTxt);
             fillAbout();
 
-            editMySong = new Dialog(this);
-            editMySong.setContentView(R.layout.edit_song_profile_dialog);
-            editMySong.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-            songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
-            saveSong = (Button) editMySong.findViewById(R.id.saveSong);
-            imageView = (ImageView) ViewImgDialog.findViewById(R.id.ImageView);
-
-            img = (ImageView) findViewById(R.id.user_profile_photo);
-            editBio = (TextView) findViewById(R.id.editBio);
-            toolBarText = (TextView) findViewById(R.id.toolBarText);
 
             //Profile Picture
             img.setOnClickListener(new View.OnClickListener() {
@@ -344,8 +314,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                         public void onClick(View v) {
                             imgClick.dismiss();
                             removeImage(0);
-                            //  imageView.setImageDrawable(img.getDrawable());
-                            // ViewImgDialog.show();
+
 
                         }
                     });
@@ -472,7 +441,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     Log.d("EditSong", " Edit Song youtubePlayer");
                     Intent i = new Intent(getApplicationContext(), MyYoutubeActivity.class);
                     Bundle b = new Bundle();
-                    if(songUrl!= null) {
+                    if (songUrl != null) {
                         b.putString("youtubeSongUrl", songUrl);
                     }
                     i.putExtras(b);
@@ -532,41 +501,12 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     }
 
     public void fillAbout() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.SPRING_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        AboutUserInterface aboutUserApi = retrofit.create(AboutUserInterface.class);
-        Call<AboutUserResponseModel> call = aboutUserApi.getAboutUser(GeneralAppInfo.getUserID());
-        call.enqueue(new Callback<AboutUserResponseModel>() {
-            @Override
-            public void onResponse(Call<AboutUserResponseModel> call, Response<AboutUserResponseModel> response) {
-                if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
-                    GeneralFunctions generalFunctions = new GeneralFunctions();
-                    generalFunctions.showErrorMesaage(getApplicationContext());
-                } else {
 
-
-                    if (response != null) {
-                        if (response.body() != null) {
-                            profileBio.setText(response.body().getUserBio());
-                            bioTxt.setText(response.body().getUserBio());
-                            statusTxt.setText(response.body().getUserStatus());
-                            songTxt.setText(response.body().getUserSong());
-                            songUrl=response.body().getUserSong();
-
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AboutUserResponseModel> call, Throwable t) {
-                GeneralFunctions generalFunctions = new GeneralFunctions();
-                generalFunctions.showErrorMesaage(MyProfileActivity.context);
-                Log.d("AboutUserFill", "Failure " + t.getMessage());
-            }
-        });
-
+        profileBio.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
+        bioTxt.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
+        statusTxt.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserStatus());
+        songTxt.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserSong());
+        songUrl = GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserSong();
     }
 
     public void updateAbout(final String bioText, final String statusText, final String songText) {
@@ -624,7 +564,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 Log.d("ImagesCode ", " " + response.code());
-                getUserInfo();
+                //    getUserInfo();
             }
 
             @Override
@@ -636,10 +576,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 
     }
 
-    public Bitmap getBitmapfromUrl(String imageUrl)
-    {
-        try
-        {
+    public Bitmap getBitmapfromUrl(String imageUrl) {
+        try {
             URL url = new URL(imageUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
@@ -648,8 +586,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             Bitmap bitmap = BitmapFactory.decodeStream(input);
             return bitmap;
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
