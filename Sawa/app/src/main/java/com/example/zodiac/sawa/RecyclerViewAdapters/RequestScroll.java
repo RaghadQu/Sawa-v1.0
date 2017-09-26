@@ -163,6 +163,7 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
                                   //  MyRequestsActivity.FriendsList.remove(position);
                                     //MyRequestsActivity.LayoutFriendsList.remove(position);
                                     changeButtonState(position);
+
                                 }
                             }
                             @Override

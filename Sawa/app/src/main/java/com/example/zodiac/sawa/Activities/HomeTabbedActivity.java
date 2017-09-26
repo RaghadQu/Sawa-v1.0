@@ -149,6 +149,11 @@ public class HomeTabbedActivity extends AppCompatActivity {
     }
 
     public static void getUserInfo() {
+//        Log.d("InfoUser", " Enter here ");
+//
+//        userInfo = GeneralAppInfo.generalUserInfo.getUser();
+//        Log.d("InfoUser", " " + userInfo.getFirst_name());
+//        userName.setText((userInfo.getFirst_name() + " " + userInfo.getLast_name()));
         Log.d("InfoUser", " Enter here ");
 
         Retrofit retrofit = new Retrofit.Builder()

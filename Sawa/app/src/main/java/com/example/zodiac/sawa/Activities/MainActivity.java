@@ -25,6 +25,10 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecoverPassword.RecoverPass;
 import com.example.zodiac.sawa.RegisterPkg.RegisterActivity;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
+import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
+import com.example.zodiac.sawa.SpringModels.SignInModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
 import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
@@ -115,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog = new Dialog(MainActivity.this);
         progressDialog.setContentView(R.layout.facebook_progress_dialog);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//Login with face book
+
         callbackManager = CallbackManager.Factory.create();
 
 
@@ -221,47 +227,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                         int statusCode = response.code();
-                        GeneralUserInfoModel generalUserModel = response.body();
+                        Log.d("-----", " enter request " + statusCode);
+                        GeneralUserInfoModel generalUserInfoModel = response.body();
+                        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
                         if (statusCode == 200) {
 
-                            GeneralAppInfo.setGeneralUserInfo(generalUserModel);
-                            GeneralAppInfo.setUserID(Integer.valueOf(generalUserModel.getUser().getId()));
-                            sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            Gson gson = new Gson();
-                            String json = gson.toJson(generalUserModel);
-                            editor.putString("generalUserInfo", json);
-                            editor.putString("email", emailEditText.getText().toString());
-                            editor.putString("password", passEditText.getText().toString());
-                            editor.putInt("id", GeneralAppInfo.getUserID());
-                            editor.putString("isLogined", "1");
-                            editor.apply();
-                            Log.d("Logged"," sign in "+json);
+                            GeneralAppInfo.setUserID(Integer.valueOf(generalUserInfoModel.getUser().getId()));
+                            GeneralUserInfoModel generalUserModel = response.body();
 
-                            Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
-                            LoggingInDialog.dismiss();
-                            startActivity(i);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            if (statusCode == 200) {
 
-                            finish();
+                                GeneralAppInfo.setGeneralUserInfo(generalUserModel);
+                                GeneralAppInfo.setUserID(Integer.valueOf(generalUserModel.getUser().getId()));
+                                sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                Gson gson = new Gson();
+                                String json = gson.toJson(generalUserModel);
+                                editor.putString("generalUserInfo", json);
+                                editor.putString("email", emailEditText.getText().toString());
+                                editor.putString("password", passEditText.getText().toString());
+                                editor.putString("profileImage", generalUserInfoModel.getUser().getImage());
+                                editor.putString("coverImage", generalUserInfoModel.getUser().getCover_image());
+
+                                editor.putInt("id", GeneralAppInfo.getUserID());
+                                editor.putString("isLogined", "1");
+                                editor.apply();
+                                Log.d("Logged", " sign in " + json);
+
+                                Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+                                LoggingInDialog.dismiss();
+                                startActivity(i);
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                                finish();
 
 
-                        } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+                            } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
 
-                            LoggingInDialog.dismiss();
-                            generalFunctions.showErrorMesaage(getApplicationContext());
-                        } else {
-                            LoggingInDialog.dismiss();
-                            YoYo.with(Techniques.Shake)
-                                    .duration(700)
-                                    .repeat(0)
-                                    .playOn(findViewById(R.id.username));
-                            YoYo.with(Techniques.Shake)
-                                    .duration(700)
-                                    .repeat(0)
-                                    .playOn(findViewById(R.id.password));
-                            emailEditText.setError("Invalid Email or Password");
+                                LoggingInDialog.dismiss();
+                                generalFunctions.showErrorMesaage(getApplicationContext());
+                            } else {
+                                LoggingInDialog.dismiss();
+                                YoYo.with(Techniques.Shake)
+                                        .duration(700)
+                                        .repeat(0)
+                                        .playOn(findViewById(R.id.username));
+                                YoYo.with(Techniques.Shake)
+                                        .duration(700)
+                                        .repeat(0)
+                                        .playOn(findViewById(R.id.password));
+                                emailEditText.setError("Invalid Email or Password");
+                            }
                         }
                     }
 
@@ -333,9 +350,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (requestCode == 9001) {
             // data.getStringExtra("")
+
             LoggingInDialog.show();
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
+            if (googleApiClient.hasConnectedApi(Plus.API)) {
+                LoggingInDialog.show();
+
+                com.google.android.gms.plus.model.people.Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
+                Log.i("", "Gender: " + person.getGender());
+            }
+
             com.google.android.gms.plus.model.people.Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
             Log.i("", "Gender: " + person.getGender());
         } else {

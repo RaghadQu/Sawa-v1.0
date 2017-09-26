@@ -15,10 +15,12 @@ import android.widget.TextView;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
+import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringModels.EditProfileModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.google.gson.Gson;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -116,6 +118,7 @@ public class EditProfileActivity extends Activity {
 
     public void FillUserInfo() {
 
+                    String userBirthdate="";
                     userModel = GeneralAppInfo.generalUserInfo.getUser();
                     firstName.setText(userModel.getFirst_name());
                     lastName.setText(userModel.getLast_name());
@@ -123,8 +126,12 @@ public class EditProfileActivity extends Activity {
                         femaleBtn.setChecked(true);
                     else if (userModel.getGender().equals("male"))
                         maleBtn.setChecked(true);
-
-                    String userBirthdate = userModel.getBirthdate();
+                    //When the user doesnt has birthdate
+                    //like sign up useing gmail or faceook
+                    if (userModel.getBirthdate()==null) {
+                        userBirthdate = "1990-01-01";
+                    } else
+                        userBirthdate = userModel.getBirthdate();
                     String[] separated = userBirthdate.split("-");
                     Log.d("Birthdate", " String is  " + userBirthdate);
                     String year = separated[0];

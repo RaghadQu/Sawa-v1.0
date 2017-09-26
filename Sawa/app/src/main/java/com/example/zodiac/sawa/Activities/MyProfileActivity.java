@@ -193,6 +193,9 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -204,6 +207,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_my_profile);
         context = this;
         GeneralFunctions generalFunctions = new GeneralFunctions();
@@ -220,14 +224,25 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         editMySong.setContentView(R.layout.edit_song_profile_dialog);
         editMySong.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         coverProgressBar = (ProgressBar) findViewById(R.id.coverProgressBar);
+        img = (ImageView) findViewById(R.id.user_profile_photo);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String profileImageUrl = sharedPreferences.getString("profileImage","");
         songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
         saveSong = (Button) editMySong.findViewById(R.id.saveSong);
         img = (ImageView) findViewById(R.id.user_profile_photo);
         editBio = (TextView) findViewById(R.id.editBio);
         toolBarText = (TextView) findViewById(R.id.toolBarText);
         progressBar = (ProgressBar) findViewById(R.id.profilePictureProgressBar);
-        getUserInfo();
 
+        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
+        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
+        //   progressBar.setVisibility(View.INVISIBLE);
+
+         Picasso.with(context).load(imageUrl).into(img);
+        String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
+        Picasso.with(context).load(coverUrl).into(coverImage);
+        profileBio.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
 //        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
 //        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
 //        //   progressBar.setVisibility(View.INVISIBLE);
@@ -238,6 +253,10 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 //        Picasso.with(context).load(coverUrl).into(coverImage);
 //        profileBio.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
 
+        Log.d("InfoUser", " " + imageUrl);
+
+        //progressBar.setVisibility(View.INVISIBLE);
+        Picasso.with(context).load(imageUrl).into(img);
         if (isOnline == false) {
             Toast.makeText(this, "no internet connection!",
                     Toast.LENGTH_LONG).show();
@@ -263,8 +282,20 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             saveAbout = (Button) editMyBio.findViewById(R.id.saveAbout);
             bioTxt = (EditText) editMyBio.findViewById(R.id.bioTxt);
             statusTxt = (EditText) editMyBio.findViewById(R.id.statusTxt);
-            fillAbout();
 
+            editMySong = new Dialog(this);
+            editMySong.setContentView(R.layout.edit_song_profile_dialog);
+            editMySong.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            songTxt = (EditText) editMySong.findViewById(R.id.songTxt);
+            saveSong = (Button) editMySong.findViewById(R.id.saveSong);
+            imageView = (ImageView) ViewImgDialog.findViewById(R.id.ImageView);
+
+          //  img = (ImageView) findViewById(R.id.user_profile_photo);
+            editBio = (TextView) findViewById(R.id.editBio);
+            toolBarText = (TextView) findViewById(R.id.toolBarText);
+            getUserInfo();
+            fillAbout();
 
             //Profile Picture
             img.setOnClickListener(new View.OnClickListener() {
@@ -280,6 +311,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     RemovePic.setText("Remove Profile Picture");
                     changePic.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
+                            verifyStoragePermissions(MyProfileActivity.this);
+
                             imgClick.dismiss();
                             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, 100);
@@ -322,6 +355,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 
                     changePic.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
+                            verifyStoragePermissions(MyProfileActivity.this);
+
                             imgClick.dismiss();
                             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, 200);
@@ -461,7 +496,6 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         if (resultCode == RESULT_OK && (requestCode == 100 || requestCode == 200)) {
             imageuri = data.getData();
             try {
-                verifyStoragePermissions(this);
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 String path = generalFunctions.getRealPathFromURI(this, imageuri);
                 Log.d("Path", path);
@@ -474,15 +508,20 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     img.setImageBitmap(bitmap);
                 }
                 if (requestCode == 200) {
+                    Log.d("requestCode","Uploading cover image...");
+
                     coverImage.setImageBitmap(bitmap);
                 }
                 ImageConverterService imageConverter = new ImageConverterService();
                 byte[] image = imageConverter.getBytes(bitmap);
                 String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
                 Log.d("XX", "arrive");
+                GeneralFunctions generalFunctions1=new GeneralFunctions();
+               generalFunctions.uploadImagetoDB(GeneralAppInfo.getUserID(),  path, bitmap, requestCode, coverProgressBar);
+
             } catch (Exception e) {
-                Toast toast = Toast.makeText(this, "Image is large", Toast.LENGTH_SHORT);
-                toast.show();
+                Log.d("XX", "Image cannot be uploaded");
+
             }
         }
     }

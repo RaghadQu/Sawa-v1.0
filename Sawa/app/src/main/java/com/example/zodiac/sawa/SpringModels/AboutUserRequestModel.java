@@ -17,7 +17,9 @@ public class AboutUserRequestModel {
         this.userStatus = user_status;
         this.userSong = user_song;
     }
+    public AboutUserRequestModel(){
 
+    }
     public int getUserId() {
         return userId;
     }
