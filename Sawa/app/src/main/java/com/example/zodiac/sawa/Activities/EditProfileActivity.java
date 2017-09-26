@@ -1,6 +1,8 @@
 package com.example.zodiac.sawa.Activities;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringModels.EditProfileModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,8 +85,22 @@ public class EditProfileActivity extends Activity {
                             GeneralFunctions generalFunctions = new GeneralFunctions();
                             generalFunctions.showErrorMesaage(getApplicationContext());
                         }
-                        Log.d("AboutProfileUpdate", "Done successfully " + response.code() + " " + response.body());
-                        finish();
+                        else
+                        {
+                            GeneralAppInfo.getGeneralUserInfo().getUser().setFirst_name(editProfileModle.getFirst_name());
+                            GeneralAppInfo.getGeneralUserInfo().getUser().setLast_name(editProfileModle.getLast_name());
+                            GeneralAppInfo.getGeneralUserInfo().getUser().setBirthdate(editProfileModle.getBirthdate());
+                            GeneralAppInfo.getGeneralUserInfo().getUser().setGender(editProfileModle.getGender());
+                            SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            Gson gson = new Gson();
+                            String json = gson.toJson(GeneralAppInfo.generalUserInfo);
+                            editor.putString("generalUserInfo", json);
+                            editor.apply();
+                            Log.d("AboutProfileUpdate", "Done successfully " + response.code() + " " + response.body());
+                            finish();
+                        }
+
                     }
 
                     @Override

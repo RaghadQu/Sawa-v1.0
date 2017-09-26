@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
@@ -33,12 +35,14 @@ public class SearchActivity extends AppCompatActivity {
     public static RecyclerView.Adapter adapter;
     SearchView searchView;
     SearchInterface searchInterface;
+    ProgressBar searchProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         SearchView mSearchView = (SearchView) findViewById(R.id.search);
+        searchProgressBar= (ProgressBar) findViewById(R.id.searchProgressBar);
         //mSearchView.setSelected(true);
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setIconified(false);
@@ -79,8 +83,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void sendSearchQuery(String word) {
+        searchProgressBar.setVisibility(View.VISIBLE);
         LayoutFriendsList.clear();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -93,6 +97,7 @@ public class SearchActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+                searchProgressBar.setVisibility(View.GONE);
                 if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
@@ -127,6 +132,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<UserModel>> call, Throwable t) {
                 // progressBar.setVisibility(View.GONE);
+                searchProgressBar.setVisibility(View.GONE);
                 GeneralFunctions generalFunctions = new GeneralFunctions();
                 generalFunctions.showErrorMesaage(getApplicationContext());
                 Log.d("fail to get friends ", "Failure to Get friends");

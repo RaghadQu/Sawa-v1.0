@@ -65,6 +65,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
     static ImageView imageView;
     static TabLayout tabLayout;
     static TextView userName;
+    static CircleImageView profilePicture, followerIcon, followingIcon, reqeustsIcon, settingsIcon, logoutIcon;
     static Context context;
     static int tabNumber;
     /**
@@ -188,6 +189,13 @@ public class HomeTabbedActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("Hello", " new resume");
+        if(userName != null &&profilePicture != null )
+        {
+            userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name()+ " " +GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
+            Picasso.with(context).load(GeneralAppInfo.SPRING_URL+'/'+GeneralAppInfo.getGeneralUserInfo().getUser().getImage()).into(profilePicture);
+
+        }
+
         NotificationTabFragment.getUserNotifications(getApplicationContext());
         showBadge(getApplicationContext());
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("isRunning",
@@ -427,11 +435,10 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 GeneralFunctions.getSharedPreferences(getContext());
                 View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
                 userName = (TextView) rootView.findViewById(R.id.userName);
-                userName.setText(GeneralAppInfo.generalUserInfo.getUser().getFirst_name()+ " " +GeneralAppInfo.generalUserInfo.getUser().getLast_name());
+                userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name()+ " " +GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
                // getUserInfo();
-                CircleImageView profilePicture, followerIcon, followingIcon, reqeustsIcon, settingsIcon, logoutIcon;
                 profilePicture = (CircleImageView) rootView.findViewById(R.id.profile_picture);
-                Picasso.with(context).load(GeneralAppInfo.SPRING_URL+'/'+GeneralAppInfo.generalUserInfo.getUser().getImage()).into(profilePicture);
+                Picasso.with(context).load(GeneralAppInfo.SPRING_URL+'/'+GeneralAppInfo.getGeneralUserInfo().getUser().getImage()).into(profilePicture);
                 followerIcon = (CircleImageView) rootView.findViewById(R.id.followersIcon);
                 followingIcon = (CircleImageView) rootView.findViewById(R.id.FollowingIcon);
                 reqeustsIcon = (CircleImageView) rootView.findViewById(R.id.RequestsIcon);

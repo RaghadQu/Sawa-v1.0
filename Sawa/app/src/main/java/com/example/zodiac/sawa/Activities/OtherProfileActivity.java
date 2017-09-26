@@ -416,8 +416,6 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                                 }
                             });
                         }
-
-
                     }
                     fillAbout(about_bio, about_status, Id1);
 

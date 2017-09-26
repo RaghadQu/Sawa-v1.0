@@ -1,7 +1,6 @@
 package com.example.zodiac.sawa.Activities;
 
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
