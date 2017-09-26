@@ -181,9 +181,7 @@ public class RegisterActivity extends Activity {
                         Gson gson = new Gson();
                         String json = gson.toJson(generalUserModel);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("generalUserInfo", json);
-                        sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-                        editor.putString("email", generalUserModel.getUser().getEmail());
+                        editor.putString("generalUserInfo", json);editor.putString("email", generalUserModel.getUser().getEmail());
                         editor.putInt("id", GeneralAppInfo.getUserID());
                         editor.putString("isLogined", "1");
                         editor.apply();

@@ -67,7 +67,6 @@ public class EditProfileActivity extends Activity {
                 editProfileModle.setBirthdate(stringDate);
                 Log.d("stringDate", stringDate);
                 Log.d("stringDate", GeneralAppInfo.getUserID() + "");
-
                 editProfileModle.setGender(gender);
 
                 Retrofit retrofit = new Retrofit.Builder()
