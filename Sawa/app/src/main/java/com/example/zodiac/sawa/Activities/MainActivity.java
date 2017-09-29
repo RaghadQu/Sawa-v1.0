@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             loginWithFacebookModel.setEmail(object.getString("email"));
                             loginWithFacebookModel.setFirstName(object.getString("first_name"));
                             loginWithFacebookModel.setLastName(object.getString("last_name"));
-                            //  loginWithFacebookModel.(object.getString("gender"));
                             loginWithFacebookModel.setId(loginResult.getAccessToken().getUserId());
                             loginWithFacebookModel.setAccessToken(loginResult.getAccessToken().getToken());
                             loginWithFacebookModel.setImage("");
@@ -152,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d("Facebook email", "" + object.getString("email"));
                             Log.d("Facebook email", "" + object.getString("first_name"));
                             Log.d("Facebook gender", "" + object.getString("gender"));
-                            //  Log.d("Facebook gender", "" + object.getString("user_birthday"));
 
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.zodiac.sawa.SearchActivity">
+    tools:context="com.example.zodiac.sawa.Activities.SearchActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="368dp"
+        android:layout_height="551dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/search_edit_frame"
@@ -28,7 +30,14 @@
                 />
             >
         </android.support.design.widget.AppBarLayout>
-
+        <ProgressBar
+            android:id="@+id/searchProgressBar"
+            android:layout_width="25dp"
+            android:layout_gravity="center"
+            android:layout_height="25dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/purple"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

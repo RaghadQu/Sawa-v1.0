@@ -44,6 +44,7 @@ import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
@@ -62,6 +63,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
     public static ObjectAnimator anim;
+    SharedPreferences sharedPreferences;
     static UserModel userInfo;
     Context context;
     ProgressBar progressBar;
@@ -525,7 +527,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     }
 
     public void getUserInfo() {
-        Log.d("InfoUser", " Enter here " + GeneralAppInfo.getGeneralUserInfo().getUser());
+        Log.d("InfoUser", " Enter here " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
         userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
         String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
         Log.d("InfoUser", " " + imageUrl);
@@ -560,9 +562,13 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
                 } else {
-
-
-                    Log.d("AboutUserUpdate", "Done successfully");
+                    GeneralAppInfo.generalUserInfo.setAboutUser(response.body());
+                    sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(GeneralAppInfo.generalUserInfo);
+                    editor.putString("generalUserInfo", json);
+                    editor.apply();
                     fillAbout();
                 }
             }
@@ -589,7 +595,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
 
     }
 
-    public void removeImage(int profileOrCover) {
+    public void removeImage(final int profileOrCover) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GeneralAppInfo.SPRING_URL)
@@ -600,13 +606,26 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 Log.d("ImagesCode ", " " + response.code());
-                //    getUserInfo();
-            }
+                if(profileOrCover == 0)
+                {
+                    GeneralAppInfo.generalUserInfo.getUser().setImage("");
+                }
+                else
+                {
+                    GeneralAppInfo.generalUserInfo.getUser().setCover_image("");
+                }
+                sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(GeneralAppInfo.generalUserInfo);
+                editor.putString("generalUserInfo", json);
+                editor.apply();
+                getUserInfo();
 
+            }
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
                 Log.d("ImagesCode ", " Error " + t.getMessage());
-
             }
         });
 
