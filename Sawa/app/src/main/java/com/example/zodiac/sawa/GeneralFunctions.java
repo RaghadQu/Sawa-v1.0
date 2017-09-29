@@ -15,11 +15,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.zodiac.sawa.Activities.MyProfileActivity;
+import com.example.zodiac.sawa.SpringApi.DeviceTokenInterface;
 import com.example.zodiac.sawa.SpringApi.ImageInterface;
 import com.example.zodiac.sawa.SpringModels.DeviceTokenModel;
-import com.example.zodiac.sawa.SpringApi.DeviceTokenInterface;
 import com.example.zodiac.sawa.SpringModels.UserModel;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -179,9 +179,9 @@ public class GeneralFunctions {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void uploadImagetoDB(int user_id,  String path, Bitmap bitmap, int requestCode, final ProgressBar imageProgressBar) {
+    public void uploadImagetoDB(int user_id, String path, Bitmap bitmap, final int requestCode, final ProgressBar imageProgressBar) {
         File file = new File(path);
-        GeneralFunctions generalFunctions = new GeneralFunctions();
+        final GeneralFunctions generalFunctions = new GeneralFunctions();
 
         file = generalFunctions.saveBitmap(bitmap, path);
 
@@ -198,18 +198,30 @@ public class GeneralFunctions {
         Call<UserModel> userImageResponse;
         if (requestCode == 100) {
             userImageResponse = imageInterface.uploadProfileImage(body, GeneralAppInfo.userID);
-            Log.d("images", "  Profile");
+            Log.d("images", "  Profile" );
         } else {
             userImageResponse = imageInterface.uploadCoverImage(body, GeneralAppInfo.userID);
-            Log.d("images", "  Cover");
+            Log.d("images", "  Cover" + file.getName());
 
         }
 
         userImageResponse.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                Log.d("ImagesCode ", " " + response.code());
-               // MyProfileActivity.getUserInfo();
+                if(requestCode == 100)
+                {
+                    GeneralAppInfo.getGeneralUserInfo().getUser().setImage(response.body().getImage());
+                }
+                else
+                {
+                    GeneralAppInfo.getGeneralUserInfo().getUser().setCover_image(response.body().getCover_image());
+                }
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(GeneralAppInfo.generalUserInfo);
+                editor.putString("generalUserInfo", json);
+                editor.apply();
                 imageProgressBar.setVisibility(View.INVISIBLE);
 
             }
