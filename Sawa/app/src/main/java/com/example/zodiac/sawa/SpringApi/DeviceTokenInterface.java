@@ -11,6 +11,6 @@ import retrofit2.http.POST;
  */
 
 public interface DeviceTokenInterface {
-    @POST("api/token/fcm")
+    @POST("/api/v1/deviceToken/fcm")
     Call<DeviceTokenModel> storeDeviceToken(@Body DeviceTokenModel deviceTokenModel);
 }

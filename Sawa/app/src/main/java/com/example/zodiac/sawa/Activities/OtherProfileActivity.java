@@ -294,11 +294,12 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(false);
                 getOtherProfileView();
+                swipeRefreshLayout.setRefreshing(false);
+
 
             }
-        }, 2000);
+        }, 1000);
     }
 
     public void getOtherProfileView() {

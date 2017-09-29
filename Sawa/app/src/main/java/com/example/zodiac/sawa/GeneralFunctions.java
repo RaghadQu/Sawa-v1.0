@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
 import com.example.zodiac.sawa.SpringApi.ImageInterface;
+import com.example.zodiac.sawa.SpringApi.UserIdDeviceIdInterface;
 import com.example.zodiac.sawa.SpringModels.DeviceTokenModel;
 import com.example.zodiac.sawa.SpringApi.DeviceTokenInterface;
+import com.example.zodiac.sawa.SpringModels.UserDeviceIdRequestModel;
+import com.example.zodiac.sawa.SpringModels.UserIdDeviceIdResponseModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 
 import java.io.File;
@@ -108,10 +111,11 @@ public class GeneralFunctions {
         return rotate;
     }
 
-    public void storeUserIdWithDeviceId(int user_id, String deviceId) {
+    public void storeDeviceIdWithDeviceToken(int user_id, String deviceId) {
+        Log.d("Storing device token","...");
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.BACKEND_URL)
+                .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
         DeviceTokenInterface tokenApi = retrofit.create(DeviceTokenInterface.class);
         DeviceTokenModel deviceTokenModel = new DeviceTokenModel();
@@ -122,7 +126,10 @@ public class GeneralFunctions {
 
             @Override
             public void onResponse(Call<DeviceTokenModel> call, Response<DeviceTokenModel> response) {
+                Log.d("Storing device token","..."+response.code());
+
                 if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
                 }
@@ -135,7 +142,40 @@ public class GeneralFunctions {
             }
         });
     }
+    public void storeUserIdWithDeviceId(int user_id, String deviceId) {
+        Log.d("Storing device token","...");
+        Log.d("Storing device token","..."+user_id);
+        Log.d("Storing device token","..."+deviceId);
 
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GeneralAppInfo.SPRING_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        UserIdDeviceIdInterface tokenApi = retrofit.create(UserIdDeviceIdInterface.class);
+        UserDeviceIdRequestModel userDeviceIdRequestModel = new UserDeviceIdRequestModel();
+        userDeviceIdRequestModel.setUserId(user_id);
+        userDeviceIdRequestModel.setDeviceId(deviceId);
+        Call<UserIdDeviceIdResponseModel> call = tokenApi.storeUserIdWithDeviceId(userDeviceIdRequestModel);
+        call.enqueue(new Callback<UserIdDeviceIdResponseModel>() {
+
+            @Override
+            public void onResponse(Call<UserIdDeviceIdResponseModel> call, Response<UserIdDeviceIdResponseModel> response) {
+                Log.d("Storing device token","..."+response.code());
+
+                if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
+
+                    GeneralFunctions generalFunctions = new GeneralFunctions();
+                    generalFunctions.showErrorMesaage(getApplicationContext());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserIdDeviceIdResponseModel> call, Throwable t) {
+                GeneralFunctions generalFunctions = new GeneralFunctions();
+                generalFunctions.showErrorMesaage(getApplicationContext());
+            }
+        });
+    }
     public boolean isOnline(Context c) {
         ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
