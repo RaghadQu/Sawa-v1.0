@@ -1,6 +1,7 @@
 package com.example.zodiac.sawa.Activities;
 
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -90,12 +91,12 @@ public class YoutubePlayerDialogActivity extends YouTubeBaseActivity implements
         if (b != null) {
             youtubeSongUrl = b.getString("youtubeSongUrl");
             if(youtubeSongUrl!=null){
-            String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
-            Pattern compiledPattern = Pattern.compile(pattern);
-            Matcher matcher = compiledPattern.matcher(youtubeSongUrl);
-            if(matcher.find()){
-                video_id= matcher.group();
-            }}
+                String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+                Pattern compiledPattern = Pattern.compile(pattern);
+                Matcher matcher = compiledPattern.matcher(youtubeSongUrl);
+                if(matcher.find()){
+                    video_id= matcher.group();
+                }}
         }
 
         youTubePlayerFragment = (YouTubePlayerView) findViewById(R.id.youtubeplayerfragment);

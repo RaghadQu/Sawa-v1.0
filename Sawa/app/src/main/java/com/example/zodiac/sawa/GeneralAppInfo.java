@@ -22,6 +22,7 @@ import java.net.URL;
 public class GeneralAppInfo  {
     public static String BACKEND_URL = "http://cb2d8852.ngrok.io/Sawa/public/index.php/";
     public static String IMAGE_URL = "http://cb2d8852.ngrok.io/Sawa/public/";
+
     public static String SPRING_URL = "http://9de4c2aa.ngrok.io";
     public static int notifications_counter = 0;
     public static int home_tab_position = 0;

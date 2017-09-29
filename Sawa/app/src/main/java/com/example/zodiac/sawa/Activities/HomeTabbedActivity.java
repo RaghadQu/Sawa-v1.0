@@ -253,11 +253,15 @@ public class HomeTabbedActivity extends AppCompatActivity {
         });
 
         String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d("Refresh", token);
         String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+        Log.d("android_id", android_id);
+
         GeneralFunctions generalFunctions = new GeneralFunctions();
-        generalFunctions.storeUserIdWithDeviceId(GeneralAppInfo.getUserID(), android_id);
+        Log.d("storeUserIdWithDeviceId", "....");
+
+        generalFunctions.storeUserIdWithDeviceId(GeneralAppInfo.getGeneralUserInfo().getUser().getId(), android_id);
+
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(container);

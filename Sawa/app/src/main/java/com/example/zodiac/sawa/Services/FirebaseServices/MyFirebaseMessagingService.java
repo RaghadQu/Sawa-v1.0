@@ -34,7 +34,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 ++count).commit();
         count = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("notifications_counter",
                 0);
-        Log.d("notifications_counter1222", " " + count);
+        Log.d("notifications_counter1222", " " + remoteMessage.getData().toString());
+//        Log.d("notifications_counter1222", " " + remoteMessage.getNotification().getTitle());
+
         //check if the apploication is in the foreground
         int state = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("isRunning",
                 0);
