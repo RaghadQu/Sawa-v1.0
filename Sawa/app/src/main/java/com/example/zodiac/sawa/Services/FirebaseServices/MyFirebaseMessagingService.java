@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.zodiac.sawa.Activities.HomeTabbedActivity;
 import com.example.zodiac.sawa.Activities.MainActivity;
+import com.example.zodiac.sawa.Activities.OtherProfileActivity;
 import com.example.zodiac.sawa.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -41,30 +43,51 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         int state = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("isRunning",
                 0);
         if (state == 0)
-            createNotification(count + "");
+            createNotification(count + "",remoteMessage);
         else Log.d("Notficationcounter", "" + count);
-        HomeTabbedActivity.showBadge(getApplicationContext());
+        //HomeTabbedActivity.showBadge(getApplicationContext());
+        createNotification(count + "",remoteMessage);
+
 
     }
 
-    private void createNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+    private void createNotification(String messageBody,RemoteMessage remoteMessage) {
+        String title="";
 
-        Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Ibrahim")
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(notificationSoundURI)
-                .setContentIntent(resultIntent);
+       String type= remoteMessage.getData().get("type");
+        Log.d("Type ",type);
+        if(type.equals("3")){
+            String first_name= remoteMessage.getData().get("first_name");
+            String id= remoteMessage.getData().get("id");
+            String ImageUrl=remoteMessage.getData().get("image");
+            Intent intent = new Intent(this, OtherProfileActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Bundle b = new Bundle();
+            b.putString("mName", first_name);
+            b.putInt("Id", Integer.parseInt(id));
+            b.putString("mImageURL", ImageUrl);
+            intent.putExtras(b);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
 
-        notificationManager.notify(0, mNotificationBuilder.build());
+            title=first_name+" send a new follow request for you";
+
+            Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.follower_icon)
+                    .setContentTitle("TickaPost")
+                    .setContentText(title)
+                    .setAutoCancel(true)
+                    .setSound(notificationSoundURI)
+                    .setContentIntent(resultIntent);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, mNotificationBuilder.build());
+
+        }
+
     }
 }

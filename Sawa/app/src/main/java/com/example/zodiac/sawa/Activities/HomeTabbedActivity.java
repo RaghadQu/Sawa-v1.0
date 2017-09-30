@@ -239,7 +239,17 @@ public class HomeTabbedActivity extends AppCompatActivity {
         //set As logined for badge number
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("isRunning",
                 1).commit();
+        if(getIntent().getExtras() != null) {
+            Log.d("dataaa",getIntent().getData().toString());
 
+            for(String key:getIntent().getExtras().keySet()){
+                if(key.equals("id")){
+                    Log.d("Home tabbed activity :", getIntent().getExtras().getString(key));
+
+                }
+            }
+
+        }
         ImageView searchImage = (ImageView) findViewById(R.id.serachImage);
         LinearLayout searchLayout = (LinearLayout) findViewById(R.id.SearchLayout);
         searchLayout.setOnClickListener(new View.OnClickListener() {
