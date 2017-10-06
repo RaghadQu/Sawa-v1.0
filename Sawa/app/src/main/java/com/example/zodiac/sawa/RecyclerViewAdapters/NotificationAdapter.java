@@ -52,7 +52,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         String imageUrl = GeneralAppInfo.SPRING_URL + "/" + dataProvider.getImage();
         Picasso.with(dataProvider.getContext()).load(imageUrl).into(holder.image);
-        holder.text.setText(dataProvider.getText() + " sent you a friend request.");
+        if(dataProvider.getType()==3){
+            holder.text.setText(dataProvider.getText() + " sent you a follow request.");
+        }else if(dataProvider.getType()==4){
+            holder.text.setText(dataProvider.getText() + " accepted your  follow request.");
+
+        }
+
         holder.time.setText(dataProvider.getTime());
         // 0 new   1 not new
         if (dataProvider.getReadFlag() == 0) {

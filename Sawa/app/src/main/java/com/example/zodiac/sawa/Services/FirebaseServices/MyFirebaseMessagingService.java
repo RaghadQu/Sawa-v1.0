@@ -87,7 +87,71 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             notificationManager.notify(0, mNotificationBuilder.build());
 
+        }else   if(type.equals("4")){
+            String first_name= remoteMessage.getData().get("first_name");
+            String id= remoteMessage.getData().get("id");
+            String ImageUrl=remoteMessage.getData().get("image");
+            Intent intent = new Intent(this, OtherProfileActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Bundle b = new Bundle();
+            b.putString("mName", first_name);
+            b.putInt("Id", Integer.parseInt(id));
+            b.putString("mImageURL", ImageUrl);
+            intent.putExtras(b);
+
+            PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+            title=first_name+" accepted your  follow request.";
+
+            Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.follower_icon)
+                    .setContentTitle("TickaPost")
+                    .setContentText(title)
+                    .setAutoCancel(true)
+                    .setSound(notificationSoundURI)
+                    .setContentIntent(resultIntent);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, mNotificationBuilder.build());
+
         }
+        else   if(type.equals("5")){
+            String first_name= remoteMessage.getData().get("first_name");
+            String id= remoteMessage.getData().get("id");
+            String ImageUrl=remoteMessage.getData().get("image");
+            Intent intent = new Intent(this, OtherProfileActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Bundle b = new Bundle();
+            b.putString("mName", first_name);
+            b.putInt("Id", Integer.parseInt(id));
+            b.putString("mImageURL", ImageUrl);
+            intent.putExtras(b);
+
+            PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+            title=first_name+" delete your  follow request.";
+
+            Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
+            NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.remove_friend_style)
+                    .setContentTitle("TickaPost")
+                    .setContentText(title)
+                    .setAutoCancel(true)
+                    .setSound(notificationSoundURI)
+                    .setContentIntent(resultIntent);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, mNotificationBuilder.build());
+
+        }
+
 
     }
 }
