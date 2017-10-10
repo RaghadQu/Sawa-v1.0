@@ -3,10 +3,6 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
     }
-    dexOptions {
-        incremental true
-        javaMaxHeapSize "4g"
-    }
 
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -41,7 +37,6 @@ final def var = dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'id.zelory:compressor:1.0.4'
-
 
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 

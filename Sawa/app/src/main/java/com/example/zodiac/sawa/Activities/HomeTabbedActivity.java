@@ -496,6 +496,13 @@ public class HomeTabbedActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
+                settingsIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, SettingsActivity.class);
+                        startActivity(i);
+                    }
+                });
                 logoutIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

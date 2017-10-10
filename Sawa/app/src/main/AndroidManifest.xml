@@ -91,6 +91,10 @@
         <activity android:name=".Activities.EditProfileActivity" />
 
         <activity android:name=".Activities.SearchActivity" />
+        <activity android:name=".Activities.SettingsActivity" />
+        <activity android:name=".Activities.ChangeAccountInfoActivities.ChangePasswordActivity" />
+        <activity android:name=".Activities.ChangeAccountInfoActivities.ChangeEmailActivity" />
+        <activity android:name=".Activities.ChangeAccountInfoActivities.ChangeMobileActivity"/>
 
         <activity
             android:name=".Activities.YoutubePlayerDialogActivity"
