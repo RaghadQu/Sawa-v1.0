@@ -20,21 +20,20 @@ public class UserModel {
     boolean isProfileImagePublic;
     String themeColor;
 
-
-    public boolean isPublic() {
+    public boolean getIsPublic() {
         return isPublic;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setIsPublic(boolean aPublic) {
+        this.isPublic = aPublic;
     }
 
-    public boolean isProfileImagePublic() {
+    public boolean getIsProfileImagePublic() {
         return isProfileImagePublic;
     }
 
-    public void setProfileImagePublic(boolean profileImagePublic) {
-        isProfileImagePublic = profileImagePublic;
+    public void setIsProfileImagePublic(boolean profileImagePublic) {
+        this.isProfileImagePublic = profileImagePublic;
     }
 
     public String getThemeColor() {

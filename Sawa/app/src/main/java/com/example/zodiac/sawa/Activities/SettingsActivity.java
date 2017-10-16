@@ -76,7 +76,7 @@ public class SettingsActivity extends Activity {
 
         userMail.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getEmail());
         userMobile.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getMobile());
-        if(GeneralAppInfo.getGeneralUserInfo().getUser().isPublic())
+        if(GeneralAppInfo.getGeneralUserInfo().getUser().getIsPublic())
         {
             publicAccountRadio.setChecked(true);
         }
@@ -85,7 +85,7 @@ public class SettingsActivity extends Activity {
             privateAccountRadio.setChecked(true);
         }
 
-        if(GeneralAppInfo.getGeneralUserInfo().getUser().isProfileImagePublic())
+        if(GeneralAppInfo.getGeneralUserInfo().getUser().getIsProfileImagePublic())
         {
             publicProfilePictureRadio.setChecked(true);
         }
@@ -209,9 +209,8 @@ public class SettingsActivity extends Activity {
         final EditPrivacyModel editPrivacy = new EditPrivacyModel();
         editPrivacy.setId(GeneralAppInfo.getUserID());
         editPrivacy.setThemeColor(themeColor);
-        editPrivacy.setProfileImagePublic(isProfileImagePublic);
-        editPrivacy.setPublic(isAccountPublic);
-        Log.d("EditPrivacy", editPrivacy.getThemeColor() + " " +editPrivacy.isPublic() + " " +editPrivacy.isProfileImagePublic() );
+        editPrivacy.setIsProfileImagePublic(isProfileImagePublic);
+        editPrivacy.setIsPublic(isAccountPublic);
 
         final Call<GeneralUserInfoModel> editPrivacyCall = service.editPrivacy(editPrivacy);
         editPrivacyCall.enqueue(new Callback<GeneralUserInfoModel>() {
@@ -221,7 +220,7 @@ public class SettingsActivity extends Activity {
                     GeneralUserInfoModel generalUserInfo = response.body();
                     UserModel userModel = generalUserInfo.getUser();
                     GeneralAppInfo.setGeneralUserInfo(generalUserInfo);
-                    Log.d("EditPrivacy", userModel.getThemeColor() + " " +userModel.isPublic() + " " +userModel.isProfileImagePublic() );
+                    Log.d("EditPrivacy", userModel.getThemeColor() + " " +userModel.getIsPublic() + " " +userModel.getIsProfileImagePublic() );
                     GeneralAppInfo.setUserID(userModel.getId());
                     SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();

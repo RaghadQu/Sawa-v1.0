@@ -19,19 +19,19 @@ public class EditPrivacyModel {
         this.id = id;
     }
 
-    public boolean isPublic() {
+    public boolean getIsPublic() {
         return isPublic;
     }
 
-    public void setPublic(boolean aPublic) {
+    public void setIsPublic(boolean aPublic) {
         this.isPublic = aPublic;
     }
 
-    public boolean isProfileImagePublic() {
+    public boolean getIsProfileImagePublic() {
         return isProfileImagePublic;
     }
 
-    public void setProfileImagePublic(boolean profileImagePublic) {
+    public void setIsProfileImagePublic(boolean profileImagePublic) {
         this.isProfileImagePublic = profileImagePublic;
     }
 
