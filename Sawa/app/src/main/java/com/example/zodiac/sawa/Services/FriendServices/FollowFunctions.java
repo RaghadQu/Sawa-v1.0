@@ -287,7 +287,7 @@ public class FollowFunctions {
                 else if (GeneralAppInfo.friendMode == 0) {
                     Log.d("OtherActivityProfile","Requested");
 
-                    if(userModel.getIsPublic())
+                    if(userModel.isPublic())
                     {
                         GeneralAppInfo.friendMode = 2;
                         friendStatus.setText("Following");

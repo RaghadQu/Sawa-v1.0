@@ -5,52 +5,40 @@ package com.example.zodiac.sawa.SpringModels;
  */
 
 public class UserModel {
+
     int id;
+
+
     String first_name;
+
     String last_name;
+
+
     String email;
-    String gender;
+
+    String password;
+
     String birthdate;
+
     String mobile;
+
     String image;
-    int sign_in_out;
-    int public_post_view;
+
     String cover_image;
+
+    int sign_in_out;
+
+
     boolean isPublic;
+
     boolean isProfileImagePublic;
+
     String themeColor;
 
-    public boolean getIsPublic() {
-        return isPublic;
-    }
+    int public_post_view;
 
-    public void setIsPublic(boolean aPublic) {
-        this.isPublic = aPublic;
-    }
 
-    public boolean getIsProfileImagePublic() {
-        return isProfileImagePublic;
-    }
-
-    public void setIsProfileImagePublic(boolean profileImagePublic) {
-        this.isProfileImagePublic = profileImagePublic;
-    }
-
-    public String getThemeColor() {
-        return themeColor;
-    }
-
-    public void setThemeColor(String themeColor) {
-        this.themeColor = themeColor;
-    }
-
-    public String getCover_image() {
-        return cover_image;
-    }
-
-    public void setCover_image(String cover_image) {
-        this.cover_image = cover_image;
-    }
+    String gender;
 
     public int getId() {
         return id;
@@ -82,6 +70,14 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getBirthdate() {
@@ -132,5 +128,37 @@ public class UserModel {
         this.gender = gender;
     }
 
-}
+    public String getCover_image() {
+        return cover_image;
+    }
 
+    public void setCover_image(String cover_image) {
+        this.cover_image = cover_image;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public boolean isProfileImagePublic() {
+        return isProfileImagePublic;
+    }
+
+    public void setProfileImagePublic(boolean isProfileImagePublic) {
+        this.isProfileImagePublic = isProfileImagePublic;
+    }
+
+    public String getThemeColor() {
+        return themeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+
+}

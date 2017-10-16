@@ -76,7 +76,7 @@ public class SettingsActivity extends Activity {
 
         userMail.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getEmail());
         userMobile.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getMobile());
-        if(GeneralAppInfo.getGeneralUserInfo().getUser().getIsPublic())
+        if(GeneralAppInfo.getGeneralUserInfo().getUser().isPublic())
         {
             publicAccountRadio.setChecked(true);
         }
@@ -85,7 +85,7 @@ public class SettingsActivity extends Activity {
             privateAccountRadio.setChecked(true);
         }
 
-        if(GeneralAppInfo.getGeneralUserInfo().getUser().getIsProfileImagePublic())
+        if(GeneralAppInfo.getGeneralUserInfo().getUser().isProfileImagePublic())
         {
             publicProfilePictureRadio.setChecked(true);
         }
@@ -220,7 +220,7 @@ public class SettingsActivity extends Activity {
                     GeneralUserInfoModel generalUserInfo = response.body();
                     UserModel userModel = generalUserInfo.getUser();
                     GeneralAppInfo.setGeneralUserInfo(generalUserInfo);
-                    Log.d("EditPrivacy", userModel.getThemeColor() + " " +userModel.getIsPublic() + " " +userModel.getIsProfileImagePublic() );
+                    Log.d("EditPrivacy", userModel.getThemeColor() + " " +userModel.isPublic() + " " +userModel.isProfileImagePublic() );
                     GeneralAppInfo.setUserID(userModel.getId());
                     SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
