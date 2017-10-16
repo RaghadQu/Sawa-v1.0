@@ -16,6 +16,34 @@ public class UserModel {
     int sign_in_out;
     int public_post_view;
     String cover_image;
+    boolean isPublic;
+    boolean isProfileImagePublic;
+    String themeColor;
+
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public boolean isProfileImagePublic() {
+        return isProfileImagePublic;
+    }
+
+    public void setProfileImagePublic(boolean profileImagePublic) {
+        isProfileImagePublic = profileImagePublic;
+    }
+
+    public String getThemeColor() {
+        return themeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
 
     public String getCover_image() {
         return cover_image;

@@ -5,6 +5,7 @@ import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.EditEmailModel;
 import com.example.zodiac.sawa.SpringModels.EditMobileModel;
 import com.example.zodiac.sawa.SpringModels.EditPasswordModel;
+import com.example.zodiac.sawa.SpringModels.EditPrivacyModel;
 import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 
 import retrofit2.Call;
@@ -29,6 +30,10 @@ public interface AccountInfoInterface {
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/user/settings/edit-mobile")
     Call<GeneralUserInfoModel> editMobile(@Body EditMobileModel editMobileModel);
+
+    @Headers("Cache-Control: max-age=64000")
+    @POST("/api/v1/user/settings/edit-privacy")
+    Call<GeneralUserInfoModel> editPrivacy(@Body EditPrivacyModel editPrivacyModel);
 
 }
 

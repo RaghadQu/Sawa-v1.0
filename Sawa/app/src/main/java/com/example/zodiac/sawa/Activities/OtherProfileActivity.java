@@ -28,9 +28,12 @@ import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.squareup.picasso.Picasso;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +46,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static ObjectAnimator anim;
     public static ObjectAnimator anim_button;
+    static String youtubeSongUrl;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -62,9 +66,6 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
     ImageView aboutFriendIcon;
     ImageView coverPhoto;
     int Id1;
-    static String youtubeSongUrl;
-    private ProgressBar progressBar;
-    private ProgressBar progressBar_button;
     int Id = -1; // or other values
     String mName = "";
     String mImageUrl = "";
@@ -76,7 +77,9 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
     TextView followerTxt, followingTxt;
     Button myFollowState;
     ImageView otherFollowState;
-
+    UserModel userProfileModel;
+    private ProgressBar progressBar;
+    private ProgressBar progressBar_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,8 +176,11 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
 
             img.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    imageView.setImageDrawable(img.getDrawable());
-                    ViewImgDialog.show();
+                    if (userProfileModel.isProfileImagePublic()) {
+                        imageView.setImageDrawable(img.getDrawable());
+                        ViewImgDialog.show();
+                    }
+
                 }
             });
 
@@ -197,23 +203,22 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
             showOtherSong.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    int flag =0 ;
+                    int flag = 0;
                     String pattern = "https?:\\/\\/(?:[0-9A-Z-]+\\.)?(?:youtu\\.be\\/|youtube\\.com\\S*[^\\w\\-\\s])([\\w\\-]{11})(?=[^\\w\\-]|$)(?![?=&+%\\w]*(?:['\"][^<>]*>|<\\/a>))[?=&+%\\w]*";
                     Pattern compiledPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
                     Matcher matcher = compiledPattern.matcher(youtubeSongUrl);
-                    if(matcher.find()) {
-                        flag =1 ;
+                    if (matcher.find()) {
+                        flag = 1;
                     }
 
-                    if(flag==1) {
+                    if (flag == 1) {
                         Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
                         Bundle b = new Bundle();
                         b.putString("youtubeSongUrl", youtubeSongUrl);
                         i.putExtras(b);
                         startActivity(i);
-                    }
-                    else {
-                        Toast.makeText(OtherProfileActivity.this,"No song",Toast.LENGTH_SHORT);
+                    } else {
+                        Toast.makeText(OtherProfileActivity.this, "No song", Toast.LENGTH_SHORT);
                     }
 
                 }
@@ -221,24 +226,28 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
             final String finalMName1 = mName;
             followerTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("source", 1);
-                    b.putInt("friendId", Id1);
-                    b.putString("friendName", finalMName1);
-                    i.putExtras(b);
-                    startActivity(i);
+                    if (userProfileModel.isPublic()) {
+                        Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("source", 1);
+                        b.putInt("friendId", Id1);
+                        b.putString("friendName", finalMName1);
+                        i.putExtras(b);
+                        startActivity(i);
+                    }
                 }
             });
             followingTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("source", 2);
-                    b.putInt("friendId", Id1);
-                    b.putString("friendName", finalMName1);
-                    i.putExtras(b);
-                    startActivity(i);
+                    if (userProfileModel.isPublic()) {
+                        Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("source", 2);
+                        b.putInt("friendId", Id1);
+                        b.putString("friendName", finalMName1);
+                        i.putExtras(b);
+                        startActivity(i);
+                    }
                 }
             });
         }
@@ -267,7 +276,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
         call.enqueue(new Callback<AboutUserResponseModel>() {
             @Override
             public void onResponse(Call<AboutUserResponseModel> call, Response<AboutUserResponseModel> response) {
-                Log.d("AboutUserFill", "Success  " + response.code()+ " " + ID) ;
+                Log.d("AboutUserFill", "Success  " + response.code() + " " + ID);
 
                 if (response != null) {
                     if (response.body() != null) {
@@ -281,6 +290,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<AboutUserResponseModel> call, Throwable t) {
                 Log.d("AboutUserFill", "Failure " + t.getMessage() + " " + ID);
@@ -318,7 +328,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                 if (response.code() == 200) {
                     FollowRelationState[0] = response.body().getFriend1State();
                     FollowRelationState[1] = response.body().getFriend2State();
-
+                    userProfileModel = response.body().getUser();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar_button.setVisibility(View.INVISIBLE);
                     if (FollowRelationState[1] == 0) {
@@ -326,14 +336,14 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                         Log.d("stateeee", "" + FollowRelationState[0]);
                         if (FollowRelationState[0] == 0) {  // No relation
                             GeneralAppInfo.friendMode = 0;
-                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
+                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
 
                         } else if (FollowRelationState[0] == 1) { // Follow Request Pending
                             GeneralAppInfo.friendMode = 1;
-                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
+                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
                         } else if (FollowRelationState[0] == 2) { // Follower
                             GeneralAppInfo.friendMode = 2;
-                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, Id1, getApplicationContext());
+                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
                         }
 
                     } else {
@@ -347,14 +357,14 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                         Log.d("stateeee", "" + FollowRelationState[0]);
                         if (FollowRelationState[0] == 0) {  // No relation
                             GeneralAppInfo.friendMode = 0;
-                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, Id1, getApplicationContext());
+                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, userProfileModel, getApplicationContext());
 
                         } else if (FollowRelationState[0] == 1) { // Follow Request Pending
                             GeneralAppInfo.friendMode = 1;
-                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, Id1, getApplicationContext());
+                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, userProfileModel, getApplicationContext());
                         } else if (FollowRelationState[0] == 2) { // Follower
                             GeneralAppInfo.friendMode = 2;
-                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, Id1, getApplicationContext());
+                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, userProfileModel, getApplicationContext());
                         }
 
 

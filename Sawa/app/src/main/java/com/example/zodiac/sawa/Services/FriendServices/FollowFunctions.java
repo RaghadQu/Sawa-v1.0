@@ -17,6 +17,7 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -205,8 +206,9 @@ public class FollowFunctions {
 
     }
 
-    public static void setFollowRelationState(final Button friendStatus, final Context context, final int Id, Context c) {
+    public static void setFollowRelationState(final Button friendStatus, final Context context, final UserModel userModel, Context c) {
         // recyclerView.setVisibility(View.VISIBLE);
+        final int Id=userModel.getId();
         if (GeneralAppInfo.friendMode == 0)
             friendStatus.setText("Follow");
         if (GeneralAppInfo.friendMode == 1)
@@ -285,8 +287,18 @@ public class FollowFunctions {
                 else if (GeneralAppInfo.friendMode == 0) {
                     Log.d("OtherActivityProfile","Requested");
 
-                    GeneralAppInfo.friendMode = 1;
-                    friendStatus.setText("Requested");
+                    if(userModel.isPublic())
+                    {
+                        GeneralAppInfo.friendMode = 2;
+                        friendStatus.setText("Following");
+
+                    }
+                    else
+                    {
+                        GeneralAppInfo.friendMode = 1;
+                        friendStatus.setText("Requested");
+
+                    }
                     FollowFunctions.addNewFriendShip(GeneralAppInfo.getUserID(), Id);
                 }
             }

@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/purple"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/toolBarText"
@@ -32,16 +33,27 @@
 
             <TextView
                 android:id="@+id/FriendshipTabType"
-                android:layout_width="match_parent"
+                android:layout_width="240dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:paddingRight="45dp"
                 android:text="Settings"
                 android:textColor="#fff"
                 android:textSize="19dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Save"
+                android:gravity="center"
+                android:textSize="15dp"
+                android:id="@+id/saveSettings"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textColor="#fff" />
 
         </Toolbar>
 
@@ -109,7 +121,7 @@
                 android:paddingBottom="3dp"
                 android:paddingLeft="15dp"
                 android:paddingTop="3dp"
-                android:text="Raghadzaki@gmail.com"
+                android:id="@+id/userMail"
                 android:textAllCaps="false"
                 android:textColor="#b1b1b1"
                 android:textSize="13dp" />
@@ -141,7 +153,7 @@
                 android:paddingBottom="3dp"
                 android:paddingLeft="15dp"
                 android:paddingTop="3dp"
-                android:text="+9725835211"
+                android:id="@+id/userMobile"
                 android:textAllCaps="false"
                 android:textColor="#b1b1b1"
                 android:textSize="13dp" />
@@ -210,6 +222,7 @@
                     android:layout_height="wrap_content"
                     android:text="Private"
                     android:textColor="#717171"
+                    android:id="@+id/privateAccountRadio"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
                     android:textSize="18dp"
@@ -220,40 +233,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="60dp"
                     android:textColor="#717171"
+                    android:id="@+id/publicAccountRadio"
                     android:buttonTint="@color/purple"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
                     android:textSize="18dp"
                     android:text="Public"/>
             </RadioGroup>
-
-
-            <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-                <!--android:id="@+id/TableLayout1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:backgroundTint="#19CC4455"-->
-                <!--android:paddingBottom="15dp"-->
-                <!--android:paddingLeft="60dp"-->
-                <!--android:paddingRight="80dp"-->
-                <!--android:paddingTop="15dp">-->
-
-                <!--<include-->
-                    <!--android:id="@+id/tableRow1_ref"-->
-                    <!--layout="@layout/account_state"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-                <!--<SeekBar-->
-                    <!--android:id="@+id/seekBar1"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="10dp"-->
-                    <!--android:backgroundTint="@color/purple"-->
-                    <!--android:max="100" />-->
-
-            <!--</TableLayout>-->
-
 
             <View
                 android:layout_width="match_parent"
@@ -288,6 +274,7 @@
                     android:textColor="#717171"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
+                    android:id="@+id/privateProfilePictureRadio"
                     android:buttonTint="@color/purple"
                     android:textSize="18dp"
                     />
@@ -295,6 +282,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="60dp"
+                    android:id="@+id/publicProfilePictureRadio"
                     android:textColor="#717171"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
@@ -303,32 +291,7 @@
                     android:text="Public"/>
             </RadioGroup>
 
-            <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-                <!--android:id="@+id/TableLayout1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:backgroundTint="#cc45"-->
-                <!--android:paddingBottom="15dp"-->
-                <!--android:paddingLeft="20dp"-->
-                <!--android:paddingRight="20dp"-->
-                <!--android:paddingTop="15dp">-->
 
-                <!--<include-->
-                    <!--android:id="@+id/tableRow1_ref"-->
-                    <!--layout="@layout/description"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-                <!--<SeekBar-->
-                    <!--android:id="@+id/seekBar1"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="10dp"-->
-                    <!--android:layout_marginTop="10dp"-->
-                    <!--android:backgroundTint="@color/purple"-->
-                    <!--android:max="100" />-->
-
-            <!--</TableLayout>-->
         </LinearLayout>
 
     <LinearLayout
@@ -367,17 +330,46 @@
             android:orientation="horizontal"
             android:paddingBottom="8dp">
 
-            <at.markushi.ui.CircleButton
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginLeft="80dp"
-                app:cb_color="@color/purple" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
 
-            <at.markushi.ui.CircleButton
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginLeft="40dp"
-                app:cb_color="@color/green" />
+                <RadioButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="#00222222"
+                    android:layout_marginLeft="100dp"
+                    android:scaleX="2.2"
+                    android:buttonTint="@color/purple"
+                    android:id="@+id/purpleColorRadio"
+                    android:scaleY="2.2"/>
+
+                <at.markushi.ui.CircleButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="-70dp"
+                    android:id="@+id/purpleColorBtn"
+                    app:cb_color="@color/purple"/>
+
+                <RadioButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="60dp"
+                    android:scaleX="2.2"
+                    android:buttonTint="@color/green"
+                    android:id="@+id/greenColorRadio"
+                    android:scaleY="2.2"/>
+
+                <at.markushi.ui.CircleButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/greenColorBtn"
+                    android:layout_marginLeft="-70dp"
+                    app:cb_color="@color/green"/>
+
+
+            </RadioGroup>
 
         </LinearLayout>
 
