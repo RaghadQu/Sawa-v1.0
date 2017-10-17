@@ -5,25 +5,22 @@ package com.example.zodiac.sawa.SpringModels;
  */
 
 public class UserModel {
+
     int id;
     String first_name;
     String last_name;
     String email;
-    String gender;
+    String password;
     String birthdate;
     String mobile;
     String image;
-    int sign_in_out;
-    int public_post_view;
     String cover_image;
-
-    public String getCover_image() {
-        return cover_image;
-    }
-
-    public void setCover_image(String cover_image) {
-        this.cover_image = cover_image;
-    }
+    int sign_in_out;
+    String isPublic;
+    String isProfileImagePublic;
+    String themeColor;
+    int public_post_view;
+    String gender;
 
     public int getId() {
         return id;
@@ -55,6 +52,14 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getBirthdate() {
@@ -105,5 +110,38 @@ public class UserModel {
         this.gender = gender;
     }
 
-}
+    public String getCover_image() {
+        return cover_image;
+    }
 
+    public void setCover_image(String cover_image) {
+        this.cover_image = cover_image;
+    }
+
+
+    public String getThemeColor() {
+        return themeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+    public String getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(String isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public String getIsProfileImagePublic() {
+        return isProfileImagePublic;
+    }
+
+    public void setIsProfileImagePublic(String isProfileImagePublic) {
+        this.isProfileImagePublic = isProfileImagePublic;
+    }
+
+
+}

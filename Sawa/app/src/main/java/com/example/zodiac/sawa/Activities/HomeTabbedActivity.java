@@ -193,7 +193,10 @@ public class HomeTabbedActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("Hello", " new resume");
+//       this.onCreate(null);
+
+     //   setContentView(R.layout.activity_home_tabbed2);
+
         if(userName != null &&profilePicture != null )
         {
             userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name()+ " " +GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
@@ -233,6 +236,14 @@ public class HomeTabbedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UIHandler = new Handler(Looper.getMainLooper());
+        if(GeneralAppInfo.getGeneralUserInfo().getUser().getThemeColor().equals("GREEN"))
+        {
+            getTheme().applyStyle(R.style.OverlayPrimaryColorGreen, true);
+        }
+        else
+        {
+            getTheme().applyStyle(R.style.OverlayPrimaryColorPurple, true);
+        }
         setContentView(R.layout.activity_home_tabbed2);
         HomeTabbedActivity.context = getApplicationContext();
         activity = this;
@@ -493,6 +504,13 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(context, MyRequestsActivity.class);
+                        startActivity(i);
+                    }
+                });
+                settingsIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, SettingsActivity.class);
                         startActivity(i);
                     }
                 });

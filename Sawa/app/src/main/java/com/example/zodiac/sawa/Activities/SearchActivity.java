@@ -1,6 +1,5 @@
 package com.example.zodiac.sawa.Activities;
 
-import android.animation.ObjectAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -11,12 +10,13 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
-import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringApi.SearchInterface;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
@@ -83,7 +83,6 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d("Enter the query", " Enter search change " + s + " here is the change");
                 if (mSearchView.getQuery().length() == 0) {
                     Log.d("Enter the query", "empty");
-
                     LayoutFriendsList.clear();
                     recyclerView.setAdapter(new FastScrollAdapter(SearchActivity.this, LayoutFriendsList, 1));
                 } else {
