@@ -211,7 +211,6 @@ public class SettingsActivity extends Activity {
                 saveSettings();
             }
         });
-
     }
 
     public void saveSettings(){
@@ -249,9 +248,7 @@ public class SettingsActivity extends Activity {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
                 }
-
             }
-
             @Override
             public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
                 GeneralFunctions generalFunctions = new GeneralFunctions();
