@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         GeneralFunctions generalFunctions = new GeneralFunctions();
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
+
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
                 .repeat(0)
