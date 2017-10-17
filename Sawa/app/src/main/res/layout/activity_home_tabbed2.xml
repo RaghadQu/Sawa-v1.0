@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="-2dp"
-    android:background="@color/purple"
+    android:background="?attr/colorPrimary"
     android:fitsSystemWindows="true"
     tools:context="com.example.zodiac.sawa.Activities.HomeTabbedActivity">
 

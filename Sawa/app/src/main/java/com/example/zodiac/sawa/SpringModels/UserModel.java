@@ -7,37 +7,19 @@ package com.example.zodiac.sawa.SpringModels;
 public class UserModel {
 
     int id;
-
-
     String first_name;
-
     String last_name;
-
-
     String email;
-
     String password;
-
     String birthdate;
-
     String mobile;
-
     String image;
-
     String cover_image;
-
     int sign_in_out;
-
-
-    boolean isPublic;
-
-    boolean isProfileImagePublic;
-
+    String isPublic;
+    String isProfileImagePublic;
     String themeColor;
-
     int public_post_view;
-
-
     String gender;
 
     public int getId() {
@@ -136,21 +118,6 @@ public class UserModel {
         this.cover_image = cover_image;
     }
 
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean isPublic) {
-        this.isPublic = isPublic;
-    }
-
-    public boolean isProfileImagePublic() {
-        return isProfileImagePublic;
-    }
-
-    public void setProfileImagePublic(boolean isProfileImagePublic) {
-        this.isProfileImagePublic = isProfileImagePublic;
-    }
 
     public String getThemeColor() {
         return themeColor;
@@ -158,6 +125,22 @@ public class UserModel {
 
     public void setThemeColor(String themeColor) {
         this.themeColor = themeColor;
+    }
+
+    public String getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(String isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public String getIsProfileImagePublic() {
+        return isProfileImagePublic;
+    }
+
+    public void setIsProfileImagePublic(String isProfileImagePublic) {
+        this.isProfileImagePublic = isProfileImagePublic;
     }
 
 

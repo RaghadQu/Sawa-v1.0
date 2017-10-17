@@ -5,11 +5,26 @@ package com.example.zodiac.sawa.SpringModels;
  */
 
 public class EditPrivacyModel {
-    int id ;
-    boolean isPublic;
-    boolean isProfileImagePublic;
+    int id;
+    String isPublic;
+    String isProfileImagePublic;
     String themeColor;
 
+    public String getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(String isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public String getIsProfileImagePublic() {
+        return isProfileImagePublic;
+    }
+
+    public void setIsProfileImagePublic(String isProfileImagePublic) {
+        this.isProfileImagePublic = isProfileImagePublic;
+    }
 
     public int getId() {
         return id;
@@ -19,21 +34,6 @@ public class EditPrivacyModel {
         this.id = id;
     }
 
-    public boolean getIsPublic() {
-        return isPublic;
-    }
-
-    public void setIsPublic(boolean aPublic) {
-        this.isPublic = aPublic;
-    }
-
-    public boolean getIsProfileImagePublic() {
-        return isProfileImagePublic;
-    }
-
-    public void setIsProfileImagePublic(boolean profileImagePublic) {
-        this.isProfileImagePublic = profileImagePublic;
-    }
 
     public String getThemeColor() {
         return themeColor;

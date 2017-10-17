@@ -19,7 +19,6 @@ import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -233,42 +232,33 @@ public class FollowFunctions {
                 if (GeneralAppInfo.friendMode == 1) {
                     textMsg.setText("Are you sure you want to delete the follow request ?");
                     ConfirmDeletion.show();
-
                     NoBtn.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View view) {
                             ConfirmDeletion.dismiss();
-
                         }
                     });
-
                     YesBtn.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View view) {
                             // recyclerView.setVisibility(View.GONE);
-
                             GeneralAppInfo.friendMode = 0;
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
                             friendFunction.DeleteFriend(Id, GeneralAppInfo.getUserID());
-
-
                         }
                     });
-
                 }
                 //Friend state
                 else if (GeneralAppInfo.friendMode == 2) {
                     ConfirmDeletion.show();
-
                     NoBtn.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View view) {
                             ConfirmDeletion.dismiss();
-
                         }
                     });
 
@@ -286,23 +276,19 @@ public class FollowFunctions {
                 //not friend state
                 else if (GeneralAppInfo.friendMode == 0) {
                     Log.d("OtherActivityProfile","Requested");
-
-                    if(userModel.isPublic())
+                    if(userModel.getIsPublic().equals("true"))
                     {
                         GeneralAppInfo.friendMode = 2;
                         friendStatus.setText("Following");
-
                     }
                     else
                     {
                         GeneralAppInfo.friendMode = 1;
                         friendStatus.setText("Requested");
-
                     }
                     FollowFunctions.addNewFriendShip(GeneralAppInfo.getUserID(), Id);
                 }
             }
         });
     }
-
 }

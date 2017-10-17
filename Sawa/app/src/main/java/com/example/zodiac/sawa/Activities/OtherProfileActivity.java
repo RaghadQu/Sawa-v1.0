@@ -176,11 +176,10 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
 
             img.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (userProfileModel.isProfileImagePublic()) {
+                    if (userProfileModel.getIsProfileImagePublic().equals("true")) {
                         imageView.setImageDrawable(img.getDrawable());
                         ViewImgDialog.show();
                     }
-
                 }
             });
 
@@ -226,7 +225,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
             final String finalMName1 = mName;
             followerTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (userProfileModel.isPublic()) {
+                    if (userProfileModel.getIsPublic().equals("true")) {
                         Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("source", 1);
@@ -239,7 +238,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
             });
             followingTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (userProfileModel.isPublic()) {
+                    if (userProfileModel.getIsPublic().equals("true")) {
                         Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("source", 2);

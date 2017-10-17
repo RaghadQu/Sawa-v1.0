@@ -18,7 +18,6 @@ import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringApi.AccountInfoInterface;
-import com.example.zodiac.sawa.SpringModels.EditEmailModel;
 import com.example.zodiac.sawa.SpringModels.EditPrivacyModel;
 import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
@@ -43,7 +42,7 @@ public class SettingsActivity extends Activity {
     RadioButton purpleColorRadio , greenColorRadio;
     TextView editProfile, changePassword, changeEmail, changeMobile , userMobile, userMail;
     String themeColor;
-    boolean isProfileImagePublic , isAccountPublic;
+    String isProfileImagePublic , isAccountPublic;
 
 
 
@@ -76,7 +75,7 @@ public class SettingsActivity extends Activity {
 
         userMail.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getEmail());
         userMobile.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getMobile());
-        if(GeneralAppInfo.getGeneralUserInfo().getUser().isPublic())
+        if(GeneralAppInfo.getGeneralUserInfo().getUser().getIsPublic().equals("true"))
         {
             publicAccountRadio.setChecked(true);
         }
@@ -85,7 +84,7 @@ public class SettingsActivity extends Activity {
             privateAccountRadio.setChecked(true);
         }
 
-        if(GeneralAppInfo.getGeneralUserInfo().getUser().isProfileImagePublic())
+        if(GeneralAppInfo.getGeneralUserInfo().getUser().getIsProfileImagePublic().equals("true"))
         {
             publicProfilePictureRadio.setChecked(true);
         }
@@ -95,12 +94,14 @@ public class SettingsActivity extends Activity {
         }
         if(GeneralAppInfo.getGeneralUserInfo().getUser().getThemeColor().equals("GREEN"))
         {
+            getTheme().applyStyle(R.style.OverlayPrimaryColorGreen, true);
             greenColorBtn.setVisibility(View.INVISIBLE);
             greenColorRadio.setChecked(true);
             purpleColorBtn.setVisibility(View.VISIBLE);
         }
         else
         {
+            getTheme().applyStyle(R.style.OverlayPrimaryColorPurple, true);
             purpleColorBtn.setVisibility(View.INVISIBLE);
             purpleColorRadio.setChecked(true);
             greenColorBtn.setVisibility(View.VISIBLE);
@@ -153,6 +154,9 @@ public class SettingsActivity extends Activity {
                 purpleColorBtn.setVisibility(View.INVISIBLE);
                 purpleColorRadio.setChecked(true);
                 greenColorBtn.setVisibility(View.VISIBLE);
+                setTheme(R.style.OverlayPrimaryColorGreen);
+               // setContentView(R.layout.settings_activity);
+
 
             }
         });
@@ -163,6 +167,14 @@ public class SettingsActivity extends Activity {
                 greenColorBtn.setVisibility(View.INVISIBLE);
                 greenColorRadio.setChecked(true);
                 purpleColorBtn.setVisibility(View.VISIBLE);
+                setTheme(R.style.OverlayPrimaryColorPurple);
+
+//                getTheme().applyStyle(R.style.OverlayPrimaryColorGreen, true);
+  //              setContentView(R.layout.settings_activity);
+
+
+
+
             }
         });
 
@@ -172,26 +184,28 @@ public class SettingsActivity extends Activity {
                 if(greenColorRadio.isChecked())
                 {
                     themeColor="GREEN";
+
                 }
                 else
                 {
                     themeColor="PURPLE";
+
                 }
                 if(privateAccountRadio.isChecked())
                 {
-                    isAccountPublic= false;
+                    isAccountPublic= "fasle";
                 }
                 else
                 {
-                    isAccountPublic= true;
+                    isAccountPublic= "true";
                 }
                 if(publicProfilePictureRadio.isChecked())
                 {
-                    isProfileImagePublic=true;
+                    isProfileImagePublic="true";
                 }
                 else
                 {
-                    isProfileImagePublic=false;
+                    isProfileImagePublic="fasle";
                 }
 
                 saveSettings();
@@ -220,20 +234,22 @@ public class SettingsActivity extends Activity {
                     GeneralUserInfoModel generalUserInfo = response.body();
                     UserModel userModel = generalUserInfo.getUser();
                     GeneralAppInfo.setGeneralUserInfo(generalUserInfo);
-                    Log.d("EditPrivacy", userModel.getThemeColor() + " " +userModel.isPublic() + " " +userModel.isProfileImagePublic() );
                     GeneralAppInfo.setUserID(userModel.getId());
                     SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     Gson gson = new Gson();
                     String json = gson.toJson(generalUserInfo);
+                    Log.d("EditPrivacy", " Error " + json);
                     editor.putString("generalUserInfo", json);
-                    Log.d("EditPrivacy","  " + json);
                     editor.apply();
                     finish();
+//                    Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+//                    startActivity(i);
                 } else if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
                 }
+
             }
 
             @Override

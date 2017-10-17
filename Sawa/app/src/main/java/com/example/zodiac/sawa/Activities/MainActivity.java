@@ -25,15 +25,10 @@ import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecoverPassword.RecoverPass;
 import com.example.zodiac.sawa.RegisterPkg.RegisterActivity;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
-import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
-import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
-import com.example.zodiac.sawa.SpringModels.SignInModel;
-import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.SpringModels.GeneralUserInfoModel;
 import com.example.zodiac.sawa.SpringModels.LoginWIthGoogleModel;
 import com.example.zodiac.sawa.SpringModels.LoginWithFacebookModel;
 import com.example.zodiac.sawa.SpringModels.SignInModel;
-import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -224,20 +219,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 userModelCall.enqueue(new Callback<GeneralUserInfoModel>() {
                     @Override
                     public void onResponse(Call<GeneralUserInfoModel> call, Response<GeneralUserInfoModel> response) {
-
-
                         int statusCode = response.code();
                         Log.d("-----", " enter request " + statusCode);
                         GeneralUserInfoModel generalUserInfoModel = response.body();
                         SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
-                        if (statusCode == 200) {
-
-                            GeneralAppInfo.setUserID(Integer.valueOf(generalUserInfoModel.getUser().getId()));
-                            GeneralUserInfoModel generalUserModel = response.body();
 
                             if (statusCode == 200) {
-
+                                GeneralUserInfoModel generalUserModel = response.body();
                                 GeneralAppInfo.setGeneralUserInfo(generalUserModel);
                                 GeneralAppInfo.setUserID(Integer.valueOf(generalUserModel.getUser().getId()));
                                 sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
@@ -279,19 +268,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         .playOn(findViewById(R.id.password));
                                 emailEditText.setError("Invalid Email or Password");
                             }
-                        }
+
                     }
 
                     @Override
                     public void onFailure(Call<GeneralUserInfoModel> call, Throwable t) {
+
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
-                        LoggingInDialog.dismiss();
                         if (isOnline == false) {
                             Toast.makeText(MainActivity.this, "no internet connection!",
                                     Toast.LENGTH_LONG).show();
                         }
                         Log.d("----", " Error " + t.getMessage());
+                        Log.d("LoggingInDialog", " Error " + t.getMessage());
+
+                        LoggingInDialog.dismiss();
 
 
                     }
