@@ -208,7 +208,6 @@ public class FollowFunctions {
     public static void setFollowRelationState(final Button friendStatus, final Context context, final UserModel userModel, Context c) {
         // recyclerView.setVisibility(View.VISIBLE);
         final int Id=userModel.getId();
-        Log.d("")
         if (GeneralAppInfo.friendMode == 0)
             friendStatus.setText("Follow");
 

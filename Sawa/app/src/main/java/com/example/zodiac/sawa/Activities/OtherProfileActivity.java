@@ -345,8 +345,8 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                         FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
                     }
 
-                        friendStatus.setVisibility(View.INVISIBLE);
-                        myFollowState.setVisibility(View.VISIBLE);
+                        //friendStatus.setVisibility(View.INVISIBLE);
+                       // myFollowState.setVisibility(View.VISIBLE);
 
 
 
