@@ -126,7 +126,7 @@ public class MyFollowingActivity extends Activity {
                                 noFriendsLayout.setVisibility(View.GONE);
                                 for (int i = 0; i < FriendList.size(); i++) {
                                     LayoutFriendsList.add(new MyFollowersActivity.friend(FriendList.get(i).getUser().getId(), FriendList.get(i).getUser().getImage(),
-                                            FriendList.get(i).getUser().getFirst_name() + " " + FriendList.get(i).getUser().getLast_name(), FriendList.get(i).getFriend1State()));
+                                            FriendList.get(i).getUser().getFirst_name() + " " + FriendList.get(i).getUser().getLast_name(), FriendList.get(i).getState()));
                                 }
                                 recyclerView.setAdapter(new FastScrollAdapter(MyFollowingActivity.this, LayoutFriendsList, 2));
 

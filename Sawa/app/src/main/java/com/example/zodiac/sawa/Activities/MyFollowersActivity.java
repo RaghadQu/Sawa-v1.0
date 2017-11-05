@@ -186,7 +186,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
                     image=FriendsList.get(i).getUser().getImage();
                     first_name=FriendsList.get(i).getUser().getFirst_name();
                     last_name=FriendsList.get(i).getUser().getLast_name();
-                    state=FriendsList.get(i).getFriend1State();
+                    state=FriendsList.get(i).getState();
                    /* }else if(source==1||source==2) {
                         id=FriendsList.get(i).getUser().getId();
                         image=FriendsList.get(i).getUser().getImage();
