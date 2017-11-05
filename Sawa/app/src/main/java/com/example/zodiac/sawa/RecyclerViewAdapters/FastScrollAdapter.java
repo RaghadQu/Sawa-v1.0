@@ -210,7 +210,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                             if (remove.getText().toString().equals("Follow")) {
                                 FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());
                                 FriendRequest.setFriend2_id(userList.get(position).getId());
-                                final Call<FriendResponseModel> FollowCall = FriendApi.sendFollowRequest(FriendRequest);
+                                final Call<FriendResponseModel> FollowCall = FriendApi.sendNewFollow(FriendRequest);
                                 FollowCall.enqueue(new Callback<FriendResponseModel>() {
                                     @Override
                                     public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {

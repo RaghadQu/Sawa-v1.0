@@ -6,9 +6,7 @@ package com.example.zodiac.sawa.SpringModels;
 
 public class FollowesAndFollowingResponse {
     UserModel user;
-    int friend1_state;
-    int friend2_state;
-
+    int state;
     public UserModel getUser() {
         return user;
     }
@@ -17,19 +15,11 @@ public class FollowesAndFollowingResponse {
         this.user = user;
     }
 
-    public int getFriend1State() {
-        return friend1_state;
+    public int getState() {
+        return state;
     }
 
-    public void setFriend2State(int state) {
-        this.friend2_state = state;
-    }
-
-    public int getFriend2State() {
-        return friend2_state;
-    }
-
-    public void setFriend1State(int state) {
-        this.friend1_state = state;
+    public void setState(int state) {
+        this.state = state;
     }
 }

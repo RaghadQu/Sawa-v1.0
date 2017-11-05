@@ -85,6 +85,7 @@
         <activity android:name=".Activities.MyProfileActivity" />
         <activity
             android:name=".Activities.HomeTabbedActivity"
+            android:noHistory = "true"
             android:label="@string/title_activity_home_tabbed"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activities.OtherProfileActivity" />

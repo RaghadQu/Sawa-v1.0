@@ -19,7 +19,6 @@ import com.example.zodiac.sawa.SpringModels.FriendRequestModel;
 import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -188,7 +187,7 @@ public class FollowFunctions {
         friendshipModel.setFriend2_id(friend2_id);
 
 
-        Call<FriendResponseModel> addFrienshipCall = FriendApi.sendFollowRequest(friendshipModel);
+        Call<FriendResponseModel> addFrienshipCall = FriendApi.sendNewFollow(friendshipModel);
         addFrienshipCall.enqueue(new Callback<FriendResponseModel>() {
             @Override
             public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
@@ -209,11 +208,11 @@ public class FollowFunctions {
     public static void setFollowRelationState(final Button friendStatus, final Context context, final UserModel userModel, Context c) {
         // recyclerView.setVisibility(View.VISIBLE);
         final int Id=userModel.getId();
+        Log.d("")
         if (GeneralAppInfo.friendMode == 0)
             friendStatus.setText("Follow");
+
         if (GeneralAppInfo.friendMode == 1)
-            friendStatus.setText("Requested");
-        if (GeneralAppInfo.friendMode == 2)
             friendStatus.setText("Following");
 
 
@@ -231,78 +230,38 @@ public class FollowFunctions {
             public void onClick(View view) {
                 //Pending state
                 if (GeneralAppInfo.friendMode == 1) {
-                    textMsg.setText("Are you sure you want to delete the follow request ?");
+                    textMsg.setText("Are you sure you want to delete the follow ?");
                     ConfirmDeletion.show();
-
                     NoBtn.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View view) {
                             ConfirmDeletion.dismiss();
-
                         }
                     });
-
                     YesBtn.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View view) {
                             // recyclerView.setVisibility(View.GONE);
-
                             GeneralAppInfo.friendMode = 0;
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
                             friendFunction.DeleteFriend(Id, GeneralAppInfo.getUserID());
-
-
                         }
                     });
-
                 }
                 //Friend state
-                else if (GeneralAppInfo.friendMode == 2) {
-                    ConfirmDeletion.show();
 
-                    NoBtn.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View view) {
-                            ConfirmDeletion.dismiss();
-
-                        }
-                    });
-
-                    YesBtn.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View view) {
-                            GeneralAppInfo.friendMode = 0;
-                            friendStatus.setText("Follow");
-                            ConfirmDeletion.dismiss();
-                            friendFunction.DeleteFriend(Id,GeneralAppInfo.getUserID());
-                        }
-                    });
-                }
                 //not friend state
                 else if (GeneralAppInfo.friendMode == 0) {
                     Log.d("OtherActivityProfile","Requested");
 
-                    if(userModel.isPublic())
-                    {
-                        GeneralAppInfo.friendMode = 2;
-                        friendStatus.setText("Following");
-
-                    }
-                    else
-                    {
                         GeneralAppInfo.friendMode = 1;
-                        friendStatus.setText("Requested");
-
-                    }
-                    FollowFunctions.addNewFriendShip(GeneralAppInfo.getUserID(), Id);
+                        friendStatus.setText("Following");
+                        FollowFunctions.addNewFriendShip(GeneralAppInfo.getUserID(), Id);
                 }
             }
         });
     }
-
 }

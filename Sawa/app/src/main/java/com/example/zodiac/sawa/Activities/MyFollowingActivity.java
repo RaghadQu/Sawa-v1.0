@@ -123,6 +123,7 @@ public class MyFollowingActivity extends Activity {
                                 for (int i = 0; i < FriendList.size(); i++) {
                                     LayoutFriendsList.add(new MyFollowersActivity.friend(FriendList.get(i).getId(), FriendList.get(i).getImage(),
                                             FriendList.get(i).getFirst_name() + " " + FriendList.get(i).getLast_name(), 1));
+
                                 }
                                 recyclerView.setAdapter(new FastScrollAdapter(MyFollowingActivity.this, LayoutFriendsList, 2));
 

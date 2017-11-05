@@ -232,18 +232,18 @@ public class RequestScroll extends RecyclerView.Adapter<RequestScroll.UserViewHo
             remove.setVisibility(View.INVISIBLE);
             stateBtn.setVisibility(View.VISIBLE);
 
-            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==0 )
-            {
-                stateBtn.setText("Follow");
-            }
-            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==1)
-            {
-                stateBtn.setText("Requested");
-            }
-            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==2)
-            {
-                stateBtn.setText("Following");
-            }
+//            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==0 )
+//            {
+//                stateBtn.setText("Follow");
+//            }
+//            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==1)
+//            {
+//                stateBtn.setText("Requested");
+//            }
+//            if(MyRequestsActivity.FriendsList.get(position).getFriend1State()==2)
+//            {
+//                stateBtn.setText("Following");
+//            }
 
         }
     }

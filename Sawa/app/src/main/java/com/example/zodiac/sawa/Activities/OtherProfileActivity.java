@@ -28,6 +28,7 @@ import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
 import com.example.zodiac.sawa.SpringModels.AboutUserResponseModel;
 import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
+import com.example.zodiac.sawa.SpringModels.FriendResponseModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.squareup.picasso.Picasso;
 
@@ -176,11 +177,10 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
 
             img.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (userProfileModel.isProfileImagePublic()) {
+                    if (userProfileModel.getIsProfileImagePublic().equals("true")) {
                         imageView.setImageDrawable(img.getDrawable());
                         ViewImgDialog.show();
                     }
-
                 }
             });
 
@@ -226,7 +226,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
             final String finalMName1 = mName;
             followerTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (userProfileModel.isPublic()) {
+                    if (userProfileModel.getIsPublic().equals("true")) {
                         Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("source", 1);
@@ -239,7 +239,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
             });
             followingTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (userProfileModel.isPublic()) {
+                    if (userProfileModel.getIsPublic().equals("true")) {
                         Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("source", 2);
@@ -317,117 +317,39 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                 .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
         FriendshipInterface getFreindApi = retrofit.create(FriendshipInterface.class);
-        Call<FollowesAndFollowingResponse> call = getFreindApi.getFollowRelationState(GeneralAppInfo.getUserID(), Id);
+        Call<FriendResponseModel> call = getFreindApi.getFollowRelationState(GeneralAppInfo.getUserID(), Id);
         final Integer[] FollowRelationState = new Integer[2];
 
         final String finalMName = mName;
-        call.enqueue(new Callback<FollowesAndFollowingResponse>() {
+        call.enqueue(new Callback<FriendResponseModel>() {
             @Override
-            public void onResponse(Call<FollowesAndFollowingResponse> call, final Response<FollowesAndFollowingResponse> response) {
+            public void onResponse(Call<FriendResponseModel> call, final Response<FriendResponseModel> response) {
                 Log.d("GetState", "get Friend State code is " + response.code());
+                Log.d("GetState", "get Friend State code is " + response.body().getFriend2_id().getId());
+
                 if (response.code() == 200) {
-                    FollowRelationState[0] = response.body().getFriend1State();
-                    FollowRelationState[1] = response.body().getFriend2State();
-                    userProfileModel = response.body().getUser();
+                    FollowRelationState[0] = response.body().getState();
+                    userProfileModel = response.body().getFriend2_id();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar_button.setVisibility(View.INVISIBLE);
-                    if (FollowRelationState[1] == 0) {
+                    if (FollowRelationState[0] == 0) {
 
-                        Log.d("stateeee", "" + FollowRelationState[0]);
-                        if (FollowRelationState[0] == 0) {  // No relation
+                       // No relation
                             GeneralAppInfo.friendMode = 0;
                             FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
 
-                        } else if (FollowRelationState[0] == 1) { // Follow Request Pending
-                            GeneralAppInfo.friendMode = 1;
-                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
-                        } else if (FollowRelationState[0] == 2) { // Follower
-                            GeneralAppInfo.friendMode = 2;
-                            FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
-                        }
 
-                    } else {
+
+                    } else if (FollowRelationState[0] == 1) { // Follow Request Pending
+                        GeneralAppInfo.friendMode = 1;
+                        FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
+                    }
 
                         friendStatus.setVisibility(View.INVISIBLE);
                         myFollowState.setVisibility(View.VISIBLE);
-                        otherFollowState.setVisibility(View.VISIBLE);
-
-                        // myFollowState
-                        //   FriendsClass friendsClass = new FriendsClass();
-                        Log.d("stateeee", "" + FollowRelationState[0]);
-                        if (FollowRelationState[0] == 0) {  // No relation
-                            GeneralAppInfo.friendMode = 0;
-                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, userProfileModel, getApplicationContext());
-
-                        } else if (FollowRelationState[0] == 1) { // Follow Request Pending
-                            GeneralAppInfo.friendMode = 1;
-                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, userProfileModel, getApplicationContext());
-                        } else if (FollowRelationState[0] == 2) { // Follower
-                            GeneralAppInfo.friendMode = 2;
-                            FollowFunctions.setFollowRelationState(myFollowState, OtherProfileActivity.this, userProfileModel, getApplicationContext());
-                        }
 
 
-                        if (FollowRelationState[1] == 1) // follower request Pending ( follower sent request)
-                        {
-                            otherFollowState.setImageResource(R.drawable.follower_request_pending);
-                            otherFollowState.setOnClickListener(new View.OnClickListener() {
 
-                                @Override
-                                public void onClick(View view) {
-                                    textMsg.setText("Do you want to accept " + finalMName + " follow request?");
-                                    ConfirmDeletion.show();
-
-                                    NoBtn.setOnClickListener(new View.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(View view) {
-                                            ConfirmDeletion.dismiss();
-                                            FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1, friendStatus, myFollowState, otherFollowState);
-                                        }
-                                    });
-
-                                    YesBtn.setOnClickListener(new View.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(View view) {
-                                            ConfirmDeletion.dismiss();
-                                            FollowFunctions.ConfirmFollowRequest(GeneralAppInfo.getUserID(), Id1, otherFollowState);
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        if (FollowRelationState[1] == 2) {
-                            otherFollowState.setImageResource(R.drawable.follower_icon);
-                            otherFollowState.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View view) {
-                                    textMsg.setText(" Do you want to remove " + finalMName + " from your followers ?");
-                                    ConfirmDeletion.show();
-
-                                    NoBtn.setOnClickListener(new View.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(View view) {
-                                            ConfirmDeletion.dismiss();
-
-                                        }
-                                    });
-
-                                    YesBtn.setOnClickListener(new View.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(View view) {
-                                            ConfirmDeletion.dismiss();
-                                            FollowFunctions.DeleteFriendwithBtn(GeneralAppInfo.getUserID(), Id1, friendStatus, myFollowState, otherFollowState);
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    }
                     fillAbout(about_bio, about_status, Id1);
 
 
@@ -435,7 +357,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
             }
 
             @Override
-            public void onFailure(Call<FollowesAndFollowingResponse> call, Throwable t) {
+            public void onFailure(Call<FriendResponseModel> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar_button.setVisibility(View.INVISIBLE);
                 Log.d("OtherActivityProfile", " Error" + t.getMessage());
