@@ -7,3 +7,14 @@
 /build
 /captures
 .externalNativeBuild
+gradle/wrapper/gradle-wrapper.properties
+gradle/wrapper/gradle-wrapper.jar
+app/src/test/java/com/example/zodiac/sawa/ExampleUnitTest.java
+app/src/main/res/values/styles.xml
+app/src/main/res/values/strings.xml
+app/src/main/res/values/dimens.xml
+app/src/main/res/values/colors.xml
+app/src/main/res/values-w820dp/dimens.xml
+app/src/main/res/values-v21/styles.xml
+app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png
+app/src/main/res/mipmap-xxhdpi/ic_launcher.png
