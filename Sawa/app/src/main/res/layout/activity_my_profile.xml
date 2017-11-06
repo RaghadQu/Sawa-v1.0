@@ -165,66 +165,122 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:gravity="center">
+
             <TextView
                 android:id="@+id/newPostTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="21dp"
                 android:clickable="true"
-                android:padding="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="New Post"
                 android:textAllCaps="false"
                 android:textColor="@color/purple"
                 android:textSize="14dp" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text=" "
+                android:textAllCaps="false"
+                android:textColor="#ccc"
+                android:textSize="12dp"/>
+            </LinearLayout>
             <View
                 android:layout_width="0.1dp"
-                android:layout_height="33dp"
+                android:layout_height="36dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="22dp"
                 android:layout_marginTop="3dp"
                 android:background="#ACACAC" />
 
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:gravity="center">
             <TextView
                 android:id="@+id/followerTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
                 android:clickable="true"
-                android:padding="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Follower"
                 android:textAllCaps="false"
                 android:textColor="@color/purple"
                 android:textSize="14dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="150"
+                android:id="@+id/followerCount"
+                android:textAllCaps="false"
+                android:textColor="#ccc"
+                android:textSize="12dp"/>
+        </LinearLayout>
+
+
 
             <View
                 android:layout_width="0.1dp"
-                android:layout_height="33dp"
+                android:layout_height="36dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginLeft="22dp"
                 android:layout_marginTop="3dp"
                 android:background="#ACACAC" />
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:gravity="center">
             <TextView
                 android:id="@+id/followingTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
                 android:clickable="true"
-                android:padding="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Following"
                 android:textAllCaps="false"
                 android:textColor="@color/purple"
                 android:textSize="14dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="150"
+                android:id="@+id/followingCount"
+                android:textAllCaps="false"
+                android:textColor="#ccc"
+                android:textSize="12dp"/>
+        </LinearLayout>
 
-            <View
-                android:layout_width="0.1dp"
-                android:layout_height="33dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="3dp"
-                android:background="#ACACAC" />
+            <!--<View-->
+                <!--android:layout_width="0.1dp"-->
+                <!--android:layout_height="33dp"-->
+                <!--android:layout_marginBottom="3dp"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_marginTop="3dp"-->
+                <!--android:background="#ACACAC" />-->
 
 
         </LinearLayout>

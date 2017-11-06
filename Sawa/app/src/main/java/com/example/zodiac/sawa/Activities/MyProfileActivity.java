@@ -77,7 +77,8 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
     TextView userName;
     String songUrl;
     int youtubeFlag = 0;
-    TextView followerTxt, followingTxt, newPostTxt;
+    TextView followingTxt, newPostTxt , followerCount , followingCount;
+//    TextView followerTxt;
     TextView profileBio;
     CircleImageView editProfile, editSong;
     Button saveAbout, saveSong;
@@ -212,7 +213,7 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         context = this;
         GeneralFunctions generalFunctions = new GeneralFunctions();
         boolean isOnline = generalFunctions.isOnline(getApplicationContext());
-        followerTxt = (TextView) findViewById(R.id.followerTxt);
+      //  followerTxt = (TextView) findViewById(R.id.followerTxt);
         followingTxt = (TextView) findViewById(R.id.followingTxt);
         newPostTxt = (TextView) findViewById(R.id.newPostTxt);
         editProfile = (CircleImageView) findViewById(R.id.editProfile);
@@ -234,15 +235,19 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
         editBio = (TextView) findViewById(R.id.editBio);
         toolBarText = (TextView) findViewById(R.id.toolBarText);
         progressBar = (ProgressBar) findViewById(R.id.profilePictureProgressBar);
-
         userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
         String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
         //   progressBar.setVisibility(View.INVISIBLE);
-
          Picasso.with(context).load(imageUrl).into(img);
         String coverUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getCover_image();
         Picasso.with(context).load(coverUrl).into(coverImage);
         profileBio.setText(GeneralAppInfo.getGeneralUserInfo().getAboutUser().getUserBio());
+        followingCount= (TextView) findViewById(R.id.followingCount);
+        Log.d("CountersFollow", " " + GeneralAppInfo.getGeneralUserInfo().getNumberOfFollower());
+        Log.d("CountersFollow", " " + GeneralAppInfo.getGeneralUserInfo().getNumberOfFollowing());
+        followingCount.setText(String.valueOf(GeneralAppInfo.getGeneralUserInfo().getNumberOfFollowing()));
+        followerCount= (TextView) findViewById(R.id.followerCount);
+        followerCount.setText(String.valueOf(GeneralAppInfo.getGeneralUserInfo().getNumberOfFollower()));
 //        userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
 //        String imageUrl = GeneralAppInfo.SPRING_URL + "/" + GeneralAppInfo.getGeneralUserInfo().getUser().getImage();
 //        //   progressBar.setVisibility(View.INVISIBLE);
@@ -403,16 +408,16 @@ public class MyProfileActivity extends YouTubeBaseActivity implements YouTubePla
             });
 
 
-            followerTxt.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-                    Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("source", 0);
-                    i.putExtras(b);
-                    startActivity(i);
-                }
-            });
+//            followerTxt.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//
+//                    Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+//                    Bundle b = new Bundle();
+//                    b.putInt("source", 0);
+//                    i.putExtras(b);
+//                    startActivity(i);
+//                }
+//            });
 
             followingTxt.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

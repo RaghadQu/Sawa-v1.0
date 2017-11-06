@@ -65,7 +65,8 @@ public class HomeTabbedActivity extends AppCompatActivity {
     static ImageView imageView;
     static TabLayout tabLayout;
     static TextView userName;
-    static CircleImageView profilePicture, followerIcon, followingIcon, reqeustsIcon, settingsIcon, logoutIcon;
+    static CircleImageView profilePicture, followingIcon, settingsIcon, logoutIcon;
+//    static  CircleImageView  reqeustsIcon, followerIcon;
     static Context context;
     static int tabNumber;
     /**
@@ -469,9 +470,9 @@ public class HomeTabbedActivity extends AppCompatActivity {
                // getUserInfo();
                 profilePicture = (CircleImageView) rootView.findViewById(R.id.profile_picture);
                 Picasso.with(context).load(GeneralAppInfo.SPRING_URL+'/'+GeneralAppInfo.getGeneralUserInfo().getUser().getImage()).into(profilePicture);
-                followerIcon = (CircleImageView) rootView.findViewById(R.id.followersIcon);
+//                followerIcon = (CircleImageView) rootView.findViewById(R.id.followersIcon);
                 followingIcon = (CircleImageView) rootView.findViewById(R.id.FollowingIcon);
-                reqeustsIcon = (CircleImageView) rootView.findViewById(R.id.RequestsIcon);
+//                reqeustsIcon = (CircleImageView) rootView.findViewById(R.id.RequestsIcon);
                 settingsIcon = (CircleImageView) rootView.findViewById(R.id.settingsIcon);
                 logoutIcon = (CircleImageView) rootView.findViewById(R.id.logoutIcon);
                 LinearLayout showProfileLayout = (LinearLayout) rootView.findViewById(R.id.showProfileLayout);
@@ -486,13 +487,13 @@ public class HomeTabbedActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
-                followerIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent(context, MyFollowersActivity.class);
-                        startActivity(i);
-                    }
-                });
+//                followerIcon.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent i = new Intent(context, MyFollowersActivity.class);
+//                        startActivity(i);
+//                    }
+//                });
                 followingIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -500,13 +501,13 @@ public class HomeTabbedActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
-                reqeustsIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent(context, MyRequestsActivity.class);
-                        startActivity(i);
-                    }
-                });
+//                reqeustsIcon.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent i = new Intent(context, MyRequestsActivity.class);
+//                        startActivity(i);
+//                    }
+//                });
                 settingsIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

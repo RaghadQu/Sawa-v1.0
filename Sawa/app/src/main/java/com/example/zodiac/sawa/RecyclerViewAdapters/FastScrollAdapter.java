@@ -89,7 +89,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                 holder.remove.setText("Follow");
             }
             if (FollowState == 1) {
-                holder.remove.setText("Requested");
+                holder.remove.setText("Following");
             }
         }
         else
@@ -216,7 +216,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                                     public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
                                         Log.d("FastScrollResp", " " + response.code());
                                         if (response.code() == 200) {
-                                            remove.setText("Requested");
+                                            remove.setText("Following");
                                         } else {
                                             GeneralFunctions generalFunctions = new GeneralFunctions();
                                             generalFunctions.showErrorMesaage(getApplicationContext());
@@ -252,7 +252,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
                                     }
                                 });
-                            } else if (remove.getText().toString().equals("Requested")) {
+                            } else if (remove.getText().toString().equals("Following")) {
                                 callDeleteApi(position, remove);
                             }
 
