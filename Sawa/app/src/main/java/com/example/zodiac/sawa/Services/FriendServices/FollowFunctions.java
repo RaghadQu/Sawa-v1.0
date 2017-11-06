@@ -246,7 +246,7 @@ public class FollowFunctions {
                             GeneralAppInfo.friendMode = 0;
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
-                            friendFunction.DeleteFriend(Id, GeneralAppInfo.getUserID());
+                            friendFunction.DeleteFriend( GeneralAppInfo.getUserID() , Id);
                         }
                     });
                 }
