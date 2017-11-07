@@ -21,7 +21,6 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
-import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -149,7 +148,8 @@ public class MyFollowingActivity extends Activity {
                 final int DRAWABLE_LEFT = 0;
 
                 if (event.getX() <= (toolbarText.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width() + 30)) {
-                    finish();
+                //finish();
+                    onBackPressed();
                     return true;
                 }
                 return false;
