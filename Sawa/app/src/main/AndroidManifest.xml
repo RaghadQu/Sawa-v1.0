@@ -8,15 +8,16 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
-     <supports-screens android:resizeable="true"
-      android:smallScreens="true"
-      android:normalScreens="true"
-      android:largeScreens="true"
-      android:xlargeScreens="true"
-      android:anyDensity="true"
-      android:requiresSmallestWidthDp="720"
-      android:compatibleWidthLimitDp="720"
-      android:largestWidthLimitDp="720"/>
+    <supports-screens
+        android:anyDensity="true"
+        android:compatibleWidthLimitDp="720"
+        android:largeScreens="true"
+        android:largestWidthLimitDp="720"
+        android:normalScreens="true"
+        android:requiresSmallestWidthDp="720"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
     <application
         android:allowBackup="true"
@@ -85,9 +86,9 @@
         <activity android:name=".Activities.MyProfileActivity" />
         <activity
             android:name=".Activities.HomeTabbedActivity"
-            android:noHistory = "true"
             android:label="@string/title_activity_home_tabbed"
             android:theme="@style/AppTheme" />
+        <!--android:noHistory = "true"-->
         <activity android:name=".Activities.OtherProfileActivity" />
         <activity android:name=".Activities.EditProfileActivity" />
 
@@ -95,7 +96,7 @@
         <activity android:name=".Activities.SettingsActivity" />
         <activity android:name=".Activities.ChangeAccountInfoActivities.ChangePasswordActivity" />
         <activity android:name=".Activities.ChangeAccountInfoActivities.ChangeEmailActivity" />
-        <activity android:name=".Activities.ChangeAccountInfoActivities.ChangeMobileActivity"/>
+        <activity android:name=".Activities.ChangeAccountInfoActivities.ChangeMobileActivity" />
 
         <activity
             android:name=".Activities.YoutubePlayerDialogActivity"
