@@ -1,5 +1,6 @@
 package com.example.zodiac.sawa.Activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,28 +8,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
-import com.example.zodiac.sawa.Services.ImageConverterService.*;
-import com.example.zodiac.sawa.RecyclerViewAdapters.AddPostImagesAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -36,21 +29,15 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import at.markushi.ui.CircleButton;
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by zodiac on 06/07/2017.
  */
 
-public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private static final int SELECTED_PICTURE = 100;
 
@@ -65,8 +52,8 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
     Button Cancelbtn, PostBtn;
     CircleButton anonymousBtn;
     EditText PostText;
-    TextView AddImage;
-    ImageView PostImage;
+    //   TextView AddImage;
+    ImageView PostImage, AddImage;
     TextView DeletePostImage;
     FastScrollRecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -159,96 +146,98 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        postProgress = (ProgressBar) findViewById(R.id.postProgress);
-        setContentView(R.layout.add_post_activity);
-        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube);
-        youTubePlayerView.setVisibility(View.GONE);
-        PostText = (EditText) findViewById(R.id.PostText);
-        PostText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        setContentView(R.layout.postpost);
+//        postProgress = (ProgressBar) findViewById(R.id.postProgress);
+//        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube);
+//        youTubePlayerView.setVisibility(View.GONE);
+//        PostText = (EditText) findViewById(R.id.PostText);
+//        PostText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//                String pattern = "https://m.youtube.com/watch?v=";
+//                String s = String.valueOf(PostText.getText());
+//                int i = s.indexOf(pattern);
+//                Log.d("II", "" + i);
+//
+//                if (i == 0 && youtubeFlag == 0) {
+//                    String[] split = s.split("v=");
+//                    video_id = split[1];
+//                    youTubePlayerView = new YouTubePlayerView(AddPostActivity.this);
+//                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
+//
+//                    addContentView(youTubePlayerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//
+//                    youTubePlayerView.setVisibility(View.VISIBLE);
+//                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
+//                    youtubeFlag = 1;
+//                } else if (i == -1 && youtubeFlag == 0) {
+//                    youTubePlayerView.setVisibility(View.INVISIBLE);
+//
+//                }
+//
+//
+//            }
+//        });
+        PostImage = (ImageView) findViewById(R.id.showPhoto);
+        AddImage = (ImageView) findViewById(R.id.addPhoto);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                String pattern = "https://m.youtube.com/watch?v=";
-                String s = String.valueOf(PostText.getText());
-                int i = s.indexOf(pattern);
-                Log.d("II", "" + i);
-
-                if (i == 0 && youtubeFlag == 0) {
-                    String[] split = s.split("v=");
-                    video_id = split[1];
-                    youTubePlayerView = new YouTubePlayerView(AddPostActivity.this);
-                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
-
-                    addContentView(youTubePlayerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                    youTubePlayerView.setVisibility(View.VISIBLE);
-                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
-                    youtubeFlag = 1;
-                } else if (i == -1 && youtubeFlag == 0) {
-                    youTubePlayerView.setVisibility(View.INVISIBLE);
-
-                }
-
-
-            }
-        });
-        PostImage = (ImageView) findViewById(R.id.PostImage);
-        postProgress = (ProgressBar) findViewById(R.id.postProgress);
-        anonymousBtn = (CircleButton) findViewById(R.id.anonymous);
-        Cancelbtn = (Button) findViewById(R.id.CancelBtn);
-        PostBtn = (Button) findViewById(R.id.PostBtn);
-        senderImage = (CircleImageView) findViewById(R.id.senderImage);
-        receiverImage = (CircleImageView) findViewById(R.id.receiverImage);
-        AddImage = (TextView) findViewById(R.id.AddImage);
-        DeletePostImage = (TextView) findViewById(R.id.cross);
-        Log.d("DeletePostImage", " " + DeletePostImage);
-        DeletePostImage.setVisibility(View.INVISIBLE);
-
-        adapter = new AddPostImagesAdapter(this, FriendPostList);
-        recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(adapter);
-
-        final int[] flag = {0};
-        anonymousBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (flag[0] == 0) {
-                    flag[0] = 1;
-                    anonymousBtn.setColor(getResources().getColor(R.color.green));
-                } else {
-                    flag[0] = 0;
-                    anonymousBtn.setColor(getResources().getColor(android.R.color.darker_gray));
-                }
-            }
-        });
-
-        PostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddNewPost(flag[0]);
-            }
-        });
-
-        Cancelbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
-                startActivity(i);
-            }
-        });
-
+//        postProgress = (ProgressBar) findViewById(R.id.postProgress);
+//        anonymousBtn = (CircleButton) findViewById(R.id.anonymous);
+//        Cancelbtn = (Button) findViewById(R.id.CancelBtn);
+//        PostBtn = (Button) findViewById(R.id.PostBtn);
+//        senderImage = (CircleImageView) findViewById(R.id.senderImage);
+//        receiverImage = (CircleImageView) findViewById(R.id.receiverImage);
+//        AddImage = (TextView) findViewById(R.id.AddImage);
+//        DeletePostImage = (TextView) findViewById(R.id.cross);
+//        Log.d("DeletePostImage", " " + DeletePostImage);
+//        DeletePostImage.setVisibility(View.INVISIBLE);
+//
+//        adapter = new AddPostImagesAdapter(this, FriendPostList);
+//        recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//        recyclerView.setAdapter(adapter);
+//
+//        final int[] flag = {0};
+//        anonymousBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (flag[0] == 0) {
+//                    flag[0] = 1;
+//                    anonymousBtn.setColor(getResources().getColor(R.color.green));
+//                } else {
+//                    flag[0] = 0;
+//                    anonymousBtn.setColor(getResources().getColor(android.R.color.darker_gray));
+//                }
+//            }
+//        });
+//
+//        PostBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AddNewPost(flag[0]);
+//            }
+//        });
+//
+//        Cancelbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+//                startActivity(i);
+//            }
+//        });
+//
         AddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,14 +246,15 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                 //    PostImage.setImageResource(R.drawable.image2);
             }
         });
-
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.BACKEND_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        service = retrofit.create(FriendshipInterface.class);
-
-
+//
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(GeneralAppInfo.BACKEND_URL)
+//                .addConverterFactory(GsonConverterFactory.create()).build();
+//        service = retrofit.create(FriendshipInterface.class);
+//
+//
+//    }
     }
 
     @Override
@@ -274,31 +264,32 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
             Uri imageuri = data.getData();
             try {
                 Bitmap bitmap = setPostImage(imageuri);
-               /*  Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageuri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageuri);
 
                 int newWidth = (int) (bitmap.getWidth());
                 int newHeight = (int) (bitmap.getHeight());
-                Log.d("ImageAddPost", " width " + newWidth + "  "+ newHeight);
-                Log.d("ImageAddPost", " width " + PostImage.getWidth() + "  "+ PostImage.getHeight());
+                Log.d("ImageAddPost", " width " + newWidth + "  " + newHeight);
+                Log.d("ImageAddPost", " width " + PostImage.getWidth() + "  " + PostImage.getHeight());
 
-               if (newHeight >= 500) {
-                   // if (newWidth > newHeight) {
-                        double scale = 920.0 / newWidth;
-                        newWidth = (int) (newWidth * scale);
-                        newHeight = (int) (newHeight * scale);
-                   } else {
+                if (newHeight >= 500) {
+                    if (newWidth > newHeight) {
                         double scale = 920.0 / newWidth;
                         newWidth = (int) (newWidth * scale);
                         newHeight = (int) (newHeight * scale);
                     }
-                }*/
-                //Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+                } else {
+                    double scale = 920.0 / newWidth;
+                    newWidth = (int) (newWidth * scale);
+                    newHeight = (int) (newHeight * scale);
+                }
+
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
                 PostImage.setImageBitmap(bitmap);
 
                 //  PostImage.setImageBitmap(bitmap);
-                DeletePostImage.setVisibility(View.VISIBLE);
+                //    DeletePostImage.setVisibility(View.VISIBLE);
 
-                DeletePostImage.setOnClickListener(new View.OnClickListener() {
+              /*  DeletePostImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         PostImage.setImageBitmap(null);
@@ -313,7 +304,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                         Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
                         startActivity(i);
                     }
-                });
+                });*/
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -322,6 +313,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
         }
     }
+
 
     public void AddNewPost(int is_anon) {
      /*   postProgress.setVisibility(ProgressBar.VISIBLE);
@@ -392,16 +384,17 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
         return bitmap;
 
     }
+//
+//    @Override
+//    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+//        youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
+//        youTubePlayer.setPlaybackEventListener(playbackEventListener);
+//        youTubePlayer.cueVideo(video_id);
+//    }
+//
+//    @Override
+//    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
-        youTubePlayer.setPlaybackEventListener(playbackEventListener);
-        youTubePlayer.cueVideo(video_id);
-    }
-
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-    }
+    //}
+    // }
 }
