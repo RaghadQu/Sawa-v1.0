@@ -60,7 +60,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
     TextView user_profile_name;
     TextView toolBarText;
     TextView aboutUsername;
-    TextView following, followers;
+//    TextView following, followers;
     ImageView imageView; // View image in dialog
     Button friendStatus;
     TextView editBio;
@@ -75,7 +75,7 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
     Button YesBtn;
     TextView textMsg;
     CircleImageView showOtherSong;
-    TextView followerTxt, followingTxt;
+//    TextView followerTxt, followingTxt;
     Button myFollowState;
     ImageView otherFollowState;
     UserModel userProfileModel;
@@ -89,11 +89,11 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
         setContentView(R.layout.activity_my_friend_profile);
         toolBarText = (TextView) findViewById(R.id.ToolbarText);
         user_profile_name = (TextView) findViewById(R.id.user_profile_name);
-        following = (TextView) findViewById(R.id.followingTxt);
-        followers = (TextView) findViewById(R.id.followerTxt);
+//        following = (TextView) findViewById(R.id.followingTxt);
+//        followers = (TextView) findViewById(R.id.followerTxt);
         showOtherSong = (CircleImageView) findViewById(R.id.showSong);
-        followerTxt = (TextView) findViewById(R.id.followerTxt);
-        followingTxt = (TextView) findViewById(R.id.followingTxt);
+//        followerTxt = (TextView) findViewById(R.id.followerTxt);
+//        followingTxt = (TextView) findViewById(R.id.followingTxt);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -224,32 +224,32 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                 }
             });
             final String finalMName1 = mName;
-            followerTxt.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (userProfileModel.getIsPublic().equals("true")) {
-                        Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
-                        Bundle b = new Bundle();
-                        b.putInt("source", 1);
-                        b.putInt("friendId", Id1);
-                        b.putString("friendName", finalMName1);
-                        i.putExtras(b);
-                        startActivity(i);
-                    }
-                }
-            });
-            followingTxt.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (userProfileModel.getIsPublic().equals("true")) {
-                        Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
-                        Bundle b = new Bundle();
-                        b.putInt("source", 2);
-                        b.putInt("friendId", Id1);
-                        b.putString("friendName", finalMName1);
-                        i.putExtras(b);
-                        startActivity(i);
-                    }
-                }
-            });
+//            followerTxt.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    if (userProfileModel.getIsPublic().equals("true")) {
+//                        Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+//                        Bundle b = new Bundle();
+//                        b.putInt("source", 1);
+//                        b.putInt("friendId", Id1);
+//                        b.putString("friendName", finalMName1);
+//                        i.putExtras(b);
+//                        startActivity(i);
+//                    }
+//                }
+//            });
+//            followingTxt.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    if (userProfileModel.getIsPublic().equals("true")) {
+//                        Intent i = new Intent(getApplicationContext(), MyFollowersActivity.class);
+//                        Bundle b = new Bundle();
+//                        b.putInt("source", 2);
+//                        b.putInt("friendId", Id1);
+//                        b.putString("friendName", finalMName1);
+//                        i.putExtras(b);
+//                        startActivity(i);
+//                    }
+//                }
+//            });
         }
 
         toolBarText.setOnTouchListener(new View.OnTouchListener() {
@@ -345,8 +345,8 @@ public class OtherProfileActivity extends AppCompatActivity implements SwipeRefr
                         FollowFunctions.setFollowRelationState(friendStatus, OtherProfileActivity.this, userProfileModel, getApplicationContext());
                     }
 
-                        friendStatus.setVisibility(View.INVISIBLE);
-                        myFollowState.setVisibility(View.VISIBLE);
+                        //friendStatus.setVisibility(View.INVISIBLE);
+                       // myFollowState.setVisibility(View.VISIBLE);
 
 
 

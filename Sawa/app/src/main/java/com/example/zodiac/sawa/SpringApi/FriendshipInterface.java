@@ -36,7 +36,7 @@ public interface FriendshipInterface {
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getFollowing/{id}")
-    Call<List<FollowesAndFollowingResponse>> getFollowing(@Path("id") int id);
+    Call<List<UserModel>> getFollowing(@Path("id") int id);
 
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/friend/getFollowRequest/{id}")

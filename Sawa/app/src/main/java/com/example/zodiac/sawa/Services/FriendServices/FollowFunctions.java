@@ -208,7 +208,10 @@ public class FollowFunctions {
     public static void setFollowRelationState(final Button friendStatus, final Context context, final UserModel userModel, Context c) {
         // recyclerView.setVisibility(View.VISIBLE);
         final int Id=userModel.getId();
+<<<<<<< HEAD
         
+=======
+>>>>>>> 1a66bebe7b3217adc8b4b7f6968f828d5da357ef
         if (GeneralAppInfo.friendMode == 0)
             friendStatus.setText("Follow");
 
@@ -247,7 +250,7 @@ public class FollowFunctions {
                             GeneralAppInfo.friendMode = 0;
                             friendStatus.setText("Follow");
                             ConfirmDeletion.dismiss();
-                            friendFunction.DeleteFriend(Id, GeneralAppInfo.getUserID());
+                            friendFunction.DeleteFriend( GeneralAppInfo.getUserID() , Id);
                         }
                     });
                 }

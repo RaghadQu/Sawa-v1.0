@@ -54,6 +54,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
         this.mContext = mContext;
         this.userList = userList;
         this.removeButtonFlag = removeButtonFlag;
+
     }
 
 
@@ -79,23 +80,19 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
         } else {
 
-            if(FollowState != -1  )
+            if(FollowState != -1)
             {
                 holder.remove.setVisibility(View.VISIBLE);
-            if (FollowState == 2) {
-                holder.remove.setText("Following");
-            }
             if (FollowState == 0) {
                 holder.remove.setText("Follow");
             }
             if (FollowState == 1) {
-                holder.remove.setText("Requested");
+                holder.remove.setText("Following");
             }
         }
         else
             {
                 holder.remove.setVisibility(View.INVISIBLE);
-
             }
         }
 
@@ -174,7 +171,8 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
             ivProfile = (CircleImageView) itemView.findViewById(R.id.image);
             tvName = (TextView) itemView.findViewById(R.id.Name);
             remove = (Button) view.findViewById(R.id.Remove);
-            if (removeButtonFlag != 2) {
+
+             {
                 remove.setVisibility(View.VISIBLE);
                 if (removeButtonFlag == 0) // From MyFollowersActivity
                 {
@@ -186,6 +184,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                     remove.setText("Following");
                 }
 
+                Log.d("RETURN", "  " +remove.getText().toString() );
 
                 final Dialog ConfirmDeletion = new Dialog(mContext);
             ConfirmDeletion.setContentView(R.layout.confirm_delete_friend_or_request_dialog);
@@ -204,7 +203,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
                     @Override
                     public void onClick(View v) {
-
+                        Log.d("RETURN"," remove.getText().toString() ");
                         final int position = getAdapterPosition();
                         if (userList.get(position) != null) {
                             if (remove.getText().toString().equals("Follow")) {
@@ -216,7 +215,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                                     public void onResponse(Call<FriendResponseModel> call, Response<FriendResponseModel> response) {
                                         Log.d("FastScrollResp", " " + response.code());
                                         if (response.code() == 200) {
-                                            remove.setText("Requested");
+                                            remove.setText("Following");
                                         } else {
                                             GeneralFunctions generalFunctions = new GeneralFunctions();
                                             generalFunctions.showErrorMesaage(getApplicationContext());
@@ -230,6 +229,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
                                     }
                                 });
                             } else if (remove.getText().toString().equals("Following")) {
+
                                 String confirmMsg = " Are you sure you want to unfollow " + userList.get(position).getUserName() + " ?";
                                 TextView textMsg = (TextView) ConfirmDeletion.findViewById(R.id.TextMsg);
                                 textMsg.setText(confirmMsg);
@@ -252,7 +252,7 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
 
                                     }
                                 });
-                            } else if (remove.getText().toString().equals("Requested")) {
+                            } else if (remove.getText().toString().equals("Following")) {
                                 callDeleteApi(position, remove);
                             }
 
@@ -276,8 +276,8 @@ public class FastScrollAdapter extends RecyclerView.Adapter<FastScrollAdapter.Us
         FriendshipInterface FriendApi = retrofit.create(FriendshipInterface.class);
 
         final FriendRequestModel FriendRequest = new FriendRequestModel();
-        FriendRequest.setFriend1_id(userList.get(position).getId());
-        FriendRequest.setFriend2_id(GeneralAppInfo.getUserID());
+        FriendRequest.setFriend2_id(userList.get(position).getId());
+        FriendRequest.setFriend1_id(GeneralAppInfo.getUserID());
         final Call<Integer> deleteCall = FriendApi.deleteFollow(FriendRequest);
         deleteCall.enqueue(new Callback<Integer>() {
             @Override

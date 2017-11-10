@@ -224,6 +224,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         int statusCode = response.code();
                         Log.d("-----", " enter request " + statusCode);
                         GeneralUserInfoModel generalUserInfoModel = response.body();
+                        Log.d("GeneralUserInfoModel", "GeneralUserInfoModel " +  generalUserInfoModel);
+                        Log.d("GeneralUserInfoModel", "GeneralUserInfoModel " +  generalUserInfoModel.getNumberOfFollower());
+
                         SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
 

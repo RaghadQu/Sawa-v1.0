@@ -21,7 +21,7 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.FastScrollAdapter;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
-import com.example.zodiac.sawa.SpringModels.FollowesAndFollowingResponse;
+import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyFollowingActivity extends Activity {
 
-    public static List<FollowesAndFollowingResponse> FriendList;
+    public static List<UserModel> FriendList;
     public static ArrayList<MyFollowersActivity.friend> LayoutFriendsList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
@@ -92,11 +92,11 @@ public class MyFollowingActivity extends Activity {
                     Toast.LENGTH_LONG).show();
         } else {
 
-            final Call<List<FollowesAndFollowingResponse>> FriendsResponse = friendshipApi.getFollowing(GeneralAppInfo.getUserID());
-            FriendsResponse.enqueue(new Callback<List<FollowesAndFollowingResponse>>() {
+            final Call<List<UserModel>> FriendsResponse = friendshipApi.getFollowing(GeneralAppInfo.getUserID());
+            FriendsResponse.enqueue(new Callback<List<UserModel>>() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public void onResponse(Call<List<FollowesAndFollowingResponse>> call, Response<List<FollowesAndFollowingResponse>> response) {
+                public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
                     progressBar.setVisibility(View.INVISIBLE);
 
                     Log.d("GetFriends", " Get friends " + response.code());
@@ -104,11 +104,6 @@ public class MyFollowingActivity extends Activity {
                         GeneralFunctions generalFunctions = new GeneralFunctions();
                         generalFunctions.showErrorMesaage(getApplicationContext());
                     } else {
-
-
-
-
-
                         FriendList = response.body();
                         LayoutFriendsList.clear();
                         if (FriendList != null) {
@@ -121,12 +116,13 @@ public class MyFollowingActivity extends Activity {
                                 textBody.setText("   No Following To Show");
 
                             } else {
-                                Log.d("GetFriends", " Friends are : " + FriendList.size());
+                                Log.d("GetFollowings", " Followings size is  : " + FriendList.size());
                                 progressBar.setVisibility(View.GONE);
                                 noFriendsLayout.setVisibility(View.GONE);
                                 for (int i = 0; i < FriendList.size(); i++) {
-                                    LayoutFriendsList.add(new MyFollowersActivity.friend(FriendList.get(i).getUser().getId(), FriendList.get(i).getUser().getImage(),
-                                            FriendList.get(i).getUser().getFirst_name() + " " + FriendList.get(i).getUser().getLast_name(), FriendList.get(i).getState()));
+                                    LayoutFriendsList.add(new MyFollowersActivity.friend(FriendList.get(i).getId(), FriendList.get(i).getImage(),
+                                            FriendList.get(i).getFirst_name() + " " + FriendList.get(i).getLast_name(), 1));
+
                                 }
                                 recyclerView.setAdapter(new FastScrollAdapter(MyFollowingActivity.this, LayoutFriendsList, 2));
 
@@ -137,7 +133,7 @@ public class MyFollowingActivity extends Activity {
 
 
                 @Override
-                public void onFailure(Call<List<FollowesAndFollowingResponse>> call, Throwable t) {
+                public void onFailure(Call<List<UserModel>> call, Throwable t) {
                     progressBar.setVisibility(View.INVISIBLE);
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
@@ -152,7 +148,8 @@ public class MyFollowingActivity extends Activity {
                 final int DRAWABLE_LEFT = 0;
 
                 if (event.getX() <= (toolbarText.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width() + 30)) {
-                    finish();
+                //finish();
+                    onBackPressed();
                     return true;
                 }
                 return false;
