@@ -9,19 +9,27 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.SpringApi.FriendshipInterface;
+import com.example.zodiac.sawa.SpringApi.PostInterface;
+import com.example.zodiac.sawa.SpringModels.PostRequestModel;
+import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -32,6 +40,11 @@ import java.util.ArrayList;
 
 import at.markushi.ui.CircleButton;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by zodiac on 06/07/2017.
@@ -45,6 +58,7 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
     static public CircleImageView senderImage, receiverImage;
     public static ArrayList<MyFollowersActivity.friend> FriendPostList = new ArrayList<>();
     static int ReceiverID;
+    Switch showComments ;
     static String postImage = "";
     public String video_id = "rzLKwtC5q1k";
     YouTubePlayerView youTubePlayerView;
@@ -53,7 +67,8 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
     CircleButton anonymousBtn;
     EditText PostText;
     //   TextView AddImage;
-    ImageView PostImage, AddImage;
+    ImageView PostImage, AddImage , sendPost;
+    PostRequestModel postRequestModel;
     TextView DeletePostImage;
     FastScrollRecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -150,48 +165,52 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
 //        postProgress = (ProgressBar) findViewById(R.id.postProgress);
 //        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube);
 //        youTubePlayerView.setVisibility(View.GONE);
-//        PostText = (EditText) findViewById(R.id.PostText);
-//        PostText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//                String pattern = "https://m.youtube.com/watch?v=";
-//                String s = String.valueOf(PostText.getText());
-//                int i = s.indexOf(pattern);
-//                Log.d("II", "" + i);
-//
-//                if (i == 0 && youtubeFlag == 0) {
-//                    String[] split = s.split("v=");
-//                    video_id = split[1];
-//                    youTubePlayerView = new YouTubePlayerView(AddPostActivity.this);
-//                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
-//
-//                    addContentView(youTubePlayerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//
-//                    youTubePlayerView.setVisibility(View.VISIBLE);
-//                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
-//                    youtubeFlag = 1;
-//                } else if (i == -1 && youtubeFlag == 0) {
-//                    youTubePlayerView.setVisibility(View.INVISIBLE);
-//
-//                }
-//
-//
-//            }
-//        });
+        PostText = (EditText) findViewById(R.id.postText);
+        sendPost = (ImageView) findViewById(R.id.sendPost);
         PostImage = (ImageView) findViewById(R.id.showPhoto);
         AddImage = (ImageView) findViewById(R.id.addPhoto);
+        showComments= (Switch) findViewById(R.id.showComments);
+
+        PostText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                String pattern = "https://m.youtube.com/watch?v=";
+                String s = String.valueOf(PostText.getText());
+                int i = s.indexOf(pattern);
+                Log.d("II", "" + i);
+
+            /*    if (i == 0 && youtubeFlag == 0) {
+                    String[] split = s.split("v=");
+                    video_id = split[1];
+                    youTubePlayerView = new YouTubePlayerView(AddPostActivity.this);
+                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
+
+                    addContentView(youTubePlayerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                    youTubePlayerView.setVisibility(View.VISIBLE);
+                    youTubePlayerView.initialize(api_key, AddPostActivity.this);
+                    youtubeFlag = 1;
+                } else if (i == -1 && youtubeFlag == 0) {
+                    youTubePlayerView.setVisibility(View.INVISIBLE);
+
+                }*/
+
+
+            }
+        });
+
 
 //        postProgress = (ProgressBar) findViewById(R.id.postProgress);
 //        anonymousBtn = (CircleButton) findViewById(R.id.anonymous);
@@ -223,12 +242,12 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
 //            }
 //        });
 //
-//        PostBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AddNewPost(flag[0]);
-//            }
-//        });
+        sendPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddNewPost();
+            }
+        });
 //
 //        Cancelbtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -315,7 +334,42 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
     }
 
 
-    public void AddNewPost(int is_anon) {
+    public void AddNewPost() {
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GeneralAppInfo.BACKEND_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        PostInterface Postservice;
+        Postservice = retrofit.create(PostInterface.class);
+
+        PostRequestModel postRequestModel = new PostRequestModel();
+        postRequestModel.setUserId(GeneralAppInfo.getGeneralUserInfo().getUser().getId());
+        postRequestModel.setText(PostText.getText().toString());
+        postRequestModel.setIs_public_comment(showComments.isChecked());
+
+            final Call<PostResponseModel> PostRespone = Postservice.addNewPost(postRequestModel);
+            Log.d("AddPostActivity", " Add post after request");
+            PostRespone.enqueue(new Callback<PostResponseModel>() {
+                @Override
+                public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
+//                    postProgress.setVisibility(ProgressBar.INVISIBLE);
+
+                    Log.d("AddPost", " Add Post done with code " + response.code() + " " + response.body());
+                    Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+                    startActivity(i);
+                }
+
+                @Override
+                public void onFailure(Call<PostResponseModel> call, Throwable t) {
+              //      postProgress.setVisibility(ProgressBar.INVISIBLE);
+                    Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity  ... " + t.getMessage());
+                    Toast.makeText(AddPostActivity.this, "Oops! Something went wrong, please try again.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            });
+
      /*   postProgress.setVisibility(ProgressBar.VISIBLE);
         AddPostApi Postservice;
         Retrofit retrofit = new Retrofit.Builder()
