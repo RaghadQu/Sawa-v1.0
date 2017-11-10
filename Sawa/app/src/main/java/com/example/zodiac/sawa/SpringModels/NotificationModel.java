@@ -39,7 +39,7 @@ public class NotificationModel {
         int id;
         UserModel friend1_id;
         UserModel friend2_id;
-        PostModel postId;
+        PostRequestModel postId;
         FriendResponseModel friendshipId;
         int type;
         int read_flag;
@@ -70,11 +70,11 @@ public class NotificationModel {
             this.friend2_id = friend2_id;
         }
 
-        public PostModel getPostId() {
+        public PostRequestModel getPostId() {
             return postId;
         }
 
-        public void setPostId(PostModel postId) {
+        public void setPostId(PostRequestModel postId) {
             this.postId = postId;
         }
 
