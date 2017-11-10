@@ -35,7 +35,9 @@ public class PostRequestModel {
     public void setIs_public_comment(boolean is_public_comment) {
         this.is_public_comment = is_public_comment;
     }
-
+    public boolean getIs_public_comment() {
+        return is_public_comment;
+    }
 
 
 

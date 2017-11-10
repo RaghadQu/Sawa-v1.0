@@ -1,13 +1,16 @@
 package com.example.zodiac.sawa.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,7 +20,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -35,11 +37,15 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import at.markushi.ui.CircleButton;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,12 +59,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private static final int SELECTED_PICTURE = 100;
-
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
     static public CircleImageView senderImage, receiverImage;
     public static ArrayList<MyFollowersActivity.friend> FriendPostList = new ArrayList<>();
     static int ReceiverID;
-    Switch showComments ;
+    Switch showComments;
     static String postImage = "";
     public String video_id = "rzLKwtC5q1k";
     YouTubePlayerView youTubePlayerView;
@@ -67,13 +73,20 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
     CircleButton anonymousBtn;
     EditText PostText;
     //   TextView AddImage;
-    ImageView PostImage, AddImage , sendPost;
+    ImageView PostImage, AddImage, sendPost;
     PostRequestModel postRequestModel;
     TextView DeletePostImage;
     FastScrollRecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     FriendshipInterface service;
     ProgressBar postProgress;
+    static Bitmap imagePost = null;
+    static boolean isThereIsImage=false;
+    static String path;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
         @Override
@@ -169,7 +182,7 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
         sendPost = (ImageView) findViewById(R.id.sendPost);
         PostImage = (ImageView) findViewById(R.id.showPhoto);
         AddImage = (ImageView) findViewById(R.id.addPhoto);
-        showComments= (Switch) findViewById(R.id.showComments);
+        showComments = (Switch) findViewById(R.id.showComments);
 
         PostText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -246,20 +259,16 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
             @Override
             public void onClick(View v) {
                 AddNewPost();
+
             }
         });
-//
-//        Cancelbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
-//                startActivity(i);
-//            }
-//        });
+
 //
         AddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                verifyStoragePermissions(AddPostActivity    .this);
+
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, SELECTED_PICTURE);
                 //    PostImage.setImageResource(R.drawable.image2);
@@ -282,6 +291,9 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
         if (resultCode == RESULT_OK && requestCode == SELECTED_PICTURE) {
             Uri imageuri = data.getData();
             try {
+                GeneralFunctions generalFunctions = new GeneralFunctions();
+                path = generalFunctions.getRealPathFromURI(this, imageuri);
+
                 Bitmap bitmap = setPostImage(imageuri);
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageuri);
 
@@ -304,6 +316,8 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
 
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
                 PostImage.setImageBitmap(bitmap);
+                imagePost = bitmap;
+                isThereIsImage=true;
 
                 //  PostImage.setImageBitmap(bitmap);
                 //    DeletePostImage.setVisibility(View.VISIBLE);
@@ -336,9 +350,11 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
 
     public void AddNewPost() {
 
-
+        if (isThereIsImage == true) {
+            AddNewImagePost();
+        } else {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.BACKEND_URL)
+                .baseUrl(GeneralAppInfo.SPRING_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build();
         PostInterface Postservice;
         Postservice = retrofit.create(PostInterface.class);
@@ -348,7 +364,9 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
         postRequestModel.setText(PostText.getText().toString());
         postRequestModel.setIs_public_comment(showComments.isChecked());
 
-            final Call<PostResponseModel> PostRespone = Postservice.addNewPost(postRequestModel);
+
+
+            Call<PostResponseModel> PostRespone = Postservice.addNewPost(postRequestModel);
             Log.d("AddPostActivity", " Add post after request");
             PostRespone.enqueue(new Callback<PostResponseModel>() {
                 @Override
@@ -362,14 +380,14 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
 
                 @Override
                 public void onFailure(Call<PostResponseModel> call, Throwable t) {
-              //      postProgress.setVisibility(ProgressBar.INVISIBLE);
+                    //      postProgress.setVisibility(ProgressBar.INVISIBLE);
                     Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity  ... " + t.getMessage());
                     Toast.makeText(AddPostActivity.this, "Oops! Something went wrong, please try again.",
                             Toast.LENGTH_SHORT).show();
                 }
 
             });
-
+        }
      /*   postProgress.setVisibility(ProgressBar.VISIBLE);
         AddPostApi Postservice;
         Retrofit retrofit = new Retrofit.Builder()
@@ -422,6 +440,58 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
 */
     }
 
+    public void AddNewImagePost() {
+        isThereIsImage=false;
+        File file = new File(path);
+        final GeneralFunctions generalFunctions = new GeneralFunctions();
+
+        file = generalFunctions.saveBitmap(imagePost, path);
+        Log.d("file",path);
+
+        // create RequestBody instance from file
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        final MultipartBody.Part body =
+                MultipartBody.Part.createFormData("uploadfile", file.getName(), requestFile);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GeneralAppInfo.SPRING_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        PostInterface Postservice;
+        Postservice = retrofit.create(PostInterface.class);
+        Postservice = retrofit.create(PostInterface.class);
+
+        PostRequestModel postRequestModel = new PostRequestModel();
+        postRequestModel.setUserId(GeneralAppInfo.getGeneralUserInfo().getUser().getId());
+        postRequestModel.setText(PostText.getText().toString());
+        postRequestModel.setIs_public_comment(showComments.isChecked());
+        Log.d("IsThereisImage","");
+
+        Call<PostResponseModel> PostRespone = Postservice.addNewPost(body,postRequestModel.getUserId(),postRequestModel.getText(),postRequestModel.getIs_public_comment());
+        Log.d("AddPostActivity11111", " Add post after request");
+        PostRespone.enqueue(new Callback<PostResponseModel>() {
+            @Override
+            public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
+//                    postProgress.setVisibility(ProgressBar.INVISIBLE);
+
+                Log.d("AddPost", " Add Post done with code " + response.code() + " " + response.body());
+                Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
+                startActivity(i);
+            }
+
+            @Override
+            public void onFailure(Call<PostResponseModel> call, Throwable t) {
+                //      postProgress.setVisibility(ProgressBar.INVISIBLE);
+                Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity  ... " + t.getMessage());
+                Toast.makeText(AddPostActivity.this, "Oops! Something went wrong, please try again.",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+
+    }
+
+
     public Bitmap setPostImage(Uri imageuri) throws IOException {
         GeneralFunctions generalFunctions = new GeneralFunctions();
         String path = generalFunctions.getRealPathFromURI(this, imageuri);
@@ -437,6 +507,19 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
         postImage = encodedImage;*/
         return bitmap;
 
+    }
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 //
 //    @Override
