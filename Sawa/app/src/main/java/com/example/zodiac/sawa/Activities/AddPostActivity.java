@@ -17,6 +17,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -69,6 +70,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
     int youtubeFlag = 0;
     EditText PostText;
     ImageView PostImage, AddImage, sendPost;
+    ImageButton deletePostImage, deletePostYoutube;
     private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
         @Override
         public void onLoading() {
@@ -160,6 +162,8 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
         PostImage = (ImageView) findViewById(R.id.showPhoto);
         AddImage = (ImageView) findViewById(R.id.addPhoto);
         showComments = (Switch) findViewById(R.id.showComments);
+        deletePostImage = (ImageButton) findViewById(R.id.btn_close);
+        deletePostYoutube = (ImageButton) findViewById(R.id.btn_close_youtube);
 
         PostText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -176,17 +180,13 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                 String pattern = "https://m.youtube.com/watch?v=";
                 String s = String.valueOf(PostText.getText());
                 int i = s.indexOf(pattern);
-                Log.d("II", "" + i);
 
-                if (i == 0 && youtubeFlag == 0 && !isThereIsImage ) {
+                if (i == 0 && youtubeFlag == 0 && !isThereIsImage) {
                     String[] split = s.split("v=");
                     video_id = split[1];
                     youTubePlayerView.initialize(api_key, AddPostActivity.this);
-
-//                    addContentView(youTubePlayerView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-
                     youTubePlayerView.setVisibility(View.VISIBLE);
+                    deletePostYoutube.setVisibility(View.VISIBLE);
                     youTubePlayerView.initialize(api_key, AddPostActivity.this);
                     youtubeFlag = 1;
                 } else if (i == -1 && youtubeFlag == 0) {
@@ -214,6 +214,23 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                 startActivityForResult(intent, SELECTED_PICTURE);
             }
         });
+        deletePostImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PostImage.setImageBitmap(null);
+                deletePostImage.setVisibility(View.INVISIBLE);
+                isThereIsImage = false;
+            }
+        });
+
+        deletePostYoutube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("PostYoutube"," press delete");
+                youTubePlayerView.setVisibility(View.INVISIBLE);
+                deletePostYoutube.setVisibility(View.INVISIBLE);
+            }
+        });
 
     }
 
@@ -231,9 +248,6 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
                 int newWidth = (int) (bitmap.getWidth());
                 int newHeight = (int) (bitmap.getHeight());
-                Log.d("ImageAddPost", " width " + newWidth + "  " + newHeight);
-                Log.d("ImageAddPost", " width " + PostImage.getWidth() + "  " + PostImage.getHeight());
-
                 if (newHeight >= 500) {
                     if (newWidth > newHeight) {
                         double scale = 920.0 / newWidth;
@@ -249,6 +263,8 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
                 youTubePlayerView.setVisibility(View.INVISIBLE);
                 PostImage.setImageBitmap(bitmap);
+                deletePostImage.setVisibility(View.VISIBLE);
+                deletePostYoutube.setVisibility(View.INVISIBLE);
                 imagePost = bitmap;
                 isThereIsImage = true;
             } catch (IOException e) {
@@ -261,7 +277,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
         if (isThereIsImage == true) {
             AddNewImagePost();
-        } else {
+        } else if (!PostText.getText().toString().trim().equals("")) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(GeneralAppInfo.SPRING_URL)
                     .addConverterFactory(GsonConverterFactory.create()).build();
@@ -291,6 +307,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
             });
         }
+
     }
 
     public void AddNewImagePost() {
