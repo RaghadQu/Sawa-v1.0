@@ -65,7 +65,6 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
     public static ArrayList<MyFollowersActivity.friend> FriendPostList = new ArrayList<>();
     static int ReceiverID;
     Switch showComments;
-    static String postImage = "";
     public String video_id = "rzLKwtC5q1k";
     YouTubePlayerView youTubePlayerView;
     int youtubeFlag = 0;
@@ -146,9 +145,6 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
         }
     };
 
-    public static String getPostImage() {
-        return postImage;
-    }
 
     public static void setRecieverID(int ID) {
         ReceiverID = ID;
@@ -161,7 +157,6 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
     public static void setRecieverImage(String image, Context context) {
         String imageURL = GeneralAppInfo.IMAGE_URL + image;
         Picasso.with(context).load(imageURL).into(receiverImage);
-        Log.d("AdapterImage", " reciever image is : " + image);
 
     }
 
@@ -373,7 +368,6 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
                 public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
 //                    postProgress.setVisibility(ProgressBar.INVISIBLE);
 
-                    Log.d("AddPost", " Add Post done with code " + response.code() + " " + response.body());
                     Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
                     startActivity(i);
                 }
@@ -381,63 +375,13 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
                 @Override
                 public void onFailure(Call<PostResponseModel> call, Throwable t) {
                     //      postProgress.setVisibility(ProgressBar.INVISIBLE);
-                    Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity  ... " + t.getMessage());
                     Toast.makeText(AddPostActivity.this, "Oops! Something went wrong, please try again.",
                             Toast.LENGTH_SHORT).show();
                 }
 
             });
         }
-     /*   postProgress.setVisibility(ProgressBar.VISIBLE);
-        AddPostApi Postservice;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GeneralAppInfo.BACKEND_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        Postservice = retrofit.create(AddPostApi.class);
 
-        final AddNewPostModel request = new AddNewPostModel();
-        request.setImage(getPostImage());
-        request.setIs_Anon(is_anon);
-        request.setLink(" ");
-        request.setTo_user_id(getReceiverID());
-        request.setUser_id(GeneralAppInfo.getUserID());
-
-        String PostBody = PostText.getText().toString();
-        if (getReceiverID() == 0) {
-            Toast.makeText(AddPostActivity.this, "Please select a friend.",
-                    Toast.LENGTH_SHORT).show();
-        } else if (!PostBody.trim().matches("")) {
-            request.setText(PostBody.trim());
-            final Call<GeneralStateResponeModel> PostRespone = Postservice.addPost(request);
-            Log.d("AddPostActivity", " Add post after request");
-            PostRespone.enqueue(new Callback<GeneralStateResponeModel>() {
-                @Override
-                public void onResponse(Call<GeneralStateResponeModel> call, Response<GeneralStateResponeModel> response) {
-                    postProgress.setVisibility(ProgressBar.INVISIBLE);
-
-                    Log.d("AddPost", " Add Post done with code " + response.code() + " " + response.body().getState());
-                    Log.d("AddPost", " Add Post done with code " + response.code() + " " + response.body().getState());
-                    Log.d("AddPost", " Add Post done with code " + response.code() + " ");
-                    Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
-                    startActivity(i);
-                }
-
-                @Override
-                public void onFailure(Call<GeneralStateResponeModel> call, Throwable t) {
-                    postProgress.setVisibility(ProgressBar.INVISIBLE);
-
-
-                    Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity");
-                    Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity  ... " + t.getMessage());
-                    Toast.makeText(AddPostActivity.this, "Oops! Something went wrong, please try again.",
-                            Toast.LENGTH_SHORT).show();
-                }
-
-            });
-
-        }
-
-*/
     }
 
     public void AddNewImagePost() {
@@ -464,16 +408,13 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
         postRequestModel.setUserId(GeneralAppInfo.getGeneralUserInfo().getUser().getId());
         postRequestModel.setText(PostText.getText().toString());
         postRequestModel.setIs_public_comment(showComments.isChecked());
-        Log.d("IsThereisImage","");
 
         Call<PostResponseModel> PostRespone = Postservice.addNewPost(body,postRequestModel.getUserId(),postRequestModel.getText(),postRequestModel.getIs_public_comment());
-        Log.d("AddPostActivity11111", " Add post after request");
         PostRespone.enqueue(new Callback<PostResponseModel>() {
             @Override
             public void onResponse(Call<PostResponseModel> call, Response<PostResponseModel> response) {
 //                    postProgress.setVisibility(ProgressBar.INVISIBLE);
 
-                Log.d("AddPost", " Add Post done with code " + response.code() + " " + response.body());
                 Intent i = new Intent(getApplicationContext(), HomeTabbedActivity.class);
                 startActivity(i);
             }
@@ -481,7 +422,6 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
             @Override
             public void onFailure(Call<PostResponseModel> call, Throwable t) {
                 //      postProgress.setVisibility(ProgressBar.INVISIBLE);
-                Log.d("fail to get friends ", "Failure to Get friends in AddPostActivity  ... " + t.getMessage());
                 Toast.makeText(AddPostActivity.this, "Oops! Something went wrong, please try again.",
                         Toast.LENGTH_SHORT).show();
             }
@@ -499,12 +439,7 @@ public class AddPostActivity extends Activity {/// extends YouTubeBaseActivity i
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageuri);
         bitmap = MyProfileActivity.scaleDown(bitmap, 3000, true);
         bitmap = MyProfileActivity.RotateBitmap(bitmap, rotate);
-       /* ImageConverter imageConverter = new ImageConverter();
-        byte[] image = imageConverter.getBytes(bitmap);
-        //DBHandler dbHandler = new DBHandler(this);
-       // dbHandler.updateUserImage(GeneralAppInfo.getUserID(), image);
-        String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
-        postImage = encodedImage;*/
+
         return bitmap;
 
     }
