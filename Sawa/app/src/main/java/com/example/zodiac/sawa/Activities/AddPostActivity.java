@@ -15,12 +15,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zodiac.sawa.GeneralAppInfo;
@@ -58,9 +60,11 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
     public static ArrayList<MyFollowersActivity.friend> FriendPostList = new ArrayList<>();
     static int ReceiverID;
+    TextView toolbarText;
     static Bitmap imagePost = null;
     static boolean isThereIsImage = false;
     static String path;
+    String youtubeLinkString="";
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -70,9 +74,10 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
     YouTubePlayerView youTubePlayerView;
     int youtubeFlag = 0;
     EditText PostText;
-    ImageView PostImage, AddImage, sendPost;
-    ImageButton deletePostImage, deletePostYoutube;
+    ImageView PostImage, AddImage, sendPost,deletePostYoutube;
+    ImageButton deletePostImage;
     static  ProgressBar progressBar;
+
     private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
         @Override
         public void onLoading() {
@@ -165,8 +170,12 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
         AddImage = (ImageView) findViewById(R.id.addPhoto);
         showComments = (Switch) findViewById(R.id.showComments);
         deletePostImage = (ImageButton) findViewById(R.id.btn_close);
-        deletePostYoutube = (ImageButton) findViewById(R.id.btn_close_youtube);
+        deletePostYoutube = (ImageView) findViewById(R.id.btn_close_youtube);
         progressBar= (ProgressBar) findViewById(R.id.postProgressBar);
+        deletePostYoutube.setVisibility(View.INVISIBLE);
+        toolbarText = (TextView) findViewById(R.id.toolBarText);
+
+
         PostText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -179,12 +188,14 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
             @Override
             public void afterTextChanged(Editable editable) {
 
+                Log.d("PostPostPost", " " + " enter");
                 String pattern = "https://m.youtube.com/watch?v=";
                 String pattern1="https://www.youtube.com/watch?v=";
                 String s = String.valueOf(PostText.getText());
                 int i = s.indexOf(pattern);
                 int j = s.indexOf(pattern1);
                 if ((i == 0||j==0) && youtubeFlag == 0 && !isThereIsImage) {
+
                     String[] split = s.split("v=");
                     video_id = split[1];
                     youTubePlayerView.initialize(api_key, AddPostActivity.this);
@@ -193,13 +204,16 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                     youTubePlayerView.initialize(api_key, AddPostActivity.this);
                     youtubeFlag = 1;
                 } else if ((i == -1||j==-1)&& youtubeFlag == 0) {
+                    youtubeLinkString = s;
                     youTubePlayerView.setVisibility(View.INVISIBLE);
 
                 }
 
-
             }
+
+
         });
+
 
         sendPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,10 +242,26 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
         deletePostYoutube.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.d("PostYoutube"," press delete");
+            public void onClick(View view) {
                 youTubePlayerView.setVisibility(View.INVISIBLE);
                 deletePostYoutube.setVisibility(View.INVISIBLE);
+                youtubeFlag=0 ;
+                youtubeLinkString="";
+
+            }
+        });
+
+        toolbarText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+
+                if (event.getX() <= (toolbarText.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width() + 30)) {
+                    //finish();
+                    onBackPressed();
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -281,7 +311,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
         if (isThereIsImage == true) {
             AddNewImagePost();
-        } else if (!PostText.getText().toString().trim().equals("")) {
+        } else if (!PostText.getText().toString().trim().equals("")  || !youtubeLinkString.equals("") ) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(GeneralAppInfo.SPRING_URL)
                     .addConverterFactory(GsonConverterFactory.create()).build();
@@ -290,7 +320,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
             PostRequestModel postRequestModel = new PostRequestModel();
             postRequestModel.setUserId(GeneralAppInfo.getGeneralUserInfo().getUser().getId());
-            postRequestModel.setText(PostText.getText().toString());
+            postRequestModel.setText(PostText.getText().toString()+"::"+youtubeLinkString);
             postRequestModel.setIs_public_comment(showComments.isChecked());
 
 
@@ -316,6 +346,8 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
     }
 
+
+
     public void AddNewImagePost() {
         isThereIsImage = false;
         File file = new File(path);
@@ -338,7 +370,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
         PostRequestModel postRequestModel = new PostRequestModel();
         postRequestModel.setUserId(GeneralAppInfo.getGeneralUserInfo().getUser().getId());
-        postRequestModel.setText(PostText.getText().toString());
+        postRequestModel.setText(PostText.getText().toString()+"::"+youtubeLinkString);
         postRequestModel.setIs_public_comment(showComments.isChecked());
 
         Call<PostResponseModel> PostRespone = Postservice.addNewPost(body, postRequestModel.getUserId(), postRequestModel.getText(), postRequestModel.getIs_public_comment());
