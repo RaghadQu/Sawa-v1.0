@@ -8,7 +8,6 @@ android {
         javaMaxHeapSize "4g"
     }
 
-
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
