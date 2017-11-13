@@ -292,7 +292,6 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                     newWidth = (int) (newWidth * scale);
                     newHeight = (int) (newHeight * scale);
                 }
-
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
                 youTubePlayerView.setVisibility(View.INVISIBLE);
                 PostImage.setImageBitmap(resized);
@@ -308,6 +307,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
     public void AddNewPost() {
         progressBar.setVisibility(View.VISIBLE);
+        
 
         if (isThereIsImage == true) {
             AddNewImagePost();
