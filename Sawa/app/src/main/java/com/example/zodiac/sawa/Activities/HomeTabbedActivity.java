@@ -245,6 +245,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
         {
             getTheme().applyStyle(R.style.OverlayPrimaryColorPurple, true);
         }
+
         setContentView(R.layout.activity_home_tabbed2);
         HomeTabbedActivity.context = getApplicationContext();
         activity = this;

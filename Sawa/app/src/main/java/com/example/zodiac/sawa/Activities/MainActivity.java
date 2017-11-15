@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
+
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
                 .repeat(0)
