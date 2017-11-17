@@ -74,8 +74,8 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
     YouTubePlayerView youTubePlayerView;
     int youtubeFlag = 0;
     EditText PostText;
-    ImageView PostImage, AddImage, sendPost,deletePostYoutube;
-    ImageButton deletePostImage;
+    ImageView PostImage, AddImage, sendPost;
+    ImageButton deletePostImage, deletePostYoutube;;
     static  ProgressBar progressBar;
 
     private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
@@ -170,7 +170,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
         AddImage = (ImageView) findViewById(R.id.addPhoto);
         showComments = (Switch) findViewById(R.id.showComments);
         deletePostImage = (ImageButton) findViewById(R.id.btn_close);
-        deletePostYoutube = (ImageView) findViewById(R.id.btn_close_youtube);
+        deletePostYoutube = (ImageButton) findViewById(R.id.closeYoutubeIcon);
         progressBar= (ProgressBar) findViewById(R.id.postProgressBar);
         deletePostYoutube.setVisibility(View.INVISIBLE);
         toolbarText = (TextView) findViewById(R.id.toolBarText);
@@ -191,10 +191,13 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                 Log.d("PostPostPost", " " + " enter");
                 String pattern = "https://m.youtube.com/watch?v=";
                 String pattern1="https://www.youtube.com/watch?v=";
+                String pattern2="https://youtu.be/";
                 String s = String.valueOf(PostText.getText());
                 int i = s.indexOf(pattern);
                 int j = s.indexOf(pattern1);
-                if ((i == 0||j==0) && youtubeFlag == 0 && !isThereIsImage) {
+                int k = s.indexOf(pattern2);
+
+                if ((i == 0||j==0||k==0) && youtubeFlag == 0 && !isThereIsImage) {
 
                     String[] split = s.split("v=");
                     video_id = split[1];
@@ -203,7 +206,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
                     deletePostYoutube.setVisibility(View.VISIBLE);
                     youTubePlayerView.initialize(api_key, AddPostActivity.this);
                     youtubeFlag = 1;
-                } else if ((i == -1||j==-1)&& youtubeFlag == 0) {
+                } else if ((i == -1||j==-1||k==-1)&& youtubeFlag == 0) {
                     youtubeLinkString = s;
                     youTubePlayerView.setVisibility(View.INVISIBLE);
 
@@ -403,10 +406,7 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageuri);
         bitmap = MyProfileActivity.scaleDown(bitmap, 3000, true);
         bitmap = MyProfileActivity.RotateBitmap(bitmap, rotate);
-       /* ImageConverter imageConverter = new ImageConverter();
-        byte[] image = imageConverter.getBytes(bitmap);
-        String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
-        postImage = encodedImage;*/
+
         return bitmap;
 
     }
