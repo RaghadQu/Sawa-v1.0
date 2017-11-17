@@ -33,18 +33,21 @@ import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.NotificationTabFragment;
 import com.example.zodiac.sawa.R;
+import com.example.zodiac.sawa.RecyclerViewAdapters.HomePostAdapter;
 import com.example.zodiac.sawa.RecyclerViewAdapters.NotificationAdapter;
 import com.example.zodiac.sawa.Services.BadgeViewService;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
 import com.example.zodiac.sawa.SpringModels.SignOutModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
+import com.example.zodiac.sawa.TabbedFragments.HomeFragment;
 import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -435,94 +438,106 @@ public class HomeTabbedActivity extends AppCompatActivity {
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
                 HomeTabbedActivity.tabNumber = 1;
                 GeneralFunctions.getSharedPreferences(getContext());
+
+
+                Log.d("ResponsePost", " HomeTabbedActivity");
                 View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-                FloatingActionButton addPost = (FloatingActionButton) rootView.findViewById(R.id.fab);
-                final ImageView lovePost= (ImageView) rootView.findViewById(R.id.love_post);
-                final ImageView likePost= (ImageView) rootView.findViewById(R.id.like_post);
-                final ImageView dislikePost= (ImageView) rootView.findViewById(R.id.dislike_post);
-                final boolean[] firstDislike = {false},firstLike= {false} , firstLove = {false};
-                final TextView loveCountTxt = ( TextView) rootView.findViewById(R.id.loveCount);
-                loveCountTxt.setText(" ");
-                final int likeCount =0;
-                final int[] loveCount = { 0 };
-                final int dislikeCount=0;
-
-
-                lovePost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if(firstLove[0])
-                        {
-                            lovePost.setImageResource(R.drawable.love_post);
-                            if(loveCount[0] >=0 )
-                            {
-                                loveCountTxt.setText(" ");
-                            }
-                            else
-                            {
-                                loveCount[0]--;
-                                loveCountTxt.setText(String.valueOf(loveCount[0]));
-                            }
-
-                        }
-                        else
-                        {
-                            lovePost.setImageResource(R.drawable.filled_love_post);
-                            loveCount[0]++;
-                            loveCountTxt.setText(String.valueOf(loveCount[0]));
-
-
-                        }
-                        firstLove[0] =!firstLove[0];
-
-                    }
-                });
-
-                dislikePost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if(firstDislike[0])
-                        {
-                            dislikePost.setImageResource(R.drawable.dislike_post);
-
-                        }
-                        else
-                        {
-                            dislikePost.setImageResource(R.drawable.filled_dislike_post);
-                        }
-                        firstDislike[0] =!firstDislike[0];
-
-                    }
-                });
-                likePost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if(firstLike[0])
-                        {
-                            likePost.setImageResource(R.drawable.like_post);
-
-                        }
-                        else
-                        {
-                            likePost.setImageResource(R.drawable.filled_like_post);
-                        }
-                        firstLike[0] =!firstLike[0];
-
-                    }
-                });
-
-                addPost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(getContext(), AddPostActivity.class);
-                        startActivity(i);
-
-                    }
-                });
+                HomeFragment.getHomePost(rootView ,getContext());
                 return rootView;
+
+
+
+
+
+
+//                View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+//                FloatingActionButton addPost = (FloatingActionButton) rootView.findViewById(R.id.fab);
+//                final ImageView lovePost= (ImageView) rootView.findViewById(R.id.love_post);
+//                final ImageView likePost= (ImageView) rootView.findViewById(R.id.like_post);
+//                final ImageView dislikePost= (ImageView) rootView.findViewById(R.id.dislike_post);
+//                final boolean[] firstDislike = {false},firstLike= {false} , firstLove = {false};
+//                final TextView loveCountTxt = ( TextView) rootView.findViewById(R.id.loveCount);
+//                loveCountTxt.setText(" ");
+//                final int likeCount =0;
+//                final int[] loveCount = { 0 };
+//                final int dislikeCount=0;
+//
+//
+//                lovePost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        if(firstLove[0])
+//                        {
+//                            lovePost.setImageResource(R.drawable.love_post);
+//                            if(loveCount[0] >=0 )
+//                            {
+//                                loveCountTxt.setText(" ");
+//                            }
+//                            else
+//                            {
+//                                loveCount[0]--;
+//                                loveCountTxt.setText(String.valueOf(loveCount[0]));
+//                            }
+//
+//                        }
+//                        else
+//                        {
+//                            lovePost.setImageResource(R.drawable.filled_love_post);
+//                            loveCount[0]++;
+//                            loveCountTxt.setText(String.valueOf(loveCount[0]));
+//
+//
+//                        }
+//                        firstLove[0] =!firstLove[0];
+//
+//                    }
+//                });
+//
+//                dislikePost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        if(firstDislike[0])
+//                        {
+//                            dislikePost.setImageResource(R.drawable.dislike_post);
+//
+//                        }
+//                        else
+//                        {
+//                            dislikePost.setImageResource(R.drawable.filled_dislike_post);
+//                        }
+//                        firstDislike[0] =!firstDislike[0];
+//
+//                    }
+//                });
+//                likePost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        if(firstLike[0])
+//                        {
+//                            likePost.setImageResource(R.drawable.like_post);
+//
+//                        }
+//                        else
+//                        {
+//                            likePost.setImageResource(R.drawable.filled_like_post);
+//                        }
+//                        firstLike[0] =!firstLike[0];
+//
+//                    }
+//                });
+//
+//                addPost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent i = new Intent(getContext(), AddPostActivity.class);
+//                        startActivity(i);
+//
+//                    }
+//                });
+//                return rootView;
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
                 HomeTabbedActivity.tabNumber = 2;
 

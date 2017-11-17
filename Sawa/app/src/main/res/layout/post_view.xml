@@ -44,6 +44,7 @@ android:background="#eee">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tue 12:10pm"
+                android:id="@+id/postTime"
                 android:textSize="11dp" />
         </LinearLayout>
 
@@ -139,6 +140,7 @@ android:background="#eee">
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp"
+            android:id="@+id/postText"
             android:text=""
             android:textColor="#000"
             android:textSize="13dp" />
@@ -247,14 +249,7 @@ android:background="#eee">
 </RelativeLayout>
 
 
-<android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="@dimen/fab_margin"
-    android:src="@drawable/add_post"
-    app:backgroundTint="@color/purple" />
+
 
 
 </FrameLayout>

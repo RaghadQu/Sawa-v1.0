@@ -187,14 +187,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
                     first_name=FriendsList.get(i).getUser().getFirst_name();
                     last_name=FriendsList.get(i).getUser().getLast_name();
                     state=FriendsList.get(i).getState();
-                   /* }else if(source==1||source==2) {
-                        id=FriendsList.get(i).getUser().getId();
-                        image=FriendsList.get(i).getUser().getImage();
-                        first_name=FriendsList.get(i).getUser().getFirst_name();
-                        last_name=FriendsList.get(i).getUser().getLast_name();
-                        state=FriendsList.get(i).getState();
 
-                    }*/
                     LayoutFriendsList.add(new MyFollowersActivity.friend(id, image,(first_name + " " + last_name), state));
                 }
                 recyclerView.setAdapter(new FastScrollAdapter(MyFollowersActivity.this, LayoutFriendsList, 2));
