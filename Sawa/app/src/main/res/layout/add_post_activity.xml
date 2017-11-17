@@ -187,6 +187,6 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
-        android:indeterminateTint="@color/purple"
+        android:indeterminateTint="#000"
         android:visibility="invisible" />
 </LinearLayout>

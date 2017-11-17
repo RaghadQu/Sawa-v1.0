@@ -263,15 +263,15 @@
             android:id="@+id/postProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="38dp"
             android:indeterminate="true"
-            android:indeterminateTint="@color/purple"
             android:visibility="invisible"
+            android:layout_height="30dp"
 
+            android:layout_marginTop="32dp"
+            android:indeterminateTint="#000"
 
 
             />

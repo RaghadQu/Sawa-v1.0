@@ -1,12 +1,5 @@
 apply plugin: 'com.android.application'
 android {
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
-    }
-    dexOptions {
-        incremental true
-        javaMaxHeapSize "4g"
-    }
 
     compileSdkVersion 25
     buildToolsVersion "25.0.2"

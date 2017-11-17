@@ -245,6 +245,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
         {
             getTheme().applyStyle(R.style.OverlayPrimaryColorPurple, true);
         }
+
         setContentView(R.layout.activity_home_tabbed2);
         HomeTabbedActivity.context = getApplicationContext();
         activity = this;
@@ -436,7 +437,82 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 GeneralFunctions.getSharedPreferences(getContext());
                 View rootView = inflater.inflate(R.layout.fragment_home, container, false);
                 FloatingActionButton addPost = (FloatingActionButton) rootView.findViewById(R.id.fab);
+                final ImageView lovePost= (ImageView) rootView.findViewById(R.id.love_post);
+                final ImageView likePost= (ImageView) rootView.findViewById(R.id.like_post);
+                final ImageView dislikePost= (ImageView) rootView.findViewById(R.id.dislike_post);
+                final boolean[] firstDislike = {false},firstLike= {false} , firstLove = {false};
+                final TextView loveCountTxt = ( TextView) rootView.findViewById(R.id.loveCount);
+                loveCountTxt.setText(" ");
+                final int likeCount =0;
+                final int[] loveCount = { 0 };
+                final int dislikeCount=0;
 
+
+                lovePost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if(firstLove[0])
+                        {
+                            lovePost.setImageResource(R.drawable.love_post);
+                            if(loveCount[0] >=0 )
+                            {
+                                loveCountTxt.setText(" ");
+                            }
+                            else
+                            {
+                                loveCount[0]--;
+                                loveCountTxt.setText(String.valueOf(loveCount[0]));
+                            }
+
+                        }
+                        else
+                        {
+                            lovePost.setImageResource(R.drawable.filled_love_post);
+                            loveCount[0]++;
+                            loveCountTxt.setText(String.valueOf(loveCount[0]));
+
+
+                        }
+                        firstLove[0] =!firstLove[0];
+
+                    }
+                });
+
+                dislikePost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if(firstDislike[0])
+                        {
+                            dislikePost.setImageResource(R.drawable.dislike_post);
+
+                        }
+                        else
+                        {
+                            dislikePost.setImageResource(R.drawable.filled_dislike_post);
+                        }
+                        firstDislike[0] =!firstDislike[0];
+
+                    }
+                });
+                likePost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if(firstLike[0])
+                        {
+                            likePost.setImageResource(R.drawable.like_post);
+
+                        }
+                        else
+                        {
+                            likePost.setImageResource(R.drawable.filled_like_post);
+                        }
+                        firstLike[0] =!firstLike[0];
+
+                    }
+                });
 
                 addPost.setOnClickListener(new View.OnClickListener() {
                     @Override
