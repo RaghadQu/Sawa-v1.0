@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +38,7 @@ import com.example.zodiac.sawa.RecyclerViewAdapters.NotificationAdapter;
 import com.example.zodiac.sawa.Services.BadgeViewService;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.example.zodiac.sawa.SpringModels.SignOutModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
 import com.example.zodiac.sawa.TabbedFragments.HomeFragment;
@@ -47,7 +48,10 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -69,7 +73,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
     static TabLayout tabLayout;
     static TextView userName;
     static CircleImageView profilePicture, followingIcon, settingsIcon, logoutIcon;
-//    static  CircleImageView  reqeustsIcon, followerIcon;
+    //    static  CircleImageView  reqeustsIcon, followerIcon;
     static Context context;
     static int tabNumber;
     /**
@@ -199,12 +203,11 @@ public class HomeTabbedActivity extends AppCompatActivity {
         super.onResume();
 //       this.onCreate(null);
 
-     //   setContentView(R.layout.activity_home_tabbed2);
+        //   setContentView(R.layout.activity_home_tabbed2);
 
-        if(userName != null &&profilePicture != null )
-        {
-            userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name()+ " " +GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
-            Picasso.with(context).load(GeneralAppInfo.SPRING_URL+'/'+GeneralAppInfo.getGeneralUserInfo().getUser().getImage()).into(profilePicture);
+        if (userName != null && profilePicture != null) {
+            userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
+            Picasso.with(context).load(GeneralAppInfo.SPRING_URL + '/' + GeneralAppInfo.getGeneralUserInfo().getUser().getImage()).into(profilePicture);
 
         }
 
@@ -240,12 +243,9 @@ public class HomeTabbedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UIHandler = new Handler(Looper.getMainLooper());
-        if(GeneralAppInfo.getGeneralUserInfo().getUser().getThemeColor().equals("GREEN"))
-        {
+        if (GeneralAppInfo.getGeneralUserInfo().getUser().getThemeColor().equals("GREEN")) {
             getTheme().applyStyle(R.style.OverlayPrimaryColorGreen, true);
-        }
-        else
-        {
+        } else {
             getTheme().applyStyle(R.style.OverlayPrimaryColorPurple, true);
         }
 
@@ -255,11 +255,11 @@ public class HomeTabbedActivity extends AppCompatActivity {
         //set As logined for badge number
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("isRunning",
                 1).commit();
-        if(getIntent().getExtras() != null) {
-            Log.d("dataaa",getIntent().getData().toString());
+        if (getIntent().getExtras() != null) {
+            Log.d("dataaa", getIntent().getData().toString());
 
-            for(String key:getIntent().getExtras().keySet()){
-                if(key.equals("id")){
+            for (String key : getIntent().getExtras().keySet()) {
+                if (key.equals("id")) {
                     Log.d("Home tabbed activity :", getIntent().getExtras().getString(key));
 
                 }
@@ -392,7 +392,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -439,15 +438,145 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 HomeTabbedActivity.tabNumber = 1;
                 GeneralFunctions.getSharedPreferences(getContext());
 
-
-                Log.d("ResponsePost", " HomeTabbedActivity");
                 View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-                HomeFragment.getHomePost(rootView ,getContext());
+                HomeFragment.postResponseModelsList = new List<PostResponseModel>() {
+                    @Override
+                    public int size() {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean contains(Object o) {
+                        return false;
+                    }
+
+                    @NonNull
+                    @Override
+                    public Iterator<PostResponseModel> iterator() {
+                        return null;
+                    }
+
+                    @NonNull
+                    @Override
+                    public Object[] toArray() {
+                        return new Object[0];
+                    }
+
+                    @NonNull
+                    @Override
+                    public <T> T[] toArray(@NonNull T[] a) {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean add(PostResponseModel postResponseModel) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean remove(Object o) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean containsAll(@NonNull Collection<?> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean addAll(@NonNull Collection<? extends PostResponseModel> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean addAll(int index, @NonNull Collection<? extends PostResponseModel> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean removeAll(@NonNull Collection<?> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean retainAll(@NonNull Collection<?> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public void clear() {
+
+                    }
+
+                    @Override
+                    public boolean equals(Object o) {
+                        return false;
+                    }
+
+                    @Override
+                    public int hashCode() {
+                        return 0;
+                    }
+
+                    @Override
+                    public PostResponseModel get(int index) {
+                        return null;
+                    }
+
+                    @Override
+                    public PostResponseModel set(int index, PostResponseModel element) {
+                        return null;
+                    }
+
+                    @Override
+                    public void add(int index, PostResponseModel element) {
+
+                    }
+
+                    @Override
+                    public PostResponseModel remove(int index) {
+                        return null;
+                    }
+
+                    @Override
+                    public int indexOf(Object o) {
+                        return 0;
+                    }
+
+                    @Override
+                    public int lastIndexOf(Object o) {
+                        return 0;
+                    }
+
+                    @Override
+                    public ListIterator<PostResponseModel> listIterator() {
+                        return null;
+                    }
+
+                    @NonNull
+                    @Override
+                    public ListIterator<PostResponseModel> listIterator(int index) {
+                        return null;
+                    }
+
+                    @NonNull
+                    @Override
+                    public List<PostResponseModel> subList(int fromIndex, int toIndex) {
+                        return null;
+                    }
+                };
+                HomeFragment.adapter = new HomePostAdapter(getContext(), HomeFragment.postResponseModelsList);
+                HomeFragment.recyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.post_recylerView);
+                HomeFragment.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                HomeFragment.recyclerView.setAdapter(HomeFragment.adapter);
+                HomeFragment.getHomePost(getContext());
+
                 return rootView;
-
-
-
-
 
 
 //                View rootView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -529,14 +658,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
 //                    }
 //                });
 //
-//                addPost.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Intent i = new Intent(getContext(), AddPostActivity.class);
-//                        startActivity(i);
-//
-//                    }
-//                });
+
 //                return rootView;
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
                 HomeTabbedActivity.tabNumber = 2;
@@ -557,10 +679,10 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 GeneralFunctions.getSharedPreferences(getContext());
                 View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
                 userName = (TextView) rootView.findViewById(R.id.userName);
-                userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name()+ " " +GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
-               // getUserInfo();
+                userName.setText(GeneralAppInfo.getGeneralUserInfo().getUser().getFirst_name() + " " + GeneralAppInfo.getGeneralUserInfo().getUser().getLast_name());
+                // getUserInfo();
                 profilePicture = (CircleImageView) rootView.findViewById(R.id.profile_picture);
-                Picasso.with(context).load(GeneralAppInfo.SPRING_URL+'/'+GeneralAppInfo.getGeneralUserInfo().getUser().getImage()).into(profilePicture);
+                Picasso.with(context).load(GeneralAppInfo.SPRING_URL + '/' + GeneralAppInfo.getGeneralUserInfo().getUser().getImage()).into(profilePicture);
 //                followerIcon = (CircleImageView) rootView.findViewById(R.id.followersIcon);
                 followingIcon = (CircleImageView) rootView.findViewById(R.id.FollowingIcon);
 //                reqeustsIcon = (CircleImageView) rootView.findViewById(R.id.RequestsIcon);
@@ -568,7 +690,6 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 logoutIcon = (CircleImageView) rootView.findViewById(R.id.logoutIcon);
                 LinearLayout showProfileLayout = (LinearLayout) rootView.findViewById(R.id.showProfileLayout);
                 profilePicture.setImageBitmap(GeneralAppInfo.getUserProfilePicture());
-
 
 
                 showProfileLayout.setOnClickListener(new View.OnClickListener() {

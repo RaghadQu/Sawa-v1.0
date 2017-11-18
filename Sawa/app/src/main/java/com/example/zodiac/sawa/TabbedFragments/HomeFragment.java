@@ -1,16 +1,18 @@
 package com.example.zodiac.sawa.TabbedFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.zodiac.sawa.Activities.AddPostActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
@@ -37,18 +39,17 @@ public class HomeFragment extends AppCompatDialogFragment {
 
     //  public static ArrayList<NotificationAdapter.NotificationRecyclerViewDataProvider> NotificationList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
-    //  public static NotificationAdapter adapter;
+    public static HomePostAdapter adapter;
     public static Retrofit retrofit;
-    static List<PostResponseModel> postResponseModelsList;
+    public static List<PostResponseModel> postResponseModelsList;
     View view;
-    Context context = getContext();
+    Context  context = getContext();
 
-    public static void getHomePost(View view, final Context context) {
+    public static void getHomePost(final Context context) {
 
-        Log.d("ResponsePost", " HomeTabbedActivity in Function");
 
-        recyclerView = (FastScrollRecyclerView) view.findViewById(R.id.post_recylerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        //  recyclerView = (FastScrollRecyclerView) view.findViewById(R.id.post_recylerView);
+        // recyclerView.setLayoutManager(new LinearLayoutManager(context));
         PostInterface postInterface;
         GeneralFunctions generalFunctions = new GeneralFunctions();
         boolean isOnline = generalFunctions.isOnline(getApplicationContext());
@@ -61,7 +62,6 @@ public class HomeFragment extends AppCompatDialogFragment {
 
         } else {
 
-            Log.d("ResponsePost", " HomeTabbedActivity online Function");
 
             final Call<List<PostResponseModel>> postResponse = postInterface.getUserHomePost(GeneralAppInfo.getUserID());
             postResponse.enqueue(new Callback<List<PostResponseModel>>() {
@@ -76,7 +76,7 @@ public class HomeFragment extends AppCompatDialogFragment {
                     } else {
                         postResponseModelsList = response.body();
                         Log.d("ResponsePost", " " + response.body());
-                        recyclerView.setAdapter(new HomePostAdapter(context,postResponseModelsList));
+                        recyclerView.setAdapter(new HomePostAdapter(context, postResponseModelsList));
                         // postResponseModelsList.clear();
 
 
@@ -107,6 +107,15 @@ public class HomeFragment extends AppCompatDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        FloatingActionButton addPost = (FloatingActionButton) view.findViewById(R.id.fab);
+        addPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), AddPostActivity.class);
+                startActivity(i);
+
+            }
+        });
         //recyclerView = (FastScrollRecyclerView) view.findViewById(R.id.post_recylerView);
         // recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
