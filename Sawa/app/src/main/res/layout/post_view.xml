@@ -40,12 +40,7 @@ android:background="#eee">
                 android:textColor="#000"
                 android:textSize="13dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tue 12:10pm"
-                android:id="@+id/postTime"
-                android:textSize="11dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -164,7 +159,9 @@ android:background="#eee">
                 android:scrollbars="vertical" />
 
 
+
         </ScrollView>
+        
 
 
     </LinearLayout>
@@ -244,6 +241,7 @@ android:background="#eee">
             android:gravity="center"
             android:text="8"
             android:textSize="13dp" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"

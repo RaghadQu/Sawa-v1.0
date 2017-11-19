@@ -10,6 +10,8 @@ public class PostRequestModel {
 
     int userId;
     String text;
+    String link;
+
     boolean is_public_comment;
 
     public int getUserId() {
@@ -39,6 +41,11 @@ public class PostRequestModel {
         return is_public_comment;
     }
 
+    public String getLink() {
+        return link;
+    }
 
-
+    public void setLink(String link) {
+        this.link = link;
+    }
 }
