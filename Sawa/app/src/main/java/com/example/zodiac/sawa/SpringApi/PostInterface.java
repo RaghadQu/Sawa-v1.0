@@ -25,7 +25,7 @@ import retrofit2.http.Query;
 public interface PostInterface {
     @Headers("Cache-Control: max-age=64000")
     @GET("/api/v1/post/getUserHomePost/{id}")
-    Call<ArrayList<PostResponseModel>> getUserHomePost(@Path("id") int id);
+    Call<List<PostResponseModel>> getUserHomePost(@Path("id") int id);
     @Multipart
     @POST("/api/v1/post/addNewImagePost")
     Call<PostResponseModel> addNewPost(@Part MultipartBody.Part file ,@Query("id") int id,@Query("text") String text,@Query("is_public_comment") boolean is_public_comment);
