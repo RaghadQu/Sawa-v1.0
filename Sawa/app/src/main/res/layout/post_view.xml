@@ -46,7 +46,7 @@ android:background="#eee">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="53dp"
+            android:layout_marginLeft="60dp"
             android:layout_marginTop="5dp"
             >
 
@@ -58,7 +58,7 @@ android:background="#eee">
                 android:src="@drawable/love_post"/>
 
             <TextView
-                android:layout_width="15dp"
+                android:layout_width="13dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/loveCount"
@@ -72,7 +72,7 @@ android:background="#eee">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:layout_marginLeft="0dp"
             >
 
@@ -81,7 +81,7 @@ android:background="#eee">
                 android:layout_height="30dp"
                 android:padding="4dp"
                 android:id="@+id/like_post"
-                android:src="@drawable/like_post"
+                android:src="@drawable/like4"
 
                 />
             <TextView
@@ -97,16 +97,16 @@ android:background="#eee">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             >
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:padding="4dp"
+                android:padding="3dp"
                 android:id="@+id/dislike_post"
-                android:src="@drawable/dislike_post"/>
+                android:src="@drawable/unlike4"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
