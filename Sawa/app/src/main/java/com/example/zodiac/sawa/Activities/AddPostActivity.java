@@ -344,7 +344,8 @@ public class AddPostActivity extends YouTubeBaseActivity implements YouTubePlaye
 
             PostRequestModel postRequestModel = new PostRequestModel();
             postRequestModel.setUserId(GeneralAppInfo.getGeneralUserInfo().getUser().getId());
-            postRequestModel.setText(PostText.getText().toString() + "::" + youtubeLinkString);
+            postRequestModel.setText(PostText.getText().toString());
+            postRequestModel.setLink(youtubeLinkString);
             postRequestModel.setIs_public_comment(showComments.isChecked());
 
 

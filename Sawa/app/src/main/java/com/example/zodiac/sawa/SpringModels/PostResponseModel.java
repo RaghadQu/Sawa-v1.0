@@ -10,6 +10,7 @@ public class PostResponseModel {
     UserModel userId;
     String text;
     String image;
+    String link;
     boolean is_public_comment;
 
 
@@ -53,5 +54,11 @@ public class PostResponseModel {
         this.is_public_comment = is_public_comment;
     }
 
+    public String getLink() {
+        return link;
+    }
 
+    public void setLink(String link) {
+        this.link = link;
+    }
 }
