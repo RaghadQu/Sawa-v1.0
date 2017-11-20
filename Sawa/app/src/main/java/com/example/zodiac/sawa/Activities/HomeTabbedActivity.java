@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -575,7 +576,15 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 HomeFragment.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 HomeFragment.recyclerView.setAdapter(HomeFragment.adapter);
                 HomeFragment.getHomePost(getContext());
+                FloatingActionButton addPost = (FloatingActionButton) rootView.findViewById(R.id.fab);
+                addPost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getContext(), AddPostActivity.class);
+                        startActivity(i);
 
+                    }
+                });
                 return rootView;
 
 
