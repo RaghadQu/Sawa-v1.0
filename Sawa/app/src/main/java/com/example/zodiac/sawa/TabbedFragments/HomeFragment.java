@@ -38,7 +38,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by zodiac on 05/22/2017.
  */
 
-public class HomeFragment extends AppCompatDialogFragment {
+public class HomeFragment extends AppCompatDialogFragment  {
 
     //  public static ArrayList<NotificationAdapter.NotificationRecyclerViewDataProvider> NotificationList = new ArrayList<>();
     public static FastScrollRecyclerView recyclerView;
