@@ -71,10 +71,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/followersIcon"
-                android:layout_width="73dp"
-                android:layout_height="73dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_marginTop="18dp"
-                android:src="@color/com_facebook_blue"/>
+                android:src="@drawable/active_users"
+                />
                 <!--android:src="@drawable/new_friends"-->
 
 
@@ -91,21 +92,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="75dp"
+            android:paddingLeft="55dp"
             android:paddingRight="40dp"
             android:paddingTop="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="                 "
+                android:text="Active Followings"
                 android:textColor="#000"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="113dp"
+                android:layout_marginLeft="80dp"
                 android:text="Following"
                 android:textColor="#000"
                 android:textStyle="bold" />
@@ -127,10 +128,10 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/RequestsIcon"
-                android:layout_width="73dp"
-                android:layout_height="73dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="18dp"
-                android:src="@color/colorAccent"/>
+                android:src="@drawable/setting_save_post"/>
                 <!--android:src="@drawable/requests" />-->
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -146,14 +147,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="80dp"
+            android:paddingLeft="70dp"
             android:paddingRight="40dp"
             android:paddingTop="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="                 "
+                android:text="Saved Posts"
                 android:textColor="#000"
                 android:textStyle="bold" />
 

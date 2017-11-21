@@ -68,8 +68,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         final PostResponseModel postResponseModel = postResponseModelsList.get(position);
 
 
-        // holder.posterUserName.setText(postResponseModel.getUserId().getFirst_name() + " " + postResponseModel.getUserId().getLast_name());
-        holder.posterUserName.setText("Ibrahim Zahra");
+
+       holder.posterUserName.setText(postResponseModel.getUserId().getFirst_name() + " " + postResponseModel.getUserId().getLast_name());
+      //   holder.posterUserName.setText("Ibrahim Zahra");
 
         holder.postBodyText.setText(postResponseModel.getText());
       //  if (postResponseModel.getLink().equals(null) == false) {
