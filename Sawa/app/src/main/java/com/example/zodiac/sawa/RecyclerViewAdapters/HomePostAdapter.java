@@ -20,6 +20,7 @@ import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
@@ -76,23 +77,6 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
       //  if (postResponseModel.getLink().equals(null) == false) {
 
 
-
-        final YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-        holder.containerYouTubePlayer.setId(postResponseModelsList.get(position).getPostId());
-
-        ((Activity) mContext).getFragmentManager().beginTransaction().replace(holder.containerYouTubePlayer.getId(), youTubePlayerFragment).commit();
-        youTubePlayerFragment.initialize(api_key, new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
-
-                youTubePlayer.cueVideo("srH-2pQdKhg");
-                youTubePlayer.setShowFullscreenButton(false);
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-            }
-        });
     //}
 
         String image;
@@ -160,6 +144,8 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         TextView postBodyText;
         ImageView postImage;
         protected FrameLayout containerYouTubePlayer;
+        YouTubeThumbnailView youTubeThumbnailView;
+
 
 
         public UserViewHolder(View itemView) {
@@ -170,7 +156,6 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             posterUserName = (TextView) itemView.findViewById(R.id.username);
             postBodyText = (TextView) view.findViewById(R.id.postText);
             postImage=(ImageView)view.findViewById(R.id.postImage);
-            containerYouTubePlayer = (FrameLayout) itemView.findViewById(R.id.youtube_holder);
 
 
 
