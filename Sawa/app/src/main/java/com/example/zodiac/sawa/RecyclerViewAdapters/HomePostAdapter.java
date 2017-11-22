@@ -3,13 +3,16 @@ package com.example.zodiac.sawa.RecyclerViewAdapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
@@ -20,6 +23,9 @@ import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +48,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
     private Context mContext;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
 
+    String[] VideoID = {"P3mAtvs5Elc", "nCgQDjiotG0", "P3mAtvs5Elc"};
 
     public HomePostAdapter(Context mContext,List<PostResponseModel>postResponseModelsList) {
         this.mContext = mContext;
@@ -63,7 +70,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
 
 
     @Override
-    public void onBindViewHolder(final HomePostAdapter.UserViewHolder holder, int position) {
+    public void onBindViewHolder(final HomePostAdapter.UserViewHolder holder, final int position) {
         final FollowFunctions friendsFunctions = new FollowFunctions();
         final PostResponseModel postResponseModel = postResponseModelsList.get(position);
 
@@ -77,7 +84,21 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
 
 
 
-        final YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+        final YouTubeThumbnailLoader.OnThumbnailLoadedListener  onThumbnailLoadedListener = new YouTubeThumbnailLoader.OnThumbnailLoadedListener(){
+            @Override
+            public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+
+            }
+
+            @Override
+            public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                youTubeThumbnailView.setVisibility(View.VISIBLE);
+            }
+        };
+
+
+
+     /*   final YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
         holder.containerYouTubePlayer.setId(postResponseModelsList.get(position).getPostId());
 
         ((Activity) mContext).getFragmentManager().beginTransaction().replace(holder.containerYouTubePlayer.getId(), youTubePlayerFragment).commit();
@@ -92,7 +113,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
             }
-        });
+        });*/
     //}
 
         String image;
@@ -135,6 +156,19 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             }
         });
 
+        holder.youTubeThumbnailView.initialize(api_key, new YouTubeThumbnailView.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+
+                youTubeThumbnailLoader.setVideo(VideoID[position%3]);
+                youTubeThumbnailLoader.setOnThumbnailLoadedListener(onThumbnailLoadedListener);
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+                //write something for failure
+            }
+        });
 
     }
 
@@ -150,7 +184,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
     }
 
 
-    public class UserViewHolder extends RecyclerView.ViewHolder {
+    public class UserViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
 
         CircleImageView posterProfilePicture;
         TextView posterUserName;
@@ -160,6 +194,8 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         TextView postBodyText;
         ImageView postImage;
         protected FrameLayout containerYouTubePlayer;
+        YouTubeThumbnailView youTubeThumbnailView;
+
 
 
         public UserViewHolder(View itemView) {
@@ -170,10 +206,18 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             posterUserName = (TextView) itemView.findViewById(R.id.username);
             postBodyText = (TextView) view.findViewById(R.id.postText);
             postImage=(ImageView)view.findViewById(R.id.postImage);
-            containerYouTubePlayer = (FrameLayout) itemView.findViewById(R.id.youtube_holder);
 
+            // containerYouTubePlayer = (FrameLayout) itemView.findViewById(R.id.youtube_holder);
+            youTubeThumbnailView = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail);
+            youTubeThumbnailView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View v) {
 
+            Log.d("PressYoutube","Press on youtube to play");
+            Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity) mContext,api_key, VideoID[getLayoutPosition()]);
+            mContext.startActivity(intent);
         }
     }
 }
