@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="53dp"
+                android:layout_marginLeft="65dp"
                 android:layout_marginTop="5dp"
                 >
 
@@ -55,11 +55,12 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:padding="4dp"
+                    android:layout_marginTop="3dp"
                     android:id="@+id/love_post"
-                    android:src="@drawable/love_post"/>
+                    android:src="@drawable/love2"/>
 
                 <TextView
-                    android:layout_width="15dp"
+                    android:layout_width="10dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:id="@+id/loveCount"
@@ -80,9 +81,9 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="4dp"
+                    android:padding="6dp"
                     android:id="@+id/like_post"
-                    android:src="@drawable/like_post"
+                    android:src="@drawable/like3"
 
                     />
                 <TextView
@@ -98,16 +99,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="5dp"
                 >
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="4dp"
+                    android:padding="6dp"
                     android:id="@+id/dislike_post"
-                    android:src="@drawable/dislike_post"/>
+                    android:src="@drawable/unlike3"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -140,12 +141,30 @@
                 android:text=""
                 android:textColor="#000"
                 android:textSize="13dp" />
-            <com.google.android.youtube.player.YouTubeThumbnailView
-                android:id="@+id/youtube_thumbnail"
+
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:scaleType="centerCrop"
-                android:visibility="visible"/>
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="0dp"
+                android:layout_marginTop="10dp"
+                card_view:cardBackgroundColor="@android:color/black"
+                android:background="@drawable/layout_borders"
+                card_view:cardPreventCornerOverlap="false"
+                card_view:cardUseCompatPadding="true">
+
+                <com.google.android.youtube.player.YouTubeThumbnailView
+                    android:id="@+id/youtube_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:scaleType="centerCrop"
+                    android:onClick="onClick"
+                    android:visibility="visible"/>
+
+            </android.support.v7.widget.CardView>
+
             <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,9 +186,7 @@
 
 
 
-
             </ScrollView>
-
 
 
 
