@@ -11,9 +11,15 @@ public class PostResponseModel {
     String text;
     String image;
     String link;
-    boolean is_public_comment;
+    boolean isPublic_comment;
+    YoutubeLinkModel youtubeLink;
 
-
+    public void setYoutubelink(YoutubeLinkModel youtubelink) {
+        this.youtubeLink = youtubelink;
+    }
+    public YoutubeLinkModel getYoutubelink() {
+        return youtubeLink;
+    }
     public int getPostId() {
         return postId;
     }
@@ -47,11 +53,11 @@ public class PostResponseModel {
     }
 
     public boolean is_public_comment() {
-        return is_public_comment;
+        return isPublic_comment;
     }
 
     public void setIs_public_comment(boolean is_public_comment) {
-        this.is_public_comment = is_public_comment;
+        this.isPublic_comment = is_public_comment;
     }
 
     public String getLink() {

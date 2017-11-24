@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
@@ -48,7 +49,6 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
     private Context mContext;
     public static String api_key = "AIzaSyAa3QEuITB2WLRgtRVtM3jZwziz9Fc5EV4";
 
-    String[] VideoID = {"P3mAtvs5Elc", "nCgQDjiotG0", "P3mAtvs5Elc"};
 
     public HomePostAdapter(Context mContext,List<PostResponseModel>postResponseModelsList) {
         this.mContext = mContext;
@@ -76,25 +76,12 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
 
 
 
+        Log.d("ResponsePost::"," " + postResponseModel.getYoutubelink());
        holder.posterUserName.setText(postResponseModel.getUserId().getFirst_name() + " " + postResponseModel.getUserId().getLast_name());
       //   holder.posterUserName.setText("Ibrahim Zahra");
 
         holder.postBodyText.setText(postResponseModel.getText());
       //  if (postResponseModel.getLink().equals(null) == false) {
-
-
-
-        final YouTubeThumbnailLoader.OnThumbnailLoadedListener  onThumbnailLoadedListener = new YouTubeThumbnailLoader.OnThumbnailLoadedListener(){
-            @Override
-            public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-
-            }
-
-            @Override
-            public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-                youTubeThumbnailView.setVisibility(View.VISIBLE);
-            }
-        };
 
 
 
@@ -156,20 +143,15 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             }
         });
 
-        holder.youTubeThumbnailView.initialize(api_key, new YouTubeThumbnailView.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
-
-                youTubeThumbnailLoader.setVideo(VideoID[position%3]);
-                youTubeThumbnailLoader.setOnThumbnailLoadedListener(onThumbnailLoadedListener);
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-                //write something for failure
-            }
-        });
-
+        if(postResponseModel.getYoutubelink() != null) {
+            holder.youtubeLinkTitle.setText(postResponseModel.getYoutubelink().getTitle());
+            imageUrl = postResponseModel.getYoutubelink().getImage();
+            Picasso.with(mContext).load(imageUrl).into(holder.youtubeLinkImage);
+        }
+        else
+        {
+            holder.youtubeLinkLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -184,7 +166,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
     }
 
 
-    public class UserViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
+    public class UserViewHolder extends RecyclerView.ViewHolder  {
 
         CircleImageView posterProfilePicture;
         TextView posterUserName;
@@ -193,8 +175,11 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         TextView postCommentCount;
         TextView postBodyText;
         ImageView postImage;
-        protected FrameLayout containerYouTubePlayer;
-        YouTubeThumbnailView youTubeThumbnailView;
+        ImageView youtubeLinkImage;
+        TextView youtubeLinkTitle;
+        LinearLayout youtubeLinkLayout;
+
+
 
 
 
@@ -206,18 +191,15 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             posterUserName = (TextView) itemView.findViewById(R.id.username);
             postBodyText = (TextView) view.findViewById(R.id.postText);
             postImage=(ImageView)view.findViewById(R.id.postImage);
+            youtubeLinkImage= (ImageView)view.findViewById(R.id.youtubeLinkImage);
+            youtubeLinkTitle = (TextView) view.findViewById(R.id.youtubeLinkTitle);
+            youtubeLinkLayout= (LinearLayout) view.findViewById(R.id.youtubeLinkLayout);
+
 
             // containerYouTubePlayer = (FrameLayout) itemView.findViewById(R.id.youtube_holder);
-            youTubeThumbnailView = (YouTubeThumbnailView) view.findViewById(R.id.youtube_thumbnail);
-            youTubeThumbnailView.setOnClickListener(this);
+
         }
 
-        @Override
-        public void onClick(View v) {
 
-            Log.d("PressYoutube","Press on youtube to play");
-            Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity) mContext,api_key, VideoID[getLayoutPosition()]);
-            mContext.startActivity(intent);
-        }
     }
 }
