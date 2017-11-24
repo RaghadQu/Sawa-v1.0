@@ -143,8 +143,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             }
         });
 
-        if(postResponseModel.getYoutubelink() != null) {
+        if(postResponseModel.getLink()!="" && postResponseModel.getImage()== null) {
             holder.youtubeLinkTitle.setText(postResponseModel.getYoutubelink().getTitle());
+            holder.youtubeLinkAuthor.setText("By: "+postResponseModel.getYoutubelink().getAuthor_name());
             imageUrl = postResponseModel.getYoutubelink().getImage();
             Picasso.with(mContext).load(imageUrl).into(holder.youtubeLinkImage);
         }
@@ -177,6 +178,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         ImageView postImage;
         ImageView youtubeLinkImage;
         TextView youtubeLinkTitle;
+        TextView youtubeLinkAuthor;
         LinearLayout youtubeLinkLayout;
 
 
@@ -194,7 +196,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             youtubeLinkImage= (ImageView)view.findViewById(R.id.youtubeLinkImage);
             youtubeLinkTitle = (TextView) view.findViewById(R.id.youtubeLinkTitle);
             youtubeLinkLayout= (LinearLayout) view.findViewById(R.id.youtubeLinkLayout);
-
+            youtubeLinkAuthor = (TextView) view.findViewById(R.id.youtubeLinkAuthor);
 
             // containerYouTubePlayer = (FrameLayout) itemView.findViewById(R.id.youtube_holder);
 
