@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
+import com.example.zodiac.sawa.Activities.YoutubePlayerDialogActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.Services.FriendServices.FollowFunctions;
@@ -24,6 +26,7 @@ import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -35,6 +38,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Rabee on 11/17/2017.
@@ -84,24 +89,6 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
       //  if (postResponseModel.getLink().equals(null) == false) {
 
 
-
-     /*   final YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-        holder.containerYouTubePlayer.setId(postResponseModelsList.get(position).getPostId());
-
-        ((Activity) mContext).getFragmentManager().beginTransaction().replace(holder.containerYouTubePlayer.getId(), youTubePlayerFragment).commit();
-        youTubePlayerFragment.initialize(api_key, new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
-
-                youTubePlayer.cueVideo("srH-2pQdKhg");
-                youTubePlayer.setShowFullscreenButton(false);
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-            }
-        });*/
-    //}
 
         String image;
         image = postResponseModel.getUserId().getImage();
@@ -153,6 +140,20 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         {
             holder.youtubeLinkLayout.setVisibility(View.GONE);
         }
+
+        View.OnClickListener myClickLIstener= new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
+                Bundle b = new Bundle();
+                b.putString("youtubeSongUrl", postResponseModel.getLink());
+                i.putExtras(b);
+                mContext.startActivity(i);
+                // your stuff
+            }
+        };
+        holder.youtubeLinkTitle.setOnClickListener(myClickLIstener);
+        holder.youtubeLinkAuthor.setOnClickListener(myClickLIstener);
+        holder.youtubeLinkImage.setOnClickListener(myClickLIstener);
     }
 
     @Override
