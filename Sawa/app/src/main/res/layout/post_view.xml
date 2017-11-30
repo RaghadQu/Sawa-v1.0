@@ -5,10 +5,38 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
+        android:layout_height="30dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/post_corners">
+
+        <TextView
+            android:id="@+id/postTime"
+            android:layout_marginLeft="165dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:10pm"
+            android:layout_centerVertical="true"
+            android:textSize="13dp"
+            />
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="23dp"
+            android:src="@drawable/private_comment2"
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="59dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/post_corners">
+
+
+
+
 
         <LinearLayout
             android:id="@+id/userInfoLayout"
@@ -16,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:paddingRight="15dp"
-            android:paddingTop="15dp">
+            android:paddingTop="17dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userProfilePicture"
@@ -35,18 +63,13 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="First LastName"
                     android:textColor="#000"
                     android:textSize="14dp"
                     android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/postTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10:10pm"
-                    android:textSize="13dp"
-                    />
+
 
 
             </LinearLayout>
@@ -291,7 +314,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:gravity="center"
-                android:text="8"
+                android:text="8 comments"
                 android:textSize="13dp" />
 
 
@@ -300,18 +323,14 @@
                 android:layout_height="match_parent"
                 android:paddingRight="5dp">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="40dp"
-                    android:src="@drawable/save_post" />
+
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/private_comment" />
+                    android:src="@drawable/save_post"
+                     />
 
             </RelativeLayout>
 
