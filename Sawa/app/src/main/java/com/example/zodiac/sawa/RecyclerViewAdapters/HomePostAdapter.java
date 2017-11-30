@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
+import com.example.zodiac.sawa.Activities.YoutubePlayerDialogActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.Services.FriendServices.FollowFunctions;
@@ -36,6 +38,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Rabee on 11/17/2017.
@@ -126,8 +130,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             }
         });
 
-        if(postResponseModel.getYoutubelink() != null) {
+        if(postResponseModel.getLink()!="" && postResponseModel.getImage()== null) {
             holder.youtubeLinkTitle.setText(postResponseModel.getYoutubelink().getTitle());
+            holder.youtubeLinkAuthor.setText("By: "+postResponseModel.getYoutubelink().getAuthor_name());
             imageUrl = postResponseModel.getYoutubelink().getImage();
             Picasso.with(mContext).load(imageUrl).into(holder.youtubeLinkImage);
         }
@@ -135,6 +140,20 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         {
             holder.youtubeLinkLayout.setVisibility(View.INVISIBLE);
         }
+
+        View.OnClickListener myClickLIstener= new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), YoutubePlayerDialogActivity.class);
+                Bundle b = new Bundle();
+                b.putString("youtubeSongUrl", postResponseModel.getLink());
+                i.putExtras(b);
+                mContext.startActivity(i);
+                // your stuff
+            }
+        };
+        holder.youtubeLinkTitle.setOnClickListener(myClickLIstener);
+        holder.youtubeLinkAuthor.setOnClickListener(myClickLIstener);
+        holder.youtubeLinkImage.setOnClickListener(myClickLIstener);
     }
 
     @Override
@@ -160,6 +179,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         ImageView postImage;
         ImageView youtubeLinkImage;
         TextView youtubeLinkTitle;
+        TextView youtubeLinkAuthor;
         LinearLayout youtubeLinkLayout;
 
 
@@ -177,7 +197,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
             youtubeLinkImage= (ImageView)view.findViewById(R.id.youtubeLinkImage);
             youtubeLinkTitle = (TextView) view.findViewById(R.id.youtubeLinkTitle);
             youtubeLinkLayout= (LinearLayout) view.findViewById(R.id.youtubeLinkLayout);
-
+            youtubeLinkAuthor = (TextView) view.findViewById(R.id.youtubeLinkAuthor);
 
             // containerYouTubePlayer = (FrameLayout) itemView.findViewById(R.id.youtube_holder);
 
