@@ -132,13 +132,13 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
 
         if(postResponseModel.getLink()!="" && postResponseModel.getImage()== null) {
             holder.youtubeLinkTitle.setText(postResponseModel.getYoutubelink().getTitle());
-            holder.youtubeLinkAuthor.setText("By: "+postResponseModel.getYoutubelink().getAuthor_name());
+            holder.youtubeLinkAuthor.setText("Channel: "+postResponseModel.getYoutubelink().getAuthor_name());
             imageUrl = postResponseModel.getYoutubelink().getImage();
             Picasso.with(mContext).load(imageUrl).into(holder.youtubeLinkImage);
         }
         else
         {
-            holder.youtubeLinkLayout.setVisibility(View.INVISIBLE);
+            holder.youtubeLinkLayout.setVisibility(View.GONE);
         }
 
         View.OnClickListener myClickLIstener= new View.OnClickListener() {
