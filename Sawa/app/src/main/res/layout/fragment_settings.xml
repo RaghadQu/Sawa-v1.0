@@ -74,7 +74,7 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/active_users"
+                android:src="@drawable/log_out"
                 />
                 <!--android:src="@drawable/new_friends"-->
 
@@ -131,7 +131,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/setting_save_post"/>
+                android:src="@drawable/log_out"/>
                 <!--android:src="@drawable/requests" />-->
 
             <de.hdodenhof.circleimageview.CircleImageView

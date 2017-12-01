@@ -14,6 +14,7 @@ public class PostResponseModel {
     boolean isPublic_comment;
     YoutubeLinkModel youtubeLink;
 
+
     public void setYoutubelink(YoutubeLinkModel youtubelink) {
         this.youtubeLink = youtubelink;
     }

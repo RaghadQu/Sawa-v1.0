@@ -20,11 +20,11 @@
             />
 
         <at.markushi.ui.CircleButton
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="23dp"
-            android:src="@drawable/private_comment2"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="27dp"
+            android:src="@drawable/log_out"
             />
 
     </RelativeLayout>
@@ -33,10 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/post_corners">
-
-
-
-
 
         <LinearLayout
             android:id="@+id/userInfoLayout"
@@ -77,9 +73,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="65dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="-5dp"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/love_post"
@@ -87,13 +83,16 @@
                     android:layout_height="28dp"
                     android:layout_marginTop="3dp"
                     android:padding="4dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp"
                     android:src="@drawable/love2" />
 
                 <TextView
                     android:id="@+id/loveCount"
-                    android:layout_width="10dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:text="1 love"
+                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="13dp" />
 
@@ -102,25 +101,28 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="-5dp"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/like_post"
                     android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_height="31dp"
                     android:padding="6dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/like3"
 
                     />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="2"
+                    android:text="3 likes"
+                    android:id="@+id/likeCount"
                     android:textSize="13dp" />
 
             </LinearLayout>
@@ -128,23 +130,26 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="-2dp"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/dislike_post"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_gravity="center"
                     android:padding="6dp"
                     android:src="@drawable/unlike3" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:id="@+id/unlikeCount"
                     android:gravity="center"
-                    android:text=""
+                    android:layout_marginTop="-2dp"
+                    android:text="4 unlikes"
                     android:textSize="13dp" />
 
             </LinearLayout>
@@ -257,10 +262,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/postInfoLayout"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
+            android:paddingBottom="8dp"
             android:paddingLeft="30dp"
             android:paddingRight="20dp"
-            android:paddingTop="10dp">
+            android:paddingTop="8dp">
 
             <!--<ImageView-->
             <!--android:layout_width="20dp"-->
@@ -304,8 +309,8 @@
             <!--android:textSize="13dp" />-->
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_marginLeft="0dp"
                 android:src="@drawable/post_comment" />
 
@@ -326,10 +331,10 @@
 
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/save_post"
+                    android:src="@drawable/log_out"
                      />
 
             </RelativeLayout>
