@@ -25,6 +25,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginLeft="27dp"
             android:src="@drawable/private_post"
+
             />
 
     </RelativeLayout>

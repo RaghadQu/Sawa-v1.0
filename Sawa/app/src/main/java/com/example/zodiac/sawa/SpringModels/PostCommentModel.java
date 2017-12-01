@@ -9,6 +9,8 @@ import java.util.List;
 public class PostCommentModel {
     PostResponseModel post;
     List<CommentModel> comments;
+    ReactListModel reacts;
+
     public PostResponseModel getPost() {
         return post;
     }
@@ -21,4 +23,11 @@ public class PostCommentModel {
     public void setComments(List<CommentModel> comments) {
         this.comments = comments;
     }
+    public ReactListModel getReacts() {
+        return reacts;
+    }
+    public void setReacts(ReactListModel reacts) {
+        this.reacts = reacts;
+    }
+
 }
