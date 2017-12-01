@@ -24,7 +24,7 @@
             android:layout_height="15dp"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="23dp"
-            android:src="@drawable/private_comment2"
+            android:src="@drawable/add_post"
             />
 
     </RelativeLayout>
