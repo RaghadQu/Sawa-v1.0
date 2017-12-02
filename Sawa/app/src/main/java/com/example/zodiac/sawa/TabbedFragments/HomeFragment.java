@@ -16,6 +16,7 @@ import com.example.zodiac.sawa.GeneralFunctions;
 import com.example.zodiac.sawa.R;
 import com.example.zodiac.sawa.RecyclerViewAdapters.HomePostAdapter;
 import com.example.zodiac.sawa.SpringApi.PostInterface;
+import com.example.zodiac.sawa.SpringModels.PostCommentModel;
 import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -39,7 +40,7 @@ public class HomeFragment extends AppCompatDialogFragment  {
     public static FastScrollRecyclerView recyclerView;
     public static HomePostAdapter adapter;
     public static Retrofit retrofit;
-    public static List<PostResponseModel> postResponseModelsList;
+    public static List<PostCommentModel> postResponseModelsList;
     View view;
     Context  context = getContext();
 
@@ -48,6 +49,7 @@ public class HomeFragment extends AppCompatDialogFragment  {
 
         //  recyclerView = (FastScrollRecyclerView) view.findViewById(R.id.post_recylerView);
         // recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
         PostInterface postInterface;
         GeneralFunctions generalFunctions = new GeneralFunctions();
         boolean isOnline = generalFunctions.isOnline(getApplicationContext());
@@ -61,11 +63,11 @@ public class HomeFragment extends AppCompatDialogFragment  {
         } else {
 
 
-            final Call<List<PostResponseModel>> postResponse = postInterface.getUserHomePost(GeneralAppInfo.getUserID());
-            postResponse.enqueue(new Callback<List<PostResponseModel>>() {
+            final Call<List<PostCommentModel>> postResponse = postInterface.getUserHomePost(GeneralAppInfo.getUserID());
+            postResponse.enqueue(new Callback<List<PostCommentModel>>() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public void onResponse(Call<List<PostResponseModel>> call, Response<List<PostResponseModel>> response) {
+                public void onResponse(Call<List<PostCommentModel>> call, Response<List<PostCommentModel>> response) {
 
                     Log.d("ResponsePost", " Get home posts " + response.code());
                     if (response.code() == 404 || response.code() == 500 || response.code() == 502 || response.code() == 400) {
@@ -84,7 +86,7 @@ public class HomeFragment extends AppCompatDialogFragment  {
 
 
                 @Override
-                public void onFailure(Call<List<PostResponseModel>> call, Throwable t) {
+                public void onFailure(Call<List<PostCommentModel>> call, Throwable t) {
                     GeneralFunctions generalFunctions = new GeneralFunctions();
                     generalFunctions.showErrorMesaage(getApplicationContext());
                     Log.d("ResponsePost", "Failure to Get friends");

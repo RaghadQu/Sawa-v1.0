@@ -39,6 +39,7 @@ import com.example.zodiac.sawa.RecyclerViewAdapters.NotificationAdapter;
 import com.example.zodiac.sawa.Services.BadgeViewService;
 import com.example.zodiac.sawa.SpringApi.AboutUserInterface;
 import com.example.zodiac.sawa.SpringApi.AuthInterface;
+import com.example.zodiac.sawa.SpringModels.PostCommentModel;
 import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.example.zodiac.sawa.SpringModels.SignOutModel;
 import com.example.zodiac.sawa.SpringModels.UserModel;
@@ -60,6 +61,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 import static com.example.zodiac.sawa.R.id.container;
 
@@ -440,7 +442,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
                 GeneralFunctions.getSharedPreferences(getContext());
 
                 View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-                HomeFragment.postResponseModelsList = new List<PostResponseModel>() {
+                HomeFragment.postResponseModelsList = new List<PostCommentModel>() {
                     @Override
                     public int size() {
                         return 0;
@@ -458,7 +460,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public Iterator<PostResponseModel> iterator() {
+                    public Iterator<PostCommentModel> iterator() {
                         return null;
                     }
 
@@ -475,7 +477,7 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public boolean add(PostResponseModel postResponseModel) {
+                    public boolean add(PostCommentModel postResponseModel) {
                         return false;
                     }
 
@@ -490,12 +492,12 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public boolean addAll(@NonNull Collection<? extends PostResponseModel> c) {
+                    public boolean addAll(@NonNull Collection<? extends PostCommentModel> c) {
                         return false;
                     }
 
                     @Override
-                    public boolean addAll(int index, @NonNull Collection<? extends PostResponseModel> c) {
+                    public boolean addAll(int index, @NonNull Collection<? extends PostCommentModel> c) {
                         return false;
                     }
 
@@ -525,22 +527,22 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public PostResponseModel get(int index) {
+                    public PostCommentModel get(int index) {
                         return null;
                     }
 
                     @Override
-                    public PostResponseModel set(int index, PostResponseModel element) {
+                    public PostCommentModel set(int index, PostCommentModel element) {
                         return null;
                     }
 
                     @Override
-                    public void add(int index, PostResponseModel element) {
+                    public void add(int index, PostCommentModel element) {
 
                     }
 
                     @Override
-                    public PostResponseModel remove(int index) {
+                    public PostCommentModel remove(int index) {
                         return null;
                     }
 
@@ -555,19 +557,19 @@ public class HomeTabbedActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public ListIterator<PostResponseModel> listIterator() {
+                    public ListIterator<PostCommentModel> listIterator() {
                         return null;
                     }
 
                     @NonNull
                     @Override
-                    public ListIterator<PostResponseModel> listIterator(int index) {
+                    public ListIterator<PostCommentModel> listIterator(int index) {
                         return null;
                     }
 
                     @NonNull
                     @Override
-                    public List<PostResponseModel> subList(int fromIndex, int toIndex) {
+                    public List<PostCommentModel> subList(int fromIndex, int toIndex) {
                         return null;
                     }
                 };
@@ -585,70 +587,61 @@ public class HomeTabbedActivity extends AppCompatActivity {
 
                     }
                 });
-                final ImageView lovePost = (ImageView) rootView.findViewById(R.id.love_post);
-                final ImageView likePost = (ImageView) rootView.findViewById(R.id.like_post);
-                final ImageView dislikePost = (ImageView) rootView.findViewById(R.id.dislike_post);
-                final boolean[] firstDislike = {false}, firstLike = {false}, firstLove = {false};
-                final TextView loveCountTxt = (TextView) rootView.findViewById(R.id.loveCount);
-                loveCountTxt.setText(" ");
-                final int likeCount = 0;
-                final int[] loveCount = {0};
-                final int dislikeCount = 0;
 
-
-                lovePost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (firstLove[0]) {
-                            lovePost.setImageResource(R.drawable.love2);
-                            if (loveCount[0] >= 0) {
-                                loveCountTxt.setText(" ");
-                            } else {
-                                loveCount[0]--;
-                                loveCountTxt.setText(String.valueOf(loveCount[0]));
-                            }
-
-                        } else {
-                            lovePost.setImageResource(R.drawable.filled_love_post);
-                            loveCount[0]++;
-                            loveCountTxt.setText(String.valueOf(loveCount[0]));
-
-
-                        }
-                        firstLove[0] = !firstLove[0];
-
-                    }
-                });
-
-                dislikePost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (firstDislike[0]) {
-                            dislikePost.setImageResource(R.drawable.unlike3);
-
-                        } else {
-                            dislikePost.setImageResource(R.drawable.filled_like3);
-                        }
-                        firstDislike[0] = !firstDislike[0];
-
-                    }
-                });
-                likePost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (firstLike[0]) {
-                            likePost.setImageResource(R.drawable.like3);
-
-                        } else {
-                            likePost.setImageResource(R.drawable.filled_unlike3);
-                        }
-                        firstLike[0] = !firstLike[0];
-
-                    }
-                });
+//
+//                lovePost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        if (firstLove[0]) {
+//                            lovePost.setImageResource(R.drawable.love2);
+//                            if (loveCount[0] >= 0) {
+//                                loveCountTxt.setText(" ");
+//                            } else {
+//                                loveCount[0]--;
+//                                loveCountTxt.setText(String.valueOf(loveCount[0]));
+//                            }
+//
+//                        } else {
+//                            lovePost.setImageResource(R.drawable.filled_love_post);
+//                            loveCount[0]++;
+//                            loveCountTxt.setText(String.valueOf(loveCount[0]));
+//
+//
+//                        }
+//                        firstLove[0] = !firstLove[0];
+//
+//                    }
+//                });
+//
+//                dislikePost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        if (firstDislike[0]) {
+//                            dislikePost.setImageResource(R.drawable.unlike3);
+//
+//                        } else {
+//                            dislikePost.setImageResource(R.drawable.filled_like3);
+//                        }
+//                        firstDislike[0] = !firstDislike[0];
+//
+//                    }
+//                });
+//                likePost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        if (firstLike[0]) {
+//                            likePost.setImageResource(R.drawable.like3);
+//
+//                        } else {
+//                            likePost.setImageResource(R.drawable.filled_unlike3);
+//                        }
+//                        firstLike[0] = !firstLike[0];
+//
+//                    }
+//                });
                 return rootView;
 
 
