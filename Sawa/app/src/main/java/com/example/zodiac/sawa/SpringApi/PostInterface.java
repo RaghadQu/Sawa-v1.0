@@ -5,6 +5,7 @@ import com.example.zodiac.sawa.SpringModels.PostCommentModel;
 import com.example.zodiac.sawa.SpringModels.PostRequestModel;
 import com.example.zodiac.sawa.SpringModels.PostResponseModel;
 import com.example.zodiac.sawa.SpringModels.ReactRequestModel;
+import com.example.zodiac.sawa.SpringModels.ReactSingleModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,9 @@ public interface PostInterface {
     @Headers("Cache-Control: max-age=64000")
     @POST("/api/v1/post/deleteReact")
     Call<Integer> deleteReact(@Body ReactRequestModel reactRequestModel);
+    @Headers("Cache-Control: max-age=64000")
+    @GET("/api/v1/post/getPostReact/{postId}/{type}")
+    Call<ReactSingleModel> getPostReact(@Path("postId") int postId, @Path("type") int type);
 
 
 }

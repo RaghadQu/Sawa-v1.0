@@ -3,6 +3,7 @@ package com.example.zodiac.sawa.RecyclerViewAdapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.zodiac.sawa.Activities.MyProfileActivity;
+import com.example.zodiac.sawa.Activities.ReactsActivity;
 import com.example.zodiac.sawa.Activities.YoutubePlayerDialogActivity;
 import com.example.zodiac.sawa.GeneralAppInfo;
 import com.example.zodiac.sawa.GeneralFunctions;
@@ -26,6 +28,7 @@ import com.example.zodiac.sawa.SpringModels.ReactRequestModel;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -145,7 +148,6 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         holder.postLoveCount.setText(postLoveIntCount[0] > 0 ? (String.valueOf(postLoveIntCount[0]) + (postLoveIntCount[0] == 1 ? " Love" : " Loves")) : "");
         holder.postLikeCount.setText(postLikeIntCount[0] > 0 ? (String.valueOf(postLikeIntCount[0]) + (postLikeIntCount[0] == 1 ? " Like" : " Likes")) : "");
         holder.postDislikePost.setText(postDislikeIntCount[0] > 0 ? (String.valueOf(postDislikeIntCount[0]) + (postDislikeIntCount[0] > 1 ? " Unlikes" : " Unlike")) : "");
-
         if (postResponseModel.getLink() != "" && postResponseModel.getImage() == null) {
             holder.youtubeLinkTitle.setText(postResponseModel.getYoutubelink().getTitle());
             holder.youtubeLinkAuthor.setText("Channel: " + postResponseModel.getYoutubelink().getAuthor_name());
@@ -165,10 +167,23 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
                 // your stuff
             }
         };
+        View.OnClickListener reactsClickListener = new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ReactsActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("postId",postResponseModelsList.get(position).getPost().getPostId());
+
+                i.putExtras(b);
+                mContext.startActivity(i);
+                // your stuff
+            }
+        };
 
         holder.youtubeLinkTitle.setOnClickListener(myClickLIstener);
         holder.youtubeLinkAuthor.setOnClickListener(myClickLIstener);
         holder.youtubeLinkImage.setOnClickListener(myClickLIstener);
+        holder.postLoveCount.setOnClickListener(reactsClickListener);
+        holder.postLikeCount.setOnClickListener(reactsClickListener);
         final boolean[] finalPressedLoveFlag = {pressedLoveFlag};
         holder.postLoveIcon.setOnClickListener(
                 new View.OnClickListener() {
@@ -190,6 +205,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
                     }
                 });
         final boolean[] finalPressedLikeFlag = {PressedLikeFlag};
+
         holder.postLikeIcon.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -213,6 +229,8 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
                     }
                 });
         final boolean[] finalPressedUnlikeFlag = {PressedUnlikeFlag};
+        holder.postLoveCount.setOnClickListener(reactsClickListener);
+
         holder.postUnlikeIcon.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -325,7 +343,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.UserVi
         CircleImageView posterProfilePicture;
         TextView posterUserName;
         TextView postTime;
-        TextView postLoveCount, postLikeCount, postDislikePost;
+        TextView    postLoveCount, postLikeCount, postDislikePost;
         TextView postCommentCount;
         TextView postBodyText;
         ImageView postImage;

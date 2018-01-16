@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class HomeFragment extends AppCompatDialogFragment  {
 
     //  public static ArrayList<NotificationAdapter.NotificationRecyclerViewDataProvider> NotificationList = new ArrayList<>();
-    public static FastScrollRecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     public static HomePostAdapter adapter;
     public static Retrofit retrofit;
     public static List<PostCommentModel> postResponseModelsList;

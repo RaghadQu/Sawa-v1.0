@@ -68,23 +68,23 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-    compile 'com.android.support:multidex:1.0.0'
     compile files('activation.jar')
     compile files('additionnal.jar')
     compile files('mail.jar')
     compile files('YouTubeAndroidPlayerApi.jar')
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
+
+    
+    compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:support-v4:25.3.0'
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
-
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'com.daimajia.androidanimations:library:2.3@aar'
     compile 'com.hbb20:ccp:2.0.2'
-
     compile 'javax.inject:javax.inject:1'
 }
 apply plugin: 'com.google.gms.google-services'

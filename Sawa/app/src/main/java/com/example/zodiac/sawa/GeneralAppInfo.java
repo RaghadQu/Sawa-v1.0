@@ -20,7 +20,7 @@ public class GeneralAppInfo  {
     public static String IMAGE_URL = "http://cb2d8852.ngrok.io/Sawa/public/";
 
 
-    public static String SPRING_URL = "http://696fcae8.ngrok.io";
+    public static String SPRING_URL = "http://17caa777.ngrok.io";
     public static int notifications_counter = 0;
     public static int home_tab_position = 0;
     public static int notifications_tab_position = 1;
